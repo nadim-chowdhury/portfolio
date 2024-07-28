@@ -31,7 +31,7 @@ export const myProjects = [
     technologyUsed: ["Next JS", "Tailwind CSS"],
     live: {
       icon: "",
-      link: "",
+      link: "https://scl-mgt-sys-client.vercel.app",
     },
     github: {
       icon: "",
@@ -47,7 +47,7 @@ export const myProjects = [
     technologyUsed: ["Nest JS", "GraphQL"],
     live: {
       icon: "",
-      link: "",
+      link: "https://scl-mgt-sys-server.onrender.com",
     },
     github: {
       icon: "",
@@ -63,7 +63,7 @@ export const myProjects = [
     technologyUsed: [],
     live: {
       icon: "",
-      link: "",
+      link: "https://event-management-frontend-five.vercel.app",
     },
     github: {
       icon: "",
@@ -79,7 +79,7 @@ export const myProjects = [
     technologyUsed: [],
     live: {
       icon: "",
-      link: "",
+      link: "https://event-management-backend-ub9d.onrender.com",
     },
     github: {
       icon: "",
@@ -95,7 +95,7 @@ export const myProjects = [
     technologyUsed: [],
     live: {
       icon: "",
-      link: "",
+      link: "https://flight-booking-frontend-liart.vercel.app",
     },
     github: {
       icon: "",
@@ -111,7 +111,7 @@ export const myProjects = [
     technologyUsed: [],
     live: {
       icon: "",
-      link: "",
+      link: "https://flight-booking-backend-xesh.onrender.com",
     },
     github: {
       icon: "",
@@ -127,7 +127,7 @@ export const myProjects = [
     technologyUsed: [],
     live: {
       icon: "",
-      link: "",
+      link: "https://food-delivery-client-three.vercel.app",
     },
     github: {
       icon: "",
@@ -143,7 +143,7 @@ export const myProjects = [
     technologyUsed: [],
     live: {
       icon: "",
-      link: "",
+      link: "https://food-delivery-server-ybc5.onrender.com",
     },
     github: {
       icon: "",
@@ -159,7 +159,7 @@ export const myProjects = [
     technologyUsed: [],
     live: {
       icon: "",
-      link: "",
+      link: "https://next-nest-chat-app-frontend.vercel.app",
     },
     github: {
       icon: "",
@@ -175,7 +175,7 @@ export const myProjects = [
     technologyUsed: [],
     live: {
       icon: "",
-      link: "",
+      link: "https://next-nest-chat-app-backend.onrender.com",
     },
     github: {
       icon: "",
@@ -191,7 +191,7 @@ export const myProjects = [
     technologyUsed: [],
     live: {
       icon: "",
-      link: "",
+      link: "https://project-management-sass-frontend.vercel.app",
     },
     github: {
       icon: "",
@@ -207,11 +207,260 @@ export const myProjects = [
     technologyUsed: [],
     live: {
       icon: "",
+      link: "https://project-management-sass-backend.onrender.com",
+    },
+    github: {
+      icon: "",
+      link: "",
+    },
+  },
+  {
+    id: 13,
+    title: "Quikbuys Ecommerce Frontend",
+    desc: "",
+    type: "",
+    img: "/projects-card-img.jpg",
+    technologyUsed: [],
+    live: {
+      icon: "",
+      link: "https://quikbuys.vercel.app",
+    },
+    github: {
+      icon: "",
+      link: "",
+    },
+  },
+  {
+    id: 14,
+    title: "Quikbuys Ecommerce Backend",
+    desc: "",
+    type: "",
+    img: "/projects-card-img.jpg",
+    technologyUsed: [],
+    live: {
+      icon: "",
+      link: "https://quikbuys-rn-ecom-backend.onrender.com",
+    },
+    github: {
+      icon: "",
+      link: "",
+    },
+  },
+];
+
+export const mobileAppProjects = [
+  {
+    id: 1,
+    title: "School Management System",
+    desc: "",
+    type: "",
+    img: "/projects-card-img.jpg",
+    technologyUsed: ["React Native"],
+    live: {
+      icon: "",
       link: "",
     },
     github: {
       icon: "",
       link: "",
     },
+  },
+  {
+    id: 2,
+    title: "Food Delivery App",
+    desc: "",
+    type: "",
+    img: "/projects-card-img.jpg",
+    technologyUsed: ["React Native"],
+    live: {
+      icon: "",
+      link: "",
+    },
+    github: {
+      icon: "",
+      link: "",
+    },
+  },
+  {
+    id: 3,
+    title: "Flight Booking System",
+    desc: "",
+    type: "",
+    img: "/projects-card-img.jpg",
+    technologyUsed: ["React Native"],
+    live: {
+      icon: "",
+      link: "",
+    },
+    github: {
+      icon: "",
+      link: "",
+    },
+  },
+  {
+    id: 4,
+    title: "Native Chatting App",
+    desc: "",
+    type: "",
+    img: "/projects-card-img.jpg",
+    technologyUsed: ["React Native"],
+    live: {
+      icon: "",
+      link: "",
+    },
+    github: {
+      icon: "",
+      link: "",
+    },
+  },
+  {
+    id: 5,
+    title: "Quikbuys Ecommerce App",
+    desc: "",
+    type: "",
+    img: "/projects-card-img.jpg",
+    technologyUsed: ["React Native"],
+    live: {
+      icon: "",
+      link: "",
+    },
+    github: {
+      icon: "",
+      link: "",
+    },
+  },
+  {
+    id: 6,
+    title: "Learning Management System",
+    desc: "",
+    type: "",
+    img: "/projects-card-img.jpg",
+    technologyUsed: ["React Native"],
+    live: {
+      icon: "",
+      link: "",
+    },
+    github: {
+      icon: "",
+      link: "",
+    },
+  },
+  {
+    id: 7,
+    title: "Travel UI App",
+    desc: "",
+    type: "",
+    img: "/projects-card-img.jpg",
+    technologyUsed: ["React Native"],
+    live: {
+      icon: "",
+      link: "",
+    },
+    github: {
+      icon: "",
+      link: "",
+    },
+  },
+  {
+    id: 8,
+    title: "JSM Aora App ",
+    desc: "",
+    type: "",
+    img: "/projects-card-img.jpg",
+    technologyUsed: ["React Native"],
+    live: {
+      icon: "",
+      link: "",
+    },
+    github: {
+      icon: "",
+      link: "",
+    },
+  },
+  {
+    id: 9,
+    title: "Explore Place App",
+    desc: "",
+    type: "",
+    img: "/projects-card-img.jpg",
+    technologyUsed: ["React Native"],
+    live: {
+      icon: "",
+      link: "",
+    },
+    github: {
+      icon: "",
+      link: "",
+    },
+  },
+];
+
+export const projects = [
+  {
+    name: "Dashboard",
+    href: "https://dash-b0ard.netlify.app",
+  },
+  {
+    name: "Car Showroom",
+    href: "https://cars-showroom.vercel.app",
+  },
+  {
+    name: "Coinbase Clone",
+    href: "https://coiinbase.netlify.app",
+  },
+  {
+    name: "Booking App",
+    href: "https://b0oking.netlify.app",
+  },
+  {
+    name: "Hoo Bank",
+    href: "https://hoo-bnk.netlify.app",
+  },
+  {
+    name: "GPT-3 AI Clone",
+    href: "https://gpt3aiclone.netlify.app",
+  },
+  {
+    name: "E-commerce",
+    href: "https://ec0mmerce.netlify.app",
+  },
+  {
+    name: "Great Cars",
+    href: "https://greatcars.netlify.app",
+  },
+];
+
+export const experiences = [
+  {
+    title: "Jr. Frontend Developer (Mediusware Ltd)",
+    date: "01 March, 2024 - Present",
+    tasks: [
+      "Developing a drag-and-drop website builder similar to Wix and Google Sites.",
+      "Working on event management software solutions.",
+      "Multi-tenancy website builder with subdomain publishing functionality.",
+    ],
+    techUsed: "React JS, GraphQL API, Ant Design, Bootstrap, React Router Dom",
+  },
+  {
+    title: "Frontend Trainee (Mediusware Ltd)",
+    date: "04 December, 2024 - 29 February, 2024",
+    tasks: [
+      "Implemented Profile Page CRUD operations and Role-Based actions.",
+      "Developed Back Office/Tasks CRUD functionalities for store owners and employees/drivers.",
+      "Designed Customer Order CRUD features based on driver/employee roles and delivery/pick-up preferences.",
+      "Implemented logical rendering for the Preferences Page without API integration.",
+      "Led the development of an e-commerce project from scratch, including the creation of a dynamic home page with animations and an optimized folder structure.",
+    ],
+    techUsed:
+      "Next JS, Redux Toolkit, RTK Query, Ant Design, Tailwind CSS, REST API",
+  },
+  {
+    title: "Frontend Developer (Freelancer)",
+    date: "01 June, 2023 - 30 November, 2023",
+    tasks: [
+      "Developed frontend solutions for various projects, including a School Management System built with Angular and a Flight Ticket Booking website with full functionality.",
+      "Demonstrated expertise in creating dynamic and intuitive user interfaces, incorporating real data to enhance user experience.",
+    ],
+    techUsed: "",
   },
 ];

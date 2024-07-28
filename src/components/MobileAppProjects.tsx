@@ -1,17 +1,14 @@
-// import { myProjects } from "@/utls/demoData";
+// import { mobileAppProjects } from "@/utls/demoData";
 // import Heading from "./Heading";
-// import Image from "next/image";
-// import Link from "next/link";
-// import { FaArrowRight, FaGithub } from "react-icons/fa";
 // import ProjectCards from "./ProjectCards";
 
-// export default function Projects() {
+// export default function MobileAppProjects() {
 //   return (
 //     <section className="pt-16">
-//       <Heading title="Full Stack Projects" />
+//       <Heading title="Mobile App Projects" />
 
 //       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-//         {myProjects.map((item) => (
+//         {mobileAppProjects.map((item) => (
 //           <ProjectCards key={item.id} item={item} />
 //         ))}
 //       </div>
@@ -21,7 +18,7 @@
 
 "use client";
 
-import { myProjects } from "@/utls/demoData";
+import { mobileAppProjects } from "@/utls/demoData";
 import Heading from "./Heading";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
@@ -38,7 +35,7 @@ const containerVariants = {
   },
 };
 
-export default function Projects() {
+export default function MobileAppProjects() {
   const controls = useAnimation();
   const { ref, inView } = useInView({ threshold: 0.2 });
 
@@ -50,7 +47,7 @@ export default function Projects() {
 
   return (
     <section className="pt-16" ref={ref}>
-      <Heading title="Full Stack Projects" />
+      <Heading title="Mobile App Projects" />
 
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
@@ -58,7 +55,7 @@ export default function Projects() {
         animate={controls}
         variants={containerVariants}
       >
-        {myProjects.map((item) => (
+        {mobileAppProjects.map((item) => (
           <ProjectCards key={item.id} item={item} />
         ))}
       </motion.div>

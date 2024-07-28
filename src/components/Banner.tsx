@@ -1,7 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { FaCode, FaDev, FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import {
+  FaCode,
+  FaDev,
+  FaGithub,
+  FaLinkedin,
+  FaTwitter,
+  FaYoutube,
+} from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const bannerVariants = {
@@ -30,6 +37,10 @@ const socialMedia = [
   {
     href: "https://leetcode.com/u/nadim-chowdhury",
     icon: <FaCode className="w-4 h-4 lg:w-5 lg:h-5" />,
+  },
+  {
+    href: "https://youtube.com/@nadim-chowdhury",
+    icon: <FaYoutube className="w-4 h-4 lg:w-5 lg:h-5" />,
   },
   {
     href: "https://dev.to/nadim_ch0wdhury",

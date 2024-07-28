@@ -1,27 +1,3 @@
-// import Heading from "./Heading";
-
-// export default function Education() {
-//   return (
-//     <section className="pt-16">
-//       <Heading title="My Education" />
-
-//       <div className="mb-6 text-center">
-//         <h3 className="md:text-xl font-semibold">
-//           BSC (Department of Mathematics) - Habibullah Bahar University College
-//         </h3>
-//         <p>(2019 - Dropout)</p>
-//       </div>
-
-//       <div className="text-center">
-//         <h3 className="md:text-xl font-semibold">
-//           HSC (Science Stream) - Kabi Nazrul Govt. College
-//         </h3>
-//         <p>(2017 - 2019)</p>
-//       </div>
-//     </section>
-//   );
-// }
-
 "use client";
 
 import { useAnimation, motion } from "framer-motion";
@@ -59,7 +35,7 @@ export default function Education() {
       <Heading title="My Education" />
 
       <motion.div
-        className="mb-6 text-center"
+        className="mb-6 text-center space-y-4"
         initial="hidden"
         animate="visible"
         variants={containerVariants}

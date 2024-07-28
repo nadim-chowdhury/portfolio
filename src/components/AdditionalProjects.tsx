@@ -1,48 +1,3 @@
-// import { projects } from "@/utls/demoData";
-// import Link from "next/link";
-// import Heading from "./Heading";
-
-// export default function AdditionalProjects() {
-//   return (
-//     <section className="pt-16">
-//       <Heading title="Additional Projects" />
-
-//       <div className="flex flex-wrap justify-center gap-4 lg:gap-6">
-//         {projects.map((project) => (
-//           <div
-//             key={project.name}
-//             className="bg-gradient-to-tr from-white to-cyan-50 p-4 rounded-full border flex items-center gap-4"
-//           >
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               fill="none"
-//               viewBox="0 0 24 24"
-//               strokeWidth={1.5}
-//               stroke="currentColor"
-//               className="w-6 h-6"
-//             >
-//               <path
-//                 strokeLinecap="round"
-//                 strokeLinejoin="round"
-//                 d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"
-//               />
-//             </svg>
-
-//             <Link
-//               href={project.href}
-//               target="_blank"
-//               rel="noopener noreferrer"
-//               className="text-cyan-600 font-medium"
-//             >
-//               {project.name}
-//             </Link>
-//           </div>
-//         ))}
-//       </div>
-//     </section>
-//   );
-// }
-
 "use client";
 
 import { useAnimation, motion } from "framer-motion";
@@ -90,7 +45,7 @@ export default function AdditionalProjects() {
         {projects.map((project) => (
           <motion.div
             key={project.name}
-            className="bg-gradient-to-tr from-white to-cyan-50 p-4 rounded-full border flex items-center gap-4"
+            className="bg-gradient-to-tr from-white to-cyan-50 p-4 rounded-full border flex items-center gap-4 transition-all duration-300 hover:from-cyan-50 hover:to-white hover:shadow"
             variants={itemVariants}
           >
             <svg
@@ -112,7 +67,7 @@ export default function AdditionalProjects() {
               href={project.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-cyan-600 font-medium"
+              className="text-teal-600 font-medium"
             >
               {project.name}
             </Link>

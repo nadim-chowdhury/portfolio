@@ -1,21 +1,3 @@
-// import { mobileAppProjects } from "@/utls/demoData";
-// import Heading from "./Heading";
-// import ProjectCards from "./ProjectCards";
-
-// export default function MobileAppProjects() {
-//   return (
-//     <section className="pt-16">
-//       <Heading title="Mobile App Projects" />
-
-//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-//         {mobileAppProjects.map((item) => (
-//           <ProjectCards key={item.id} item={item} />
-//         ))}
-//       </div>
-//     </section>
-//   );
-// }
-
 "use client";
 
 import { mobileAppProjects } from "@/utls/demoData";

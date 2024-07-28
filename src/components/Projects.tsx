@@ -1,24 +1,3 @@
-// import { myProjects } from "@/utls/demoData";
-// import Heading from "./Heading";
-// import Image from "next/image";
-// import Link from "next/link";
-// import { FaArrowRight, FaGithub } from "react-icons/fa";
-// import ProjectCards from "./ProjectCards";
-
-// export default function Projects() {
-//   return (
-//     <section className="pt-16">
-//       <Heading title="Full Stack Projects" />
-
-//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-//         {myProjects.map((item) => (
-//           <ProjectCards key={item.id} item={item} />
-//         ))}
-//       </div>
-//     </section>
-//   );
-// }
-
 "use client";
 
 import { myProjects } from "@/utls/demoData";

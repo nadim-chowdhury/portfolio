@@ -75,7 +75,7 @@ const itemVariants = {
 
 export default function Experiences() {
   const controls = useAnimation();
-  const { ref, inView } = useInView({ threshold: 0.2 });
+  const { ref, inView } = useInView({ threshold: 0.1 });
 
   useEffect(() => {
     if (inView) {
@@ -91,9 +91,10 @@ export default function Experiences() {
         initial="hidden"
         animate={controls}
         variants={containerVariants}
+        className="space-y-8"
       >
         {experiences.map((experience, index) => (
-          <motion.div key={index} className="mb-8" variants={itemVariants}>
+          <motion.div key={index} variants={itemVariants}>
             <div className="flex items-center gap-4">
               <div>
                 <svg

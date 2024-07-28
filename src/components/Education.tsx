@@ -46,7 +46,7 @@ const itemVariants = {
 
 export default function Education() {
   const controls = useAnimation();
-  const { ref, inView } = useInView({ threshold: 0.2 });
+  const { ref, inView } = useInView({ threshold: 0.1 });
 
   useEffect(() => {
     if (inView) {

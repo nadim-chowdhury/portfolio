@@ -60,7 +60,7 @@ export const myProjects = [
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
-    technologyUsed: [],
+    technologyUsed: ["Next JS"],
     live: {
       icon: "",
       link: "https://event-management-frontend-five.vercel.app",
@@ -76,7 +76,7 @@ export const myProjects = [
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
-    technologyUsed: [],
+    technologyUsed: ["Nest JS"],
     live: {
       icon: "",
       link: "https://event-management-backend-ub9d.onrender.com",
@@ -92,7 +92,7 @@ export const myProjects = [
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
-    technologyUsed: [],
+    technologyUsed: ["Next JS"],
     live: {
       icon: "",
       link: "https://flight-booking-frontend-liart.vercel.app",
@@ -108,7 +108,7 @@ export const myProjects = [
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
-    technologyUsed: [],
+    technologyUsed: ["Nest JS"],
     live: {
       icon: "",
       link: "https://flight-booking-backend-xesh.onrender.com",
@@ -124,7 +124,7 @@ export const myProjects = [
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
-    technologyUsed: [],
+    technologyUsed: ["Next JS"],
     live: {
       icon: "",
       link: "https://food-delivery-client-three.vercel.app",
@@ -140,7 +140,7 @@ export const myProjects = [
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
-    technologyUsed: [],
+    technologyUsed: ["Nest JS"],
     live: {
       icon: "",
       link: "https://food-delivery-server-ybc5.onrender.com",
@@ -156,7 +156,7 @@ export const myProjects = [
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
-    technologyUsed: [],
+    technologyUsed: ["Next JS"],
     live: {
       icon: "",
       link: "https://next-nest-chat-app-frontend.vercel.app",
@@ -172,7 +172,7 @@ export const myProjects = [
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
-    technologyUsed: [],
+    technologyUsed: ["Nest JS"],
     live: {
       icon: "",
       link: "https://next-nest-chat-app-backend.onrender.com",
@@ -188,7 +188,7 @@ export const myProjects = [
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
-    technologyUsed: [],
+    technologyUsed: ["Next JS"],
     live: {
       icon: "",
       link: "https://project-management-sass-frontend.vercel.app",
@@ -204,7 +204,7 @@ export const myProjects = [
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
-    technologyUsed: [],
+    technologyUsed: ["Nest JS"],
     live: {
       icon: "",
       link: "https://project-management-sass-backend.onrender.com",
@@ -220,7 +220,7 @@ export const myProjects = [
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
-    technologyUsed: [],
+    technologyUsed: ["Next JS"],
     live: {
       icon: "",
       link: "https://quikbuys.vercel.app",
@@ -236,7 +236,7 @@ export const myProjects = [
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
-    technologyUsed: [],
+    technologyUsed: ["Nest JS"],
     live: {
       icon: "",
       link: "https://quikbuys-rn-ecom-backend.onrender.com",

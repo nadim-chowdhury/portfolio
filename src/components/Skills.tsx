@@ -33,7 +33,7 @@ export default function Skills() {
   }, [controls, inView]);
 
   return (
-    <section className="pt-6" ref={ref}>
+    <section className="pt-16" ref={ref}>
       <Heading title="My Skills" />
 
       <motion.div

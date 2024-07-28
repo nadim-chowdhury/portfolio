@@ -51,7 +51,7 @@ const socialMedia = [
 export default function Banner() {
   return (
     <motion.section
-      className="py-24 lg:py-48"
+      className="min-h-[85vh] lg:min-h-[90vh] flex flex-col justify-center items-center"
       initial="hidden"
       animate="visible"
       variants={bannerVariants}

@@ -17,30 +17,30 @@ const iconVariants = {
 const socialMedia = [
   {
     href: "https://www.linkedin.com/in/nadim-chowdhury",
-    icon: <FaLinkedin className="w-5 h-5 lg:w-6 lg:h-6" />,
+    icon: <FaLinkedin className="w-4 h-4 lg:w-5 lg:h-5" />,
   },
   {
     href: "https://github.com/nadim-chowdhury",
-    icon: <FaGithub className="w-5 h-5 lg:w-6 lg:h-6" />,
+    icon: <FaGithub className="w-4 h-4 lg:w-5 lg:h-5" />,
   },
   {
     href: "https://www.twitter.com/nadim_ch0wdhury",
-    icon: <FaTwitter className="w-5 h-5 lg:w-6 lg:h-6" />,
+    icon: <FaTwitter className="w-4 h-4 lg:w-5 lg:h-5" />,
   },
   {
     href: "https://leetcode.com/u/nadim-chowdhury",
-    icon: <FaCode className="w-5 h-5 lg:w-6 lg:h-6" />,
+    icon: <FaCode className="w-4 h-4 lg:w-5 lg:h-5" />,
   },
   {
     href: "https://dev.to/nadim_ch0wdhury",
-    icon: <FaDev className="w-5 h-5 lg:w-6 lg:h-6" />,
+    icon: <FaDev className="w-4 h-4 lg:w-5 lg:h-5" />,
   },
 ];
 
 export default function Banner() {
   return (
     <motion.section
-      className="py-20 lg:py-48"
+      className="py-24 lg:py-48"
       initial="hidden"
       animate="visible"
       variants={bannerVariants}
@@ -91,7 +91,7 @@ export default function Banner() {
       </motion.p>
 
       <motion.div
-        className="flex items-center justify-center gap-4 mt-10"
+        className="flex items-center justify-center gap-3 mt-10"
         initial="hidden"
         animate="visible"
         variants={bannerVariants}
@@ -100,9 +100,14 @@ export default function Banner() {
           <Link
             key={index}
             href={link.href}
-            className="text-slate-600 hover:text-teal-600 transition-all duration-300"
+            className="text-slate-600 hover:text-teal-600 hover:bg-teal-50 transition-all duration-300"
           >
-            <motion.div variants={iconVariants}>{link.icon}</motion.div>
+            <motion.div
+              variants={iconVariants}
+              className="p-3 rounded-full border"
+            >
+              {link.icon}
+            </motion.div>
           </Link>
         ))}
       </motion.div>

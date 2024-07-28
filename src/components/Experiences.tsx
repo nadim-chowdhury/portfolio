@@ -78,7 +78,7 @@ export default function Experiences() {
             </ul>
 
             {experience.techUsed && (
-              <p className="mt-2">
+              <p className="mt-2 pt-2 border-t">
                 <span className="font-semibold">Technology Used:</span>{" "}
                 {experience.techUsed}
               </p>

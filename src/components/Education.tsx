@@ -41,7 +41,7 @@ export default function Education() {
         variants={containerVariants}
       >
         <motion.div variants={itemVariants}>
-          <h3 className="md:text-xl font-semibold">
+          <h3 className="text-justify md:text-center md:text-xl font-semibold">
             BSC (Department of Mathematics) - Habibullah Bahar University
             College
           </h3>
@@ -49,7 +49,7 @@ export default function Education() {
         </motion.div>
 
         <motion.div variants={itemVariants}>
-          <h3 className="md:text-xl font-semibold">
+          <h3 className="text-justify md:text-center md:text-xl font-semibold">
             HSC (Science Stream) - Kabi Nazrul Govt. College
           </h3>
           <p>(2017 - 2019)</p>

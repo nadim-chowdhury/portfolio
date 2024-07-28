@@ -45,7 +45,7 @@ export default function AdditionalProjects() {
         {projects.map((project) => (
           <motion.div
             key={project.name}
-            className="bg-gradient-to-tr from-white to-cyan-50 p-4 rounded-full border flex items-center gap-4 transition-all duration-300 hover:from-cyan-50 hover:to-white hover:shadow"
+            className="bg-gradient-to-tr from-white to-cyan-50 px-4 py-2 lg:py-4 rounded-full border flex items-center gap-4 transition-all duration-300 hover:from-cyan-50 hover:to-white hover:shadow"
             variants={itemVariants}
           >
             <svg

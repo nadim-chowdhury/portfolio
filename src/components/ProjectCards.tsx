@@ -44,14 +44,14 @@ export default function ProjectCards({ item }: any) {
         <div className="flex items-center justify-between w-full mt-4">
           <Link
             href={item.live.link}
-            className="flex items-center gap-2 transition-all duration-300 hover:text-teal-600"
+            className="flex items-center gap-2 transition-all duration-300 hover:text-teal-600 hover:bg-teal-50 border rounded-full px-4 py-1"
           >
             <span className="font-bold">Live</span>
             <FaArrowRight className="-rotate-45" />
           </Link>
           <Link
             href={item.github.link}
-            className="transition-all duration-300 hover:text-teal-600"
+            className="transition-all duration-300 hover:text-teal-600 hover:bg-teal-50 border p-2 rounded-full"
           >
             <FaGithub className="w-5 h-5" />
           </Link>

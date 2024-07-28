@@ -24,7 +24,7 @@ export default function Header() {
     >
       <Link
         href="/"
-        className="bg-gradient-to-tr from-teal-600 to-cyan-600 p-[6px] px-4 border rounded-full transition-all duration-300 hover:rounded-2xl"
+        className="bg-gradient-to-tr from-teal-600 to-cyan-600 p-[6px] px-4 border rounded-full transition-all duration-300 hover:from-cyan-600 hover:to-teal-600"
       >
         <h1 className="font-bold text-xl text-white">NADiM</h1>
       </Link>
@@ -55,7 +55,7 @@ export default function Header() {
       <div className="flex items-center text-teal-600">
         <Link
           href="tel:+8801971258803"
-          className="bg-white border border-r-0 p-2 pl-3 rounded-l-full transition-all duration-300 hover:text-teal-500 hover:rounded-l-2xl"
+          className="bg-white border border-r-0 p-2 pl-3 rounded-l-full transition-all duration-300 hover:text-teal-600 hover:bg-teal-50 hover:rounded-l-2xl"
         >
           <motion.svg
             xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +77,7 @@ export default function Header() {
         </Link>
         <Link
           href="mailto:nadim-chowdhury@outlook.com"
-          className="bg-white border p-2 pr-3 rounded-r-full transition-all duration-300 hover:text-teal-500 hover:rounded-r-2xl"
+          className="bg-white border p-2 pr-3 rounded-r-full transition-all duration-300 hover:text-teal-600 hover:bg-teal-50 hover:rounded-r-2xl"
         >
           <motion.svg
             xmlns="http://www.w3.org/2000/svg"

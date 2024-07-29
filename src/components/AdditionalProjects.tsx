@@ -12,19 +12,19 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2,
+      staggerChildren: 0.1,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 0 },
   visible: { opacity: 1, y: 0 },
 };
 
 export default function AdditionalProjects() {
   const controls = useAnimation();
-  const { ref, inView } = useInView({ threshold: 0.2 });
+  const { ref, inView } = useInView({ threshold: 0.1 });
 
   useEffect(() => {
     if (inView) {

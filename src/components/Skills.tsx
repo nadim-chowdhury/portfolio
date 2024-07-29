@@ -12,13 +12,13 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2,
+      staggerChildren: 0.1,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 0 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -53,7 +53,7 @@ export default function Skills() {
               alt={item.title}
               width={360}
               height={360}
-              className="w-6 h-6 lg:w-8 lg:h-8 object-cover rounded-full"
+              className="w-6 h-6 lg:w-8 lg:h-8 object-contain rounded-full shadow p-1"
             />
             <h3 className="text-sm lg:text-base font-medium tracking-wide">
               {item.title}

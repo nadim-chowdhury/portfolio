@@ -67,7 +67,7 @@ export default function Experiences() {
 
               <h3 className="text-xl font-semibold">{experience.title}</h3>
             </div>
-            <p className="px-4 py-2 my-2 bg-gradient-to-tr from-white to-cyan-50 text-teal-600 border rounded-full text-sm lg:text-base">
+            <p className="px-4 py-2 my-2 bg-gradient-to-tr from-teal-50 to-cyan-50 text-teal-600 rounded-full text-sm lg:text-base">
               {experience.date}
             </p>
 

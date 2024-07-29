@@ -28,8 +28,8 @@ export default function MobileAppProjects() {
   }, [controls, inView]);
 
   return (
-    <section className="pt-16" ref={ref}>
-      <Heading title="Mobile App Projects" />
+    <section className="pt-10" ref={ref}>
+      {/* <Heading title="Mobile App Projects" /> */}
 
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"

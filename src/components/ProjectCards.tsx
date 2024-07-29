@@ -7,7 +7,7 @@ import { FaArrowRight, FaGithub } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0.5, y: 20 },
   visible: { opacity: 1, y: 0 },
 };
 

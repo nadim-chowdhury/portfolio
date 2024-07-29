@@ -1,3 +1,5 @@
+"use client";
+
 import AdditionalProjects from "@/components/AdditionalProjects";
 import Banner from "@/components/Banner";
 import Education from "@/components/Education";
@@ -7,6 +9,7 @@ import MobileAppProjects from "@/components/MobileAppProjects";
 import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AnimatePresence } from "framer-motion";
 
 export default function Home() {
   return (
@@ -16,24 +19,27 @@ export default function Home() {
 
       <div className="pt-16">
         <Heading title="Projects" />
+        <AnimatePresence>
+          <Tabs defaultValue="full-stack" className="">
+            <div className="w-full flex items-center justify-center">
+              <TabsList className="bg-gradient-to-r from-cyan-100 to-teal-100">
+                <TabsTrigger value="full-stack" className="">
+                  Full Stack Projects
+                </TabsTrigger>
+                <TabsTrigger value="mobile-app">
+                  Mobile App Projects
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
-        <Tabs defaultValue="full-stack" className="">
-          <div className="w-full flex items-center justify-center">
-            <TabsList className="bg-gradient-to-r from-cyan-100 to-teal-100">
-              <TabsTrigger value="full-stack" className="">
-                Full Stack Projects
-              </TabsTrigger>
-              <TabsTrigger value="mobile-app">Mobile App Projects</TabsTrigger>
-            </TabsList>
-          </div>
-
-          <TabsContent value="full-stack">
-            <Projects />
-          </TabsContent>
-          <TabsContent value="mobile-app">
-            <MobileAppProjects />
-          </TabsContent>
-        </Tabs>
+            <TabsContent value="full-stack">
+              <Projects />
+            </TabsContent>
+            <TabsContent value="mobile-app">
+              <MobileAppProjects />
+            </TabsContent>
+          </Tabs>
+        </AnimatePresence>
       </div>
 
       <Experiences />

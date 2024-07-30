@@ -24,7 +24,7 @@ export const mySkills = [
 export const myProjects = [
   {
     id: 1,
-    title: "School Management Frontend",
+    title: "School Management System",
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
@@ -38,25 +38,25 @@ export const myProjects = [
       link: "",
     },
   },
-  {
-    id: 2,
-    title: "School Management Backend",
-    desc: "",
-    type: "",
-    img: "/projects-card-img.jpg",
-    technologyUsed: ["Nest JS", "GraphQL"],
-    live: {
-      icon: "",
-      link: "https://scl-mgt-sys-server.onrender.com",
-    },
-    github: {
-      icon: "",
-      link: "",
-    },
-  },
+  // {
+  //   id: 2,
+  //   title: "School Management Backend",
+  //   desc: "",
+  //   type: "",
+  //   img: "/projects-card-img.jpg",
+  //   technologyUsed: ["Nest JS", "GraphQL"],
+  //   live: {
+  //     icon: "",
+  //     link: "https://scl-mgt-sys-server.onrender.com",
+  //   },
+  //   github: {
+  //     icon: "",
+  //     link: "",
+  //   },
+  // },
   {
     id: 3,
-    title: "Event Management Frontend",
+    title: "Event Management System",
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
@@ -70,25 +70,25 @@ export const myProjects = [
       link: "",
     },
   },
-  {
-    id: 4,
-    title: "Event Management Backend",
-    desc: "",
-    type: "",
-    img: "/projects-card-img.jpg",
-    technologyUsed: ["Nest JS"],
-    live: {
-      icon: "",
-      link: "https://event-management-backend-ub9d.onrender.com",
-    },
-    github: {
-      icon: "",
-      link: "",
-    },
-  },
+  // {
+  //   id: 4,
+  //   title: "Event Management Backend",
+  //   desc: "",
+  //   type: "",
+  //   img: "/projects-card-img.jpg",
+  //   technologyUsed: ["Nest JS"],
+  //   live: {
+  //     icon: "",
+  //     link: "https://event-management-backend-ub9d.onrender.com",
+  //   },
+  //   github: {
+  //     icon: "",
+  //     link: "",
+  //   },
+  // },
   {
     id: 5,
-    title: "Flight Booking Frontend",
+    title: "Flight Booking Site",
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
@@ -102,25 +102,25 @@ export const myProjects = [
       link: "",
     },
   },
-  {
-    id: 6,
-    title: "Flight Booking Backend",
-    desc: "",
-    type: "",
-    img: "/projects-card-img.jpg",
-    technologyUsed: ["Nest JS"],
-    live: {
-      icon: "",
-      link: "https://flight-booking-backend-xesh.onrender.com",
-    },
-    github: {
-      icon: "",
-      link: "",
-    },
-  },
+  // {
+  //   id: 6,
+  //   title: "Flight Booking Backend",
+  //   desc: "",
+  //   type: "",
+  //   img: "/projects-card-img.jpg",
+  //   technologyUsed: ["Nest JS"],
+  //   live: {
+  //     icon: "",
+  //     link: "https://flight-booking-backend-xesh.onrender.com",
+  //   },
+  //   github: {
+  //     icon: "",
+  //     link: "",
+  //   },
+  // },
   {
     id: 7,
-    title: "Food Delivery Frontend",
+    title: "Food Delivery Site",
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
@@ -134,25 +134,25 @@ export const myProjects = [
       link: "",
     },
   },
-  {
-    id: 8,
-    title: "Food Delivery Backend",
-    desc: "",
-    type: "",
-    img: "/projects-card-img.jpg",
-    technologyUsed: ["Nest JS"],
-    live: {
-      icon: "",
-      link: "https://food-delivery-server-ybc5.onrender.com",
-    },
-    github: {
-      icon: "",
-      link: "",
-    },
-  },
+  // {
+  //   id: 8,
+  //   title: "Food Delivery Backend",
+  //   desc: "",
+  //   type: "",
+  //   img: "/projects-card-img.jpg",
+  //   technologyUsed: ["Nest JS"],
+  //   live: {
+  //     icon: "",
+  //     link: "https://food-delivery-server-ybc5.onrender.com",
+  //   },
+  //   github: {
+  //     icon: "",
+  //     link: "",
+  //   },
+  // },
   {
     id: 9,
-    title: "Next Nest Chat Frontend",
+    title: "Next Nest Chatting Web App",
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
@@ -166,25 +166,25 @@ export const myProjects = [
       link: "",
     },
   },
-  {
-    id: 10,
-    title: "Next Nest Chat Backend",
-    desc: "",
-    type: "",
-    img: "/projects-card-img.jpg",
-    technologyUsed: ["Nest JS"],
-    live: {
-      icon: "",
-      link: "https://next-nest-chat-app-backend.onrender.com",
-    },
-    github: {
-      icon: "",
-      link: "",
-    },
-  },
+  // {
+  //   id: 10,
+  //   title: "Next Nest Chat Backend",
+  //   desc: "",
+  //   type: "",
+  //   img: "/projects-card-img.jpg",
+  //   technologyUsed: ["Nest JS"],
+  //   live: {
+  //     icon: "",
+  //     link: "https://next-nest-chat-app-backend.onrender.com",
+  //   },
+  //   github: {
+  //     icon: "",
+  //     link: "",
+  //   },
+  // },
   {
     id: 11,
-    title: "Project Management Frontend",
+    title: "Project Management System",
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
@@ -198,25 +198,25 @@ export const myProjects = [
       link: "",
     },
   },
-  {
-    id: 12,
-    title: "Project Management Backend",
-    desc: "",
-    type: "",
-    img: "/projects-card-img.jpg",
-    technologyUsed: ["Nest JS"],
-    live: {
-      icon: "",
-      link: "https://project-management-sass-backend.onrender.com",
-    },
-    github: {
-      icon: "",
-      link: "",
-    },
-  },
+  // {
+  //   id: 12,
+  //   title: "Project Management Backend",
+  //   desc: "",
+  //   type: "",
+  //   img: "/projects-card-img.jpg",
+  //   technologyUsed: ["Nest JS"],
+  //   live: {
+  //     icon: "",
+  //     link: "https://project-management-sass-backend.onrender.com",
+  //   },
+  //   github: {
+  //     icon: "",
+  //     link: "",
+  //   },
+  // },
   {
     id: 13,
-    title: "Quikbuys Ecommerce Frontend",
+    title: "Quikbuys Ecommerce Site",
     desc: "",
     type: "",
     img: "/projects-card-img.jpg",
@@ -230,22 +230,22 @@ export const myProjects = [
       link: "",
     },
   },
-  {
-    id: 14,
-    title: "Quikbuys Ecommerce Backend",
-    desc: "",
-    type: "",
-    img: "/projects-card-img.jpg",
-    technologyUsed: ["Nest JS"],
-    live: {
-      icon: "",
-      link: "https://quikbuys-rn-ecom-backend.onrender.com",
-    },
-    github: {
-      icon: "",
-      link: "",
-    },
-  },
+  // {
+  //   id: 14,
+  //   title: "Quikbuys Ecommerce Backend",
+  //   desc: "",
+  //   type: "",
+  //   img: "/projects-card-img.jpg",
+  //   technologyUsed: ["Nest JS"],
+  //   live: {
+  //     icon: "",
+  //     link: "https://quikbuys-rn-ecom-backend.onrender.com",
+  //   },
+  //   github: {
+  //     icon: "",
+  //     link: "",
+  //   },
+  // },
 ];
 
 export const mobileAppProjects = [
@@ -345,38 +345,38 @@ export const mobileAppProjects = [
       link: "",
     },
   },
-  {
-    id: 7,
-    title: "Travel UI App",
-    desc: "",
-    type: "",
-    img: "/projects-card-img.jpg",
-    technologyUsed: ["React Native"],
-    live: {
-      icon: "",
-      link: "",
-    },
-    github: {
-      icon: "",
-      link: "",
-    },
-  },
-  {
-    id: 8,
-    title: "JSM Aora App ",
-    desc: "",
-    type: "",
-    img: "/projects-card-img.jpg",
-    technologyUsed: ["React Native"],
-    live: {
-      icon: "",
-      link: "",
-    },
-    github: {
-      icon: "",
-      link: "",
-    },
-  },
+  // {
+  //   id: 7,
+  //   title: "Travel UI App",
+  //   desc: "",
+  //   type: "",
+  //   img: "/projects-card-img.jpg",
+  //   technologyUsed: ["React Native"],
+  //   live: {
+  //     icon: "",
+  //     link: "",
+  //   },
+  //   github: {
+  //     icon: "",
+  //     link: "",
+  //   },
+  // },
+  // {
+  //   id: 8,
+  //   title: "JSM Aora App ",
+  //   desc: "",
+  //   type: "",
+  //   img: "/projects-card-img.jpg",
+  //   technologyUsed: ["React Native"],
+  //   live: {
+  //     icon: "",
+  //     link: "",
+  //   },
+  //   github: {
+  //     icon: "",
+  //     link: "",
+  //   },
+  // },
   {
     id: 9,
     title: "Explore Place App",
@@ -438,8 +438,10 @@ export const experiences = [
       "Developing a drag-and-drop website builder similar to Wix and Google Sites.",
       "Working on event management software solutions.",
       "Multi-tenancy website builder with subdomain publishing functionality.",
+      "Worked on inhouse project with multiple pages UI design & api implementation.",
     ],
-    techUsed: "React JS, GraphQL API, Ant Design, Bootstrap, React Router Dom",
+    techUsed:
+      "React JS, GraphQL API, Ant Design, Bootstrap, React Router Dom, RTK Query",
   },
   {
     title: "Frontend Trainee (Mediusware Ltd)",
@@ -455,7 +457,7 @@ export const experiences = [
       "Next JS, Redux Toolkit, RTK Query, Ant Design, Tailwind CSS, REST API",
   },
   {
-    title: "Frontend Developer (Freelancer)",
+    title: "Frontend Developer (Freelance)",
     date: "01 June, 2023 - 30 November, 2023",
     tasks: [
       "Developed frontend solutions for various projects, including a School Management System built with Angular and a Flight Ticket Booking website with full functionality.",

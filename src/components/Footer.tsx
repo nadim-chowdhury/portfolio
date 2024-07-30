@@ -9,7 +9,7 @@ export default function Footer() {
         initial={{ opacity: 0, y: 0 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-gradient-to-r from-white to-teal-50 border rounded-xl py-2 px-4"
+        className="bg-gradient-to-r from-white to-teal-50 border rounded-full py-2 px-4"
       >
         <p className="text-sm lg:text-base text-center">
           &copy;2024 All Rights Reserved By{" "}

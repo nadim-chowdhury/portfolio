@@ -26,7 +26,7 @@ export default function Header() {
         href="/"
         className="bg-gradient-to-tr from-teal-600 to-cyan-600 p-[6px] px-4 border rounded-full transition-all duration-300 hover:from-cyan-600 hover:to-teal-600"
       >
-        <h1 className="font-bold text-xl text-white">NADiM</h1>
+        <h1 className="font-bold text-xl text-white">N4D1M</h1>
       </Link>
 
       <nav className="hidden lg:flex lg:items-center">
@@ -37,7 +37,7 @@ export default function Header() {
             className={`bg-white p-2 px-4 border transition-all duration-300 hover:bg-teal-50 ${
               index === 0
                 ? "border-r-0 rounded-l-full"
-                : index === 2
+                : index === 3
                 ? "border-l-0 rounded-r-full"
                 : ""
             } hover:underline hover:text-teal-600 transition-all duration-300`}

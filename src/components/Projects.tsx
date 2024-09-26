@@ -28,7 +28,7 @@ export default function Projects() {
   }, [controls, inView]);
 
   return (
-    <section className="pt-10" ref={ref}>
+    <section id="projects" className="pt-10" ref={ref}>
       {/* <Heading title="Full Stack Projects" /> */}
 
       <motion.div

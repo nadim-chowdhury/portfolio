@@ -30,7 +30,7 @@ export default function Header() {
       </Link>
 
       <nav className="hidden lg:flex lg:items-center">
-        {["Home", "About", "Projects"].map((item, index) => (
+        {["Home", "About", "Blogs", "Projects"].map((item, index) => (
           <Link
             key={index}
             href={item === "Home" ? "/" : `#${item.toLowerCase()}`}

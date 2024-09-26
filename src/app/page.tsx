@@ -18,11 +18,11 @@ export default function Home() {
       <Skills />
 
       <div className="pt-16">
-        <Heading title="Projects" />
+        <Heading title="Top Projects" />
         <AnimatePresence>
           <Tabs defaultValue="full-stack" className="">
             <div className="w-full flex items-center justify-center">
-              <TabsList className="bg-gradient-to-r from-cyan-100 to-teal-100">
+              <TabsList className="bg-gradient-to-r from-cyan-100 to-teal-100 h-11 px-2">
                 <TabsTrigger value="full-stack" className="">
                   Full Stack Projects
                 </TabsTrigger>

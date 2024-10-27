@@ -104,3 +104,20 @@ body::-webkit-scrollbar-thumb {
   pointer-events: none;
   z-index: 99999999; /* so that it stays on top of all other elements */
 }
+
+.custom-cursor {
+  pointer-events: none;
+  position: fixed;
+  width: 48px;
+  height: 48px;
+  background-color: #fff;
+  border-radius: 50%;
+  mix-blend-mode: difference;
+  transform: translate(-50%, -50%);
+  transition: background-color 0.3s ease;
+}
+
+.hover-effect:hover ~ .custom-cursor {
+  transform: translate(-50%, -50%) scale(3);
+  background-color: rgba(255, 255, 255, 0.7);
+}

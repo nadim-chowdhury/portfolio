@@ -45,7 +45,7 @@ export default function Skills() {
         {mySkills?.map((item) => (
           <motion.div
             key={item.id}
-            className="py-2 px-4 bg-gradient-to-tr from-white to-cyan-50 border rounded-full flex items-center gap-2 lg:gap-4 transition-all duration-300 hover:from-cyan-50 hover:to-white"
+            className="py-2 px-4 bg-gradient-to-tr from-white to-cyan-50 border rounded-full flex items-center gap-2 lg:gap-4 transition-all duration-300 hover:from-cyan-50 hover:to-white hover:shadow cursor-pointer"
             variants={itemVariants}
           >
             <Image

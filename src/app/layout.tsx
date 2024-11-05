@@ -25,7 +25,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
-          <CustomCursor />
+          {/* <CustomCursor /> */}
           {/* <CursorTrail /> */}
         </section>
       </body>

@@ -14,7 +14,7 @@ const cardVariants = {
 export default function ProjectCards({ item }: any) {
   return (
     <motion.div
-      className="bg-gradient-to-tr from-white to-cyan-50 border rounded-lg p-6 flex flex-col justify-between transition-all duration-300 hover:from-cyan-50 hover:to-white"
+      className="bg-gradient-to-tr from-white to-cyan-50 border rounded-lg overflow-hidden flex flex-col justify-between transition-all duration-300 hover:from-cyan-50 hover:to-white hover:shadow"
       variants={cardVariants}
     >
       <Image
@@ -22,7 +22,7 @@ export default function ProjectCards({ item }: any) {
         alt={item.title}
         width={1280}
         height={720}
-        className="w-full h-36 object-cover rounded-md"
+        className="w-full h-42 object-cover rounded-md"
       />
 
       <div className="mt-6 flex flex-col justify-between grow">
@@ -41,7 +41,7 @@ export default function ProjectCards({ item }: any) {
           ))}
         </div>
 
-        <div className="flex items-center justify-between w-full mt-4">
+        <div className="flex items-center justify-between w-full mt-4 px-4 pb-4">
           <Link
             href={item.live.link}
             className="flex items-center gap-2 transition-all duration-300 hover:text-teal-600 hover:bg-teal-50 border rounded-full px-4 py-1"

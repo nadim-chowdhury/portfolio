@@ -45,7 +45,7 @@ export default function Experiences() {
           <motion.div
             key={index}
             variants={itemVariants}
-            className="bg-gradient-to-tr from-white to-cyan-50 p-6 rounded-md border transition-all duration-300 hover:bg-gradient-to-tr hover:from-cyan-50 hover:to-white"
+            className="bg-gradient-to-tr from-white to-cyan-50 p-6 rounded-md border transition-all duration-300 hover:bg-gradient-to-tr hover:from-cyan-50 hover:to-white hover:shadow"
           >
             <div className="flex items-center gap-4">
               <div>
@@ -71,7 +71,7 @@ export default function Experiences() {
               {experience.date}
             </p>
 
-            <ul className="list-disc list-inside">
+            <ul className="list-disc list-inside text-justify">
               {experience.tasks.map((task, idx) => (
                 <li key={idx}>{task}</li>
               ))}

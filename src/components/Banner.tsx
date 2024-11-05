@@ -111,12 +111,9 @@ export default function Banner() {
           <Link
             key={index}
             href={link.href}
-            className="text-slate-600 hover:text-teal-600 hover:bg-teal-50 transition-all duration-300"
+            className="text-slate-600 hover:text-teal-600 hover:bg-teal-50 transition-all duration-300 rounded-full border hover:shadow"
           >
-            <motion.div
-              variants={iconVariants}
-              className="p-3 rounded-full border"
-            >
+            <motion.div variants={iconVariants} className="p-3">
               {link.icon}
             </motion.div>
           </Link>

@@ -432,8 +432,21 @@ export const projects = [
 
 export const experiences = [
   {
+    title: "Full Stack Developer (Freelance)",
+    date: "01 August, 2024 - Present",
+    tasks: [
+      "Developing and maintaining full-stack applications for various clients.",
+      "Building scalable web applications with modern front-end and back-end technologies.",
+      "Implementing authentication, authorization, and role-based access control in projects.",
+      "Optimizing database queries and improving API performance.",
+      "Deploying applications using cloud services and CI/CD pipelines.",
+    ],
+    techUsed:
+      "Next.js, NestJS, GraphQL, PostgreSQL, Tailwind CSS, TypeScript, Docker, AWS",
+  },
+  {
     title: "Jr. Frontend Developer (Mediusware Ltd)",
-    date: "01 March, 2024 - Present",
+    date: "01 March, 2024 - 31 July, 2025",
     tasks: [
       "Developing a drag-and-drop website builder similar to Wix and Google Sites.",
       "Working on event management software solutions.",
@@ -463,6 +476,6 @@ export const experiences = [
       "Developed frontend solutions for various projects, including a School Management System built with Angular and a Flight Ticket Booking website with full functionality.",
       "Demonstrated expertise in creating dynamic and intuitive user interfaces, incorporating real data to enhance user experience.",
     ],
-    techUsed: "",
+    techUsed: "React JS, Next JS, Redux Toolkit, Tailwind CSS, Angular",
   },
 ];

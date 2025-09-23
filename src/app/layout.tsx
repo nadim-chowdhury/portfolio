@@ -7,6 +7,7 @@ import CursorTrail from "@/components/CursorTrail";
 import CustomCursor from "@/components/CustomCursor";
 import MatrixCount from "@/components/MatrixCount";
 import LightRays from "@/components/LightRays";
+import LetterGlitch from "@/components/LetterGlitch";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,8 +32,8 @@ export default function RootLayout({
           {/* <CustomCursor /> */}
           {/* <CursorTrail /> */}
 
-          <div className="absolute top-0 left-0 right-0 w-full h-full">
-            <LightRays
+          <div className="absolute top-0 left-0 right-0 w-full h-full opacity-40">
+            {/* <LightRays
               raysOrigin="top-center"
               raysColor="#00ffff"
               raysSpeed={1.5}
@@ -43,11 +44,17 @@ export default function RootLayout({
               noiseAmount={0.1}
               distortion={0.05}
               className="custom-rays"
+            /> */}
+            <LetterGlitch
+              glitchSpeed={50}
+              centerVignette={true}
+              outerVignette={false}
+              smooth={true}
             />
           </div>
         </section>
 
-        <MatrixCount matrixCount={50} />
+        {/* <MatrixCount matrixCount={50} /> */}
       </body>
     </html>
   );

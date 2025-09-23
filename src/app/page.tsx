@@ -798,7 +798,7 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
                 </div> */}
 
                     {/* Status Bar */}
-                    <div className="mt-2 sm:mt-4 text-xs text-gray-500 border-t border-gray-700 py-2">
+                    <div className="mt-2 sm:mt-4 text-xs text-gray-400 border-t border-gray-700 py-2">
                       <div className="grid grid-cols-2 sm:grid-cols-4 place-items-center gap-1 sm:gap-0 mx-2 sm:mx-4">
                         <span className="truncate">System: Ubuntu 22.04</span>
                         <span>

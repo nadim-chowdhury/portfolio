@@ -3,6 +3,7 @@
 import LightRays from "@/components/LightRays";
 import MatrixCount from "@/components/MatrixCount";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Minus, Square, X } from "lucide-react";
 import Link from "next/link";
 // import AdditionalProjects from "@/components/AdditionalProjects";
 // import Banner from "@/components/Banner";
@@ -74,6 +75,10 @@ const Home: React.FC = () => {
   const [terminalHistory, setTerminalHistory] = useState<string[]>([]);
   const [currentCommand, setCurrentCommand] = useState<string>("");
   const [isTyping, setIsTyping] = useState<boolean>(false);
+  const [currentPath, setCurrentPath] = useState<string>("/home/visitor");
+  const [isClosed, setIsClosed] = useState<boolean>(false);
+  const [isMinimized, setIsMinimized] = useState<boolean>(false);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [matrixCount, setMatrixCount] = useState<number>(10);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -162,6 +167,136 @@ const Home: React.FC = () => {
     { name: "Booking System", url: "https://b0oking.netlify.app" },
   ];
 
+  // ---------------- Virtual Filesystem & Shell ----------------
+  type FsFile = { type: "file"; content: string };
+  type FsDir = { type: "dir"; children: Record<string, FsNode> };
+  type FsNode = FsFile | FsDir;
+
+  const vfs: FsDir = {
+    type: "dir",
+    children: {
+      home: {
+        type: "dir",
+        children: {
+          visitor: {
+            type: "dir",
+            children: {
+              "readme.txt": {
+                type: "file",
+                content:
+                  "Welcome to Nadim's portfolio terminal. Type 'help' for commands.",
+              },
+              projects: {
+                type: "dir",
+                children: {
+                  "flight-booking.txt": {
+                    type: "file",
+                    content:
+                      "Flight Booking System - see: https://flight-booking-frontend-liart.vercel.app",
+                  },
+                  "school-mgmt.txt": {
+                    type: "file",
+                    content:
+                      "School Management System - see: https://scl-mgt-sys-client.vercel.app",
+                  },
+                  "dashboard.txt": {
+                    type: "file",
+                    content: "Dashboard - see: https://dash-b0ard.netlify.app",
+                  },
+                },
+              },
+              contact: {
+                type: "dir",
+                children: {
+                  "info.txt": {
+                    type: "file",
+                    content:
+                      "Email: nadim-chowdhury@outlook.com\nLinkedIn: linkedin.com/in/nadim-chowdhury\nGitHub: github.com/nadim-chowdhury",
+                  },
+                },
+              },
+              skills: {
+                type: "dir",
+                children: {
+                  "all.txt": {
+                    type: "file",
+                    content: `${[...skills].join(", ")}`,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      etc: { type: "dir", children: {} },
+      var: { type: "dir", children: {} },
+      tmp: { type: "dir", children: {} },
+    },
+  };
+
+  const tilde = (path: string): string =>
+    path.startsWith("/home/visitor")
+      ? path === "/home/visitor"
+        ? "~"
+        : path.replace("/home/visitor", "~")
+      : path;
+
+  const unTilde = (path: string): string =>
+    path.startsWith("~") ? path.replace("~", "/home/visitor") : path;
+
+  const normalizePath = (basePath: string, target: string): string => {
+    const raw = target.trim() === "" ? basePath : target.trim();
+    const absolute = raw.startsWith("/")
+      ? raw
+      : raw.startsWith("~")
+      ? unTilde(raw)
+      : `${basePath}/${raw}`;
+    const parts = absolute.split("/");
+    const stack: string[] = [];
+    for (const part of parts) {
+      if (!part || part === ".") continue;
+      if (part === "..") {
+        if (stack.length > 0) stack.pop();
+      } else {
+        stack.push(part);
+      }
+    }
+    return "/" + stack.join("/");
+  };
+
+  const getNode = (path: string): FsNode | null => {
+    const full = path === "/" ? "/" : path.replace(/^\/+/, "/");
+    if (full === "/") return vfs; // root
+    const parts = full.split("/").filter(Boolean);
+    let node: FsNode = vfs;
+    for (const part of parts) {
+      if (node.type !== "dir") return null;
+      const nextNode: FsNode | undefined = node.children[part];
+      if (!nextNode) return null;
+      node = nextNode;
+    }
+    return node;
+  };
+
+  const listPath = (path: string): string | null => {
+    const node = getNode(path);
+    if (!node) return null;
+    if (node.type === "dir") {
+      return Object.keys(node.children).sort().join("  ");
+    }
+    return path.split("/").pop() || "";
+  };
+
+  const readFile = (path: string): string | null => {
+    const node = getNode(path);
+    if (!node || node.type !== "file") return null;
+    return node.content;
+  };
+
+  const getPrompt = (): string => {
+    return `visitor@nadim-portfolio:${tilde(currentPath)}$`;
+  };
+
   const typeWriter = (text: string, callback?: () => void): void => {
     // If a previous typing interval is running, clear it first
     if (typingTimerRef.current !== null) {
@@ -197,21 +332,97 @@ const Home: React.FC = () => {
   };
 
   const executeCommand = (cmd: string): void => {
-    const command = cmd.toLowerCase().trim();
+    const original = cmd.trim();
+    const args = original.split(/\s+/);
+    const name = (args.shift() || "").toLowerCase();
 
-    setTerminalHistory((prev) => [
-      ...prev,
-      `visitor@nadim-portfolio:~$ ${cmd}`,
-      "",
-    ]);
+    setTerminalHistory((prev) => [...prev, `${getPrompt()} ${original}`, ""]);
 
-    if (command === "clear") {
+    if (name === "clear") {
       setTimeout(() => {
         setTerminalHistory([]);
       }, 100);
       return;
     }
 
+    // Shell commands
+    if (name === "pwd") {
+      setTerminalHistory((prev) => {
+        const newHistory = [...prev];
+        newHistory[newHistory.length - 1] = tilde(currentPath);
+        return newHistory;
+      });
+      return;
+    }
+
+    if (name === "ls") {
+      const target = args[0]
+        ? normalizePath(currentPath, args[0])
+        : currentPath;
+      const out = listPath(target);
+      setTerminalHistory((prev) => {
+        const newHistory = [...prev];
+        newHistory[newHistory.length - 1] =
+          out ??
+          `ls: cannot access '${args[0] || ""}': No such file or directory`;
+        return newHistory;
+      });
+      return;
+    }
+
+    if (name === "cd") {
+      const nextPath = normalizePath(currentPath, args[0] || "~");
+      const node = getNode(nextPath);
+      let message = "";
+      if (!node) {
+        message = `cd: ${args[0] || ""}: No such file or directory`;
+      } else if (node.type !== "dir") {
+        message = `cd: ${args[0] || ""}: Not a directory`;
+      } else {
+        setCurrentPath(nextPath);
+        message = "";
+      }
+      setTerminalHistory((prev) => {
+        const newHistory = [...prev];
+        newHistory[newHistory.length - 1] = message;
+        return newHistory;
+      });
+      return;
+    }
+
+    if (name === "cat") {
+      const target = args[0] ? normalizePath(currentPath, args[0]) : "";
+      const out = target ? readFile(target) : null;
+      setTerminalHistory((prev) => {
+        const newHistory = [...prev];
+        newHistory[newHistory.length - 1] =
+          out ?? `cat: ${args[0] || ""}: No such file`;
+        return newHistory;
+      });
+      return;
+    }
+
+    if (name === "echo") {
+      setTerminalHistory((prev) => {
+        const newHistory = [...prev];
+        newHistory[newHistory.length - 1] = args.join(" ");
+        return newHistory;
+      });
+      return;
+    }
+
+    if (name === "help") {
+      const helpText = `Available commands:\n\n- ls, cd, pwd, cat, echo, help, clear\n- about, skills, experience, education, projects, contact`;
+      setTerminalHistory((prev) => {
+        const newHistory = [...prev];
+        newHistory[newHistory.length - 1] = helpText;
+        return newHistory;
+      });
+      return;
+    }
+
+    // Portfolio commands (typewriter-enabled)
+    const command = name;
     if (commands[command]) {
       if (command === "about") {
         typeWriter(commands[command], scrollToBottom);
@@ -372,157 +583,194 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
   return (
     <div className="bg-gradient-to-r from-white/5 via-transparent to-white/5">
       <div className="min-h-screen flex items-center justify-center">
-        <div className="h-full flex-1 max-w-3xl p-4 sm:p-6 rounded-lg overflow-hidden z-50">
-          {/* Terminal Header */}
-          <div className="bg-gray-900 border border-gray-700 p-2 sm:p-3 flex items-center space-x-2 flex-shrink-0 rounded-t-lg">
-            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></div>
-            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full"></div>
-            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full"></div>
-            <span className="ml-2 sm:ml-4 text-gray-300 text-xs sm:text-sm truncate">
-              visitor@nadim-portfolio:~
-            </span>
-          </div>
+        {!isClosed && (
+          <div
+            className={`${
+              isFullscreen
+                ? "w-full h-full max-w-none p-2 sm:p-4"
+                : "h-full flex-1 max-w-3xl p-4 sm:p-6"
+            } rounded-lg overflow-hidden z-50`}
+          >
+            {/* Terminal Header */}
+            <div className="bg-gray-900 border border-gray-700 p-2 sm:p-3 flex items-center space-x-2 flex-shrink-0 rounded-t-lg">
+              <button
+                onClick={() => setIsClosed(true)}
+                aria-label="Close terminal"
+                className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full hover:bg-red-400 group"
+              >
+                <X className="hidden group-hover:block h-full w-full p-[2px] text-black" />
+              </button>
+              <button
+                onClick={() => setIsMinimized((v) => !v)}
+                aria-label="Minimize terminal"
+                className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full hover:bg-yellow-400 group"
+              >
+                <Minus className="hidden group-hover:block h-full w-full p-[2px] text-black" />
+              </button>
+              <button
+                onClick={() => setIsFullscreen((v) => !v)}
+                aria-label="Toggle fullscreen"
+                className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full hover:bg-green-400 group"
+              >
+                <Square className="hidden group-hover:block h-full w-full p-[2px] text-black" />
+              </button>
+              <span className="ml-2 sm:ml-4 text-gray-300 text-xs sm:text-sm truncate">
+                {`visitor@nadim-portfolio:${tilde(currentPath)}`}
+              </span>
+            </div>
 
-          {/* Terminal Body */}
-          <div className="bg-gray-950 border-l border-r border-b border-gray-700 flex flex-col rounded-b-lg">
-            <div className="bg-graph flex flex-col justify-between">
-              <ScrollArea className="h-[calc(100vh-24rem)] sm:h-[calc(100vh-22rem)] lg:h-[calc(100vh-20rem)]">
-                <div
-                  ref={terminalRef}
-                  className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1"
-                >
-                  {/* <ScrollBar
+            {/* Terminal Body */}
+            <div
+              className={`bg-gray-950 ${
+                !isMinimized && "border-l border-r border-b"
+              } border-gray-700 flex flex-col rounded-b-lg`}
+            >
+              {!isMinimized && (
+                <div className="bg-graph flex flex-col justify-between">
+                  <ScrollArea
+                    className={`${
+                      isFullscreen
+                        ? "h-[calc(100vh-11rem)] sm:h-[calc(100vh-12rem)]"
+                        : "h-[calc(100vh-11rem)] sm:h-[calc(100vh-12rem)]"
+                    }`}
+                  >
+                    <div
+                      ref={terminalRef}
+                      className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1"
+                    >
+                      {/* <ScrollBar
                 // orientation="vertical"
                 className="bg-transparent"
               > */}
-                  {/* Terminal Output */}
-                  <div className="text-xs sm:text-sm">
-                    {terminalHistory.map((line, index) => {
-                      // Define matching rules
-                      const rules: {
-                        check: (line: string) => boolean;
-                        className: string;
-                        isBold?: boolean;
-                      }[] = [
-                        {
-                          check: (l) =>
-                            l.includes("visitor@nadim-portfolio:~$"),
-                          className: "text-blue-400 my-4",
-                        },
-                        {
-                          check: (l) => l.includes("NADIM CHOWDHURY"),
-                          className: "text-green-400",
-                        },
-                        {
-                          check: (l) => l.includes("Contact Information:"),
-                          className: "text-amber-400 font-bold",
-                        },
-                        {
-                          check: (l) => l.includes("Professional Experience:"),
-                          className: "text-stone-300 font-bold",
-                        },
-                        {
-                          check: (l) => l.includes("Technical Skills:"),
-                          className: "text-red-400 font-bold",
-                        },
-                        {
-                          check: (l) => l.includes("Featured Projects:"),
-                          className: "text-orange-400 font-bold",
-                        },
-                        {
-                          check: (l) => l.includes("Education:"),
-                          className: "text-zinc-400 font-bold",
-                        },
-                        {
-                          check: (l) => l.startsWith("   •"),
-                          className: "text-stone-300",
-                        },
-                        {
-                          check: (l) => l.startsWith("http"),
-                          className:
-                            "text-cyan-400 underline hover:text-cyan-300 break-all",
-                        },
-                      ];
+                      {/* Terminal Output */}
+                      <div className="text-xs sm:text-sm">
+                        {terminalHistory.map((line, index) => {
+                          // Define matching rules
+                          const rules: {
+                            check: (line: string) => boolean;
+                            className: string;
+                            isBold?: boolean;
+                          }[] = [
+                            {
+                              check: (l) =>
+                                l.includes("visitor@nadim-portfolio:"),
+                              className: "text-blue-400 my-4",
+                            },
+                            {
+                              check: (l) => l.includes("NADIM CHOWDHURY"),
+                              className: "text-green-400",
+                            },
+                            {
+                              check: (l) => l.includes("Contact Information:"),
+                              className: "text-amber-400 font-bold",
+                            },
+                            {
+                              check: (l) =>
+                                l.includes("Professional Experience:"),
+                              className: "text-stone-300 font-bold",
+                            },
+                            {
+                              check: (l) => l.includes("Technical Skills:"),
+                              className: "text-red-400 font-bold",
+                            },
+                            {
+                              check: (l) => l.includes("Featured Projects:"),
+                              className: "text-orange-400 font-bold",
+                            },
+                            {
+                              check: (l) => l.includes("Education:"),
+                              className: "text-zinc-400 font-bold",
+                            },
+                            {
+                              check: (l) => l.startsWith("   •"),
+                              className: "text-stone-300",
+                            },
+                            {
+                              check: (l) => l.startsWith("http"),
+                              className:
+                                "text-cyan-400 underline hover:text-cyan-300 break-all",
+                            },
+                          ];
 
-                      // Find matching rule
-                      const rule = rules.find((r) => r.check(line));
+                          // Find matching rule
+                          const rule = rules.find((r) => r.check(line));
 
-                      return (
-                        <div
-                          key={index}
-                          className="whitespace-pre-wrap break-words my-4"
-                        >
-                          {line.startsWith("http") ? (
-                            <Link
-                              href={line.trim()}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={rule?.className || "text-lime-400"}
+                          return (
+                            <div
+                              key={index}
+                              className="whitespace-pre-wrap break-words my-4"
                             >
-                              {line}
-                            </Link>
-                          ) : (
-                            <span
-                              className={rule?.className || "text-lime-400"}
-                            >
-                              {line}
-                            </span>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
+                              {line.startsWith("http") ? (
+                                <Link
+                                  href={line.trim()}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className={rule?.className || "text-lime-400"}
+                                >
+                                  {line}
+                                </Link>
+                              ) : (
+                                <span
+                                  className={rule?.className || "text-lime-400"}
+                                >
+                                  {line}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
 
-                  {/* invisible marker */}
-                  <div ref={bottomRef} />
-                  {/* </ScrollBar> */}
-                </div>
-              </ScrollArea>
+                      {/* invisible marker */}
+                      <div ref={bottomRef} />
+                      {/* </ScrollBar> */}
+                    </div>
+                  </ScrollArea>
 
-              {/* Command Input */}
-              <div className="flex-shrink-0 h-full border-t border-gray-800">
-                <div className="flex items-center px-2 sm:px-4 pt-4">
-                  <span className="text-blue-400 mr-2 text-xs sm:text-sm flex-shrink-0">
-                    visitor@nadim-portfolio:~$
-                  </span>
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    value={currentCommand}
-                    onChange={(e) => setCurrentCommand(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.ctrlKey && (e.key === "c" || e.key === "C")) {
-                        e.preventDefault();
-                        if (isTyping) {
-                          if (typingTimerRef.current !== null) {
-                            window.clearInterval(typingTimerRef.current);
-                            typingTimerRef.current = null;
+                  {/* Command Input */}
+                  <div className="flex-shrink-0 h-full border-t border-gray-800">
+                    <div className="flex items-center px-2 sm:px-4 pt-4">
+                      <span className="text-blue-400 mr-2 text-xs sm:text-sm flex-shrink-0">
+                        visitor@nadim-portfolio:~$
+                      </span>
+                      <input
+                        ref={inputRef}
+                        type="text"
+                        value={currentCommand}
+                        onChange={(e) => setCurrentCommand(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.ctrlKey && (e.key === "c" || e.key === "C")) {
+                            e.preventDefault();
+                            if (isTyping) {
+                              if (typingTimerRef.current !== null) {
+                                window.clearInterval(typingTimerRef.current);
+                                typingTimerRef.current = null;
+                              }
+                              setIsTyping(false);
+                            }
                           }
-                          setIsTyping(false);
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            if (currentCommand.trim() && !isTyping) {
+                              executeCommand(currentCommand);
+                              setCurrentCommand("");
+                            }
+                          }
+                        }}
+                        className="flex-1 bg-transparent text-green-400 outline-none border-none text-xs sm:text-sm min-w-0"
+                        placeholder={
+                          isTyping ? "Ctrl + C to stop" : "Type a command..."
                         }
-                      }
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        if (currentCommand.trim() && !isTyping) {
-                          executeCommand(currentCommand);
-                          setCurrentCommand("");
-                        }
-                      }
-                    }}
-                    className="flex-1 bg-transparent text-green-400 outline-none border-none text-xs sm:text-sm min-w-0"
-                    placeholder={
-                      isTyping ? "Ctrl + C to stop" : "Type a command..."
-                    }
-                    autoComplete="off"
-                    spellCheck="false"
-                  />
-                  <span className="text-green-400 animate-pulse ml-1 text-xs sm:text-sm">
-                    █
-                  </span>
-                </div>
+                        autoComplete="off"
+                        spellCheck="false"
+                      />
+                      <span className="text-green-400 animate-pulse ml-1 text-xs sm:text-sm">
+                        █
+                      </span>
+                    </div>
 
-                {/* Quick Commands */}
-                <div className="mt-4 p-3 border border-gray-700 rounded bg-gray-900/20 mx-2 sm:mx-4">
+                    {/* Quick Commands */}
+                    {/* <div className="mt-4 p-3 border border-gray-700 rounded bg-gray-900/20 mx-2 sm:mx-4">
                   <div className="text-yellow-400 mb-2 text-xs font-bold">
                     QUICK COMMANDS:
                   </div>
@@ -547,23 +795,40 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
                       </button>
                     ))}
                   </div>
-                </div>
+                </div> */}
 
-                {/* Status Bar */}
-                <div className="mt-2 sm:mt-4 text-xs text-gray-500 border-t border-gray-700 py-2">
-                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0 mx-2 sm:mx-4">
-                    <span className="truncate">System: Ubuntu 22.04 LTS</span>
-                    <span>Status: {isTyping ? "Processing..." : "Ready"}</span>
-                    <span className="sm:inline">
-                      Uptime: {Math.floor(Date.now() / 1000 / 60)} min
-                    </span>
-                    <span className="sm:inline">Ip: 127.0.0.1</span>
+                    {/* Status Bar */}
+                    <div className="mt-2 sm:mt-4 text-xs text-gray-500 border-t border-gray-700 py-2">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 place-items-center gap-1 sm:gap-0 mx-2 sm:mx-4">
+                        <span className="truncate">System: Ubuntu 22.04</span>
+                        <span>
+                          Status: {isTyping ? "Processing..." : "Ready"}
+                        </span>
+                        <span className="sm:inline">
+                          Uptime: {Math.floor(Date.now() / 1000 / 60)} min
+                        </span>
+                        <span className="sm:inline">Ip: 127.0.0.1</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
-        </div>
+        )}
+        {isClosed && (
+          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
+            <button
+              onClick={() => {
+                setIsClosed(false);
+                setIsMinimized(false);
+              }}
+              className="px-4 py-2 rounded-md bg-gray-800 text-teal-400 border border-gray-600 hover:bg-gray-700 text-sm shadow"
+            >
+              Reopen Terminal
+            </button>
+          </div>
+        )}
       </div>
 
       {/* <MatrixCount matrixCount={999} /> */}

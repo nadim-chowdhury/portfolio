@@ -1,5 +1,6 @@
 "use client";
 
+import MatrixCount from "@/components/MatrixCount";
 // import AdditionalProjects from "@/components/AdditionalProjects";
 // import Banner from "@/components/Banner";
 // import Education from "@/components/Education";
@@ -70,6 +71,7 @@ const Home: React.FC = () => {
   const [terminalHistory, setTerminalHistory] = useState<string[]>([]);
   const [currentCommand, setCurrentCommand] = useState<string>("");
   const [isTyping, setIsTyping] = useState<boolean>(false);
+  const [matrixCount, setMatrixCount] = useState<number>(10);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
@@ -219,19 +221,19 @@ const Home: React.FC = () => {
     } else if (command === "contact") {
       const contactText = `Contact Information:
       
-Email: nadim-chowdhury@outlook.com
-Phone: +880 1971 258803
-Location: Dhaka, Bangladesh
-Portfolio: nadim.vercel.app
-LinkedIn: linkedin.com/in/nadim-chowdhury
-GitHub: github.com/nadim-chowdhury
-YouTube: youtube.com/@nadim-chowdhury`;
+                            Email: nadim-chowdhury@outlook.com
+                            Phone: +880 1971 258803
+                            Location: Dhaka, Bangladesh
+                            Portfolio: nadim.vercel.app
+                            LinkedIn: linkedin.com/in/nadim-chowdhury
+                            GitHub: github.com/nadim-chowdhury
+                            YouTube: youtube.com/@nadim-chowdhury`;
       typeWriter(contactText, scrollToBottom);
     } else if (command === "education") {
       const eduText = `Education:
       
-BSC (Department of Mathematics) - Habibullah Bahar University College (2019 - Dropout)
-HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
+                            BSC (Department of Mathematics) - Habibullah Bahar University College (2019 - Dropout)
+                            HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
       typeWriter(eduText, scrollToBottom);
     } else {
       setTerminalHistory((prev) => {
@@ -255,20 +257,36 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
 
   useEffect(() => {
     const welcomeMsg = `
-██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
-██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝
-██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗  
-██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝  
-╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
+ ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
+ ██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝
+ ██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗  
+ ██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝  
+ ╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
  ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
-
-NADIM CHOWDHURY - Software Developer | Cybersecurity Enthusiast
-===============================================================
-
-System initialized. Type 'help' to see available commands.
-Type 'about' to learn more about me.
-    `;
+ NADIM CHOWDHURY - Software Developer | Cybersecurity Enthusiast
+ ===============================================================
+ System initialized. Type 'help' to see available commands.
+ Type 'about' to learn more about me.
+     `;
     setTerminalHistory([welcomeMsg]);
+  }, []);
+
+  useEffect(() => {
+    // Set matrix count based on window size after component mounts
+    const updateMatrixCount = () => {
+      if (typeof window !== "undefined") {
+        setMatrixCount(window.innerWidth > 768 ? 20 : 10);
+      }
+    };
+
+    updateMatrixCount();
+    window.addEventListener("resize", updateMatrixCount);
+
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", updateMatrixCount);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -283,7 +301,7 @@ Type 'about' to learn more about me.
 
   return (
     <div className="bg-black text-green-400 font-mono">
-      <div className="min-h-screen max-w-3xl mx-auto p-4 rounded-lg overflow-hidden flex flex-col">
+      <div className="min-h-screen max-w-3xl mx-auto p-6 rounded-lg overflow-hidden flex flex-col z-50">
         {/* Terminal Header */}
         <div className="bg-gray-900 border border-gray-700 p-2 sm:p-3 flex items-center space-x-2 flex-shrink-0 rounded-t-lg">
           <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></div>
@@ -305,9 +323,9 @@ Type 'about' to learn more about me.
               {terminalHistory.map((line, index) => (
                 <div key={index} className="whitespace-pre-wrap break-words">
                   {line.includes("visitor@nadim-portfolio:~$") ? (
-                    <span className="text-blue-400">{line}</span>
+                    <div className="text-blue-400">{line}</div>
                   ) : line.includes("NADIM CHOWDHURY") ? (
-                    <span className="text-cyan-400">{line}</span>
+                    <div className="text-cyan-400">{line}</div>
                   ) : line.includes("Contact Information:") ||
                     line.includes("Professional Experience:") ||
                     line.includes("Technical Skills:") ||
@@ -406,25 +424,7 @@ Type 'about' to learn more about me.
         </div>
       </div>
 
-      {/* Floating Matrix Effect */}
-      <div className="fixed inset-0 pointer-events-none opacity-5 sm:opacity-10 overflow-hidden -z-10">
-        {Array.from({ length: window.innerWidth > 768 ? 20 : 10 }).map(
-          (_, i) => (
-            <div
-              key={i}
-              className="absolute text-green-500 text-xs animate-pulse"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${2 + Math.random() * 2}s`,
-              }}
-            >
-              {Math.random().toString(36).substring(7)}
-            </div>
-          )
-        )}
-      </div>
+      <MatrixCount matrixCount={999} />
     </div>
   );
 };

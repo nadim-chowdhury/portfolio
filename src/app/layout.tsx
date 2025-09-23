@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CursorTrail from "@/components/CursorTrail";
 import CustomCursor from "@/components/CustomCursor";
+import MatrixCount from "@/components/MatrixCount";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           {/* <CustomCursor /> */}
           {/* <CursorTrail /> */}
         </section>
+        {/* <MatrixCount matrixCount={1000} /> */}
       </body>
     </html>
   );

@@ -107,8 +107,19 @@ const Home: React.FC = () => {
 
   const experience: ExperienceItem[] = [
     {
-      role: "Full Stack Developer (Freelancer)",
-      period: "01 August 2024 - Present",
+      role: "Full Stack Software Developer (Easy Fashion Ltd)",
+      period: "01 August 2024 - 30 June 2025",
+      tasks: [
+        "Designed and developed features across frontend and backend for a large-scale ERP system, integrating modules like POS, Inventory, Production, and HRM.",
+        "Implemented and consumed REST APIs for secure and efficient data communication across modules.",
+        "Optimized performance, scalability, and security of ERP modules following best practices and clean architecture.",
+        "Collaborated with a cross-functional team to deliver enterprise-grade solutions that meet business needs.",
+        "Maintained modular and scalable code for easier updates and long-term system sustainability.",
+      ],
+    },
+    {
+      role: "Full Stack Web Developer (Freelancer)",
+      period: "01 August 2024 - 30 June 2025",
       tasks: [
         "Developed a full-stack flight booking system utilizing real-time data from the Amadeus GDS API.",
         "Integrated a Stripe payment system and implemented interactive maps for seamless airport selection.",

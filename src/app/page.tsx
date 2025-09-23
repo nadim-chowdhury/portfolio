@@ -1,5 +1,6 @@
 "use client";
 
+import LightRays from "@/components/LightRays";
 import MatrixCount from "@/components/MatrixCount";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Link from "next/link";
@@ -306,13 +307,13 @@ const Home: React.FC = () => {
       } else if (width > 640) {
         // medium screen - remove some ASCII lines
         return `
- NADIM CHOWDHURY - Software Developer
+ NADIM CHOWDHURY - Software Developer | Cybersecurity Enthusiast
  System initialized. Type 'help' to see commands.
  Type 'about' to learn more about me.
         `;
       } else {
         // small screen - very compact
-        return `NADIM CHOWDHURY - Software Developer\nType 'help' for commands.`;
+        return `NADIM CHOWDHURY\nSoftware Developer | Cybersecurity Enthusiast\nType 'help' for commands.`;
       }
     };
 
@@ -353,8 +354,8 @@ const Home: React.FC = () => {
 
   return (
     <div className="bg-gradient-to-r from-white/5 via-transparent to-white/5">
-      <div className="min-h-screen flex items-center justify-center max-w-3xl mx-auto">
-        <div className="h-full p-4 sm:p-6 rounded-lg overflow-hidden z-50">
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="h-full flex-1 max-w-3xl p-4 sm:p-6 rounded-lg overflow-hidden z-50">
           {/* Terminal Header */}
           <div className="bg-gray-900 border border-gray-700 p-2 sm:p-3 flex items-center space-x-2 flex-shrink-0 rounded-t-lg">
             <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></div>
@@ -387,13 +388,13 @@ const Home: React.FC = () => {
                         {line.includes("visitor@nadim-portfolio:~$") ? (
                           <div className="text-blue-400 my-4">{line}</div>
                         ) : line.includes("NADIM CHOWDHURY") ? (
-                          <div className="text-cyan-400">{line}</div>
+                          <div className="text-green-400">{line}</div>
                         ) : line.includes("Contact Information:") ||
                           line.includes("Professional Experience:") ||
                           line.includes("Technical Skills:") ||
                           line.includes("Featured Projects:") ||
                           line.includes("Education:") ? (
-                          <span className="text-yellow-400 font-bold">
+                          <span className="text-amber-400 font-bold">
                             {line}
                           </span>
                         ) : line.startsWith("   •") ? (
@@ -408,7 +409,7 @@ const Home: React.FC = () => {
                             {line}
                           </Link>
                         ) : (
-                          <span className="text-green-400">{line}</span>
+                          <span className="text-lime-400">{line}</span>
                         )}
                       </div>
                     ))}
@@ -499,6 +500,19 @@ const Home: React.FC = () => {
       </div>
 
       {/* <MatrixCount matrixCount={999} /> */}
+
+      {/* <LightRays
+        raysOrigin="top-center"
+        raysColor="#00ffff"
+        raysSpeed={1.5}
+        lightSpread={0.8}
+        rayLength={1.2}
+        followMouse={true}
+        mouseInfluence={0.1}
+        noiseAmount={0.1}
+        distortion={0.05}
+        className="custom-rays"
+      /> */}
     </div>
   );
 };

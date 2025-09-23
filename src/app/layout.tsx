@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Nadim Chowdhury",
-  description: "Full/Mern Stack Developer",
+  description: "Software Developer | Cybersecurity Enthusiast",
 };
 
 export default function RootLayout({
@@ -22,9 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <section className="min-h-screen bg-gradient-to-tr from-teal-50 via-transparent to-teal-50 text-slate-700">
-          <Header />
+          {/* <Header /> */}
           {children}
-          <Footer />
+          {/* <Footer /> */}
           {/* <CustomCursor /> */}
           {/* <CursorTrail /> */}
         </section>

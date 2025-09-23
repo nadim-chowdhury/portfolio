@@ -30,7 +30,7 @@ export default function RootLayout({
           {/* <CustomCursor /> */}
           {/* <CursorTrail /> */}
         </section>
-        <MatrixCount matrixCount={420} />
+        <MatrixCount matrixCount={50} />
       </body>
     </html>
   );

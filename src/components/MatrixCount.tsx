@@ -1,6 +1,6 @@
 export default function MatrixCount({ matrixCount }: { matrixCount: number }) {
   return (
-    <div className="fixed top-0 left-0 inset-0 w-full h-full pointer-events-none overflow-hidden z-10 opacity-40">
+    <div className="fixed top-0 left-0 inset-0 w-full h-full pointer-events-none overflow-hidden z-10 opacity-40 bg-transparent">
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -32,13 +32,13 @@ export default function MatrixCount({ matrixCount }: { matrixCount: number }) {
       {Array.from({ length: matrixCount }).map((_, i) => (
         <div
           key={i}
-          className="absolute text-xs matrix-drop"
+          className="absolute text-sm matrix-drop bg-transparent"
           style={{
             left: `${
               i * (100 / matrixCount) + Math.random() * (100 / matrixCount)
             }%`,
             animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${2 + Math.random() * 3}s`,
+            animationDuration: `${2 + Math.random() * 6}s`,
             fontSize: `${10 + Math.random() * 4}px`,
             opacity: 0.3 + Math.random() * 0.7,
           }}

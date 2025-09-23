@@ -318,7 +318,7 @@ const Home: React.FC = () => {
   }, [terminalHistory]);
 
   return (
-    <div className="">
+    <div className="bg-gradient-to-r from-white/5 via-transparent to-white/5">
       <div className="min-h-screen max-w-3xl mx-auto p-6 rounded-lg overflow-hidden flex flex-col z-50">
         {/* Terminal Header */}
         <div className="bg-gray-900 border border-gray-700 p-2 sm:p-3 flex items-center space-x-2 flex-shrink-0 rounded-t-lg">
@@ -331,121 +331,128 @@ const Home: React.FC = () => {
         </div>
 
         {/* Terminal Body */}
-        <div className="bg-black border-l border-r border-b border-gray-700 flex-1 flex flex-col min-h-0 rounded-b-lg">
-          <ScrollArea className="h-[calc(100vh-306px)]">
-            <div
-              ref={terminalRef}
-              className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1"
-            >
-              {/* <ScrollBar
+        <div className="bg-gray-950 border-l border-r border-b border-gray-700 flex-1 flex flex-col rounded-b-lg">
+          <div className="bg-graph flex-1">
+            <ScrollArea className="h-[calc(100vh-306px)]">
+              <div
+                ref={terminalRef}
+                className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1"
+              >
+                {/* <ScrollBar
                 // orientation="vertical"
                 className="bg-transparent"
               > */}
-              {/* Terminal Output */}
-              <div className="text-xs sm:text-sm">
-                {terminalHistory.map((line, index) => (
-                  <div key={index} className="whitespace-pre-wrap break-words">
-                    {line.includes("visitor@nadim-portfolio:~$") ? (
-                      <div className="text-blue-400 my-4">{line}</div>
-                    ) : line.includes("NADIM CHOWDHURY") ? (
-                      <div className="text-cyan-400">{line}</div>
-                    ) : line.includes("Contact Information:") ||
-                      line.includes("Professional Experience:") ||
-                      line.includes("Technical Skills:") ||
-                      line.includes("Featured Projects:") ||
-                      line.includes("Education:") ? (
-                      <span className="text-yellow-400 font-bold">{line}</span>
-                    ) : line.startsWith("   •") ? (
-                      <span className="text-gray-300">{line}</span>
-                    ) : line.startsWith("http") ? (
-                      <Link
-                        href={line.trim()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-cyan-400 underline hover:text-cyan-300 break-all"
-                      >
-                        {line}
-                      </Link>
-                    ) : (
-                      <span className="text-green-400">{line}</span>
-                    )}
-                  </div>
-                ))}
+                {/* Terminal Output */}
+                <div className="text-xs sm:text-sm">
+                  {terminalHistory.map((line, index) => (
+                    <div
+                      key={index}
+                      className="whitespace-pre-wrap break-words"
+                    >
+                      {line.includes("visitor@nadim-portfolio:~$") ? (
+                        <div className="text-blue-400 my-4">{line}</div>
+                      ) : line.includes("NADIM CHOWDHURY") ? (
+                        <div className="text-cyan-400">{line}</div>
+                      ) : line.includes("Contact Information:") ||
+                        line.includes("Professional Experience:") ||
+                        line.includes("Technical Skills:") ||
+                        line.includes("Featured Projects:") ||
+                        line.includes("Education:") ? (
+                        <span className="text-yellow-400 font-bold">
+                          {line}
+                        </span>
+                      ) : line.startsWith("   •") ? (
+                        <span className="text-gray-300">{line}</span>
+                      ) : line.startsWith("http") ? (
+                        <Link
+                          href={line.trim()}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-cyan-400 underline hover:text-cyan-300 break-all"
+                        >
+                          {line}
+                        </Link>
+                      ) : (
+                        <span className="text-green-400">{line}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {/* invisible marker */}
+                <div ref={bottomRef} />
+                {/* </ScrollBar> */}
               </div>
+            </ScrollArea>
 
-              {/* invisible marker */}
-              <div ref={bottomRef} />
-              {/* </ScrollBar> */}
-            </div>
-          </ScrollArea>
-
-          {/* Command Input */}
-          <div className="flex-shrink-0 border-t border-gray-800">
-            <div className="flex items-center px-2 sm:px-4 pt-4">
-              <span className="text-blue-400 mr-2 text-xs sm:text-sm flex-shrink-0">
-                visitor@nadim-portfolio:~$
-              </span>
-              <input
-                ref={inputRef}
-                type="text"
-                value={currentCommand}
-                onChange={(e) => setCurrentCommand(e.target.value)}
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    if (currentCommand.trim() && !isTyping) {
-                      executeCommand(currentCommand);
-                      setCurrentCommand("");
-                    }
-                  }
-                }}
-                className="flex-1 bg-transparent text-green-400 outline-none border-none text-xs sm:text-sm min-w-0"
-                placeholder={isTyping ? "Processing..." : "Type a command..."}
-                disabled={isTyping}
-                autoComplete="off"
-                spellCheck="false"
-              />
-              <span className="text-green-400 animate-pulse ml-1 text-xs sm:text-sm">
-                █
-              </span>
-            </div>
-
-            {/* Quick Commands */}
-            <div className="mt-4 p-3 border border-gray-700 rounded bg-gray-900/20 mx-2 sm:mx-4">
-              <div className="text-yellow-400 mb-2 text-xs font-bold">
-                QUICK COMMANDS:
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1 sm:gap-2 text-xs">
-                {[
-                  "about",
-                  "skills",
-                  "experience",
-                  "projects",
-                  "education",
-                  "contact",
-                  "help",
-                  "clear",
-                ].map((cmd) => (
-                  <button
-                    key={cmd}
-                    onClick={() => handleCommandClick(cmd)}
-                    className="text-cyan-400 hover:text-cyan-300 bg-gray-800 hover:bg-gray-700 px-1 sm:px-2 py-1 rounded border border-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed truncate"
-                    disabled={isTyping}
-                  >
-                    {cmd}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Status Bar */}
-            <div className="mt-2 sm:mt-4 text-xs text-gray-500 border-t border-gray-700 pt-2">
-              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0 mx-2 sm:mx-4">
-                <span className="truncate">System: Ubuntu 22.04 LTS</span>
-                <span>Status: {isTyping ? "Processing..." : "Ready"}</span>
-                <span className="hidden sm:inline">
-                  Uptime: {Math.floor(Date.now() / 1000 / 60)} min
+            {/* Command Input */}
+            <div className="flex-shrink-0 border-t border-gray-800">
+              <div className="flex items-center px-2 sm:px-4 pt-4">
+                <span className="text-blue-400 mr-2 text-xs sm:text-sm flex-shrink-0">
+                  visitor@nadim-portfolio:~$
                 </span>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={currentCommand}
+                  onChange={(e) => setCurrentCommand(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      if (currentCommand.trim() && !isTyping) {
+                        executeCommand(currentCommand);
+                        setCurrentCommand("");
+                      }
+                    }
+                  }}
+                  className="flex-1 bg-transparent text-green-400 outline-none border-none text-xs sm:text-sm min-w-0"
+                  placeholder={isTyping ? "Processing..." : "Type a command..."}
+                  disabled={isTyping}
+                  autoComplete="off"
+                  spellCheck="false"
+                />
+                <span className="text-green-400 animate-pulse ml-1 text-xs sm:text-sm">
+                  █
+                </span>
+              </div>
+
+              {/* Quick Commands */}
+              <div className="mt-4 p-3 border border-gray-700 rounded bg-gray-900/20 mx-2 sm:mx-4">
+                <div className="text-yellow-400 mb-2 text-xs font-bold">
+                  QUICK COMMANDS:
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1 sm:gap-2 text-xs">
+                  {[
+                    "about",
+                    "skills",
+                    "experience",
+                    "projects",
+                    "education",
+                    "contact",
+                    "help",
+                    "clear",
+                  ].map((cmd) => (
+                    <button
+                      key={cmd}
+                      onClick={() => handleCommandClick(cmd)}
+                      className="text-cyan-400 hover:text-cyan-300 bg-gray-800 hover:bg-gray-700 px-1 sm:px-2 py-1 rounded border border-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed truncate"
+                      disabled={isTyping}
+                    >
+                      {cmd}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Status Bar */}
+              <div className="mt-2 sm:mt-4 text-xs text-gray-500 border-t border-gray-700 pt-2">
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0 mx-2 sm:mx-4">
+                  <span className="truncate">System: Ubuntu 22.04 LTS</span>
+                  <span>Status: {isTyping ? "Processing..." : "Ready"}</span>
+                  <span className="hidden sm:inline">
+                    Uptime: {Math.floor(Date.now() / 1000 / 60)} min
+                  </span>
+                </div>
               </div>
             </div>
           </div>

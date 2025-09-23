@@ -455,19 +455,19 @@ const Home: React.FC = () => {
     } else if (command === "contact") {
       const contactText = `Contact Information:
 
-Email: nadim-chowdhury@outlook.com
-Phone: +880 1971 258803
-Location: Dhaka, Bangladesh
-Portfolio: nadim.vercel.app
-LinkedIn: linkedin.com/in/nadim-chowdhury
-GitHub: github.com/nadim-chowdhury
-YouTube: youtube.com/@nadim-chowdhury`;
+- Email: nadim-chowdhury@outlook.com
+- Phone: +880 1971 258803
+- Location: Dhaka, Bangladesh
+- Portfolio: nadim.vercel.app
+- LinkedIn: linkedin.com/in/nadim-chowdhury
+- GitHub: github.com/nadim-chowdhury
+- YouTube: youtube.com/@nadim-chowdhury`;
       typeWriter(contactText, scrollToBottom);
     } else if (command === "education") {
       const eduText = `Education:
 
-BSC (Department of Mathematics) - Habibullah Bahar University College (2019 - Dropout)
-HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
+- BSC (Department of Mathematics) - Habibullah Bahar University College (2019 - Dropout)
+- HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
       typeWriter(eduText, scrollToBottom);
     } else {
       setTerminalHistory((prev) => {
@@ -489,22 +489,6 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
     }
   };
 
-  //   useEffect(() => {
-  //     const welcomeMsg = `
-  //  ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
-  //  ██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝
-  //  ██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗
-  //  ██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝
-  //  ╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
-  //  ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
-  //  NADIM CHOWDHURY - Software Developer | Cybersecurity Enthusiast
-  //  ===============================================================
-  //  System initialized. Type 'help' to see available commands.
-  //  Type 'about' to learn more about me.
-  //      `;
-  //     setTerminalHistory([welcomeMsg]);
-  //   }, []);
-
   useEffect(() => {
     const getWelcomeMsg = () => {
       const width = window.innerWidth;
@@ -518,6 +502,7 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
  ██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝  
  ╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
  ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
+ ===============================================================
  NADIM CHOWDHURY - Software Developer | Cybersecurity Enthusiast
  ===============================================================
  System initialized. Type 'help' to see available commands.
@@ -532,7 +517,12 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
         `;
       } else {
         // small screen - very compact
-        return `NADIM CHOWDHURY\nSoftware Developer | Cybersecurity Enthusiast\nType 'help' for commands.`;
+        return `
+ =============================================
+ NADIM CHOWDHURY
+ Software Developer | Cybersecurity Enthusiast
+ Type 'help' for commands.
+ =============================================`;
       }
     };
 
@@ -592,7 +582,11 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
             } rounded-lg overflow-hidden z-50`}
           >
             {/* Terminal Header */}
-            <div className="bg-gray-900 border border-gray-700 p-2 sm:p-3 flex items-center space-x-2 flex-shrink-0 rounded-t-lg">
+            <div
+              className={`bg-gray-900 border border-gray-700 p-2 sm:p-3 flex items-center space-x-2 flex-shrink-0 ${
+                isMinimized ? "rounded-lg" : "rounded-t-lg"
+              } transition-all duration-300`}
+            >
               <button
                 onClick={() => setIsClosed(true)}
                 aria-label="Close terminal"
@@ -622,20 +616,16 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
             {/* Terminal Body */}
             <div
               className={`bg-gray-950 ${
-                !isMinimized && "border-l border-r border-b"
-              } border-gray-700 flex flex-col rounded-b-lg`}
+                !isMinimized && "border-l border-r"
+              } border-gray-700 flex flex-col border rounded-b-lg`}
             >
               {!isMinimized && (
                 <div className="bg-graph flex flex-col justify-between">
-                  <ScrollArea className="h-[calc(100vh-12rem)] sm:h-[calc(100vh-12rem)]">
+                  <ScrollArea className="h-[calc(100vh-14rem)] sm:h-[calc(100vh-12rem)]">
                     <div
                       ref={terminalRef}
                       className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1"
                     >
-                      {/* <ScrollBar
-                // orientation="vertical"
-                className="bg-transparent"
-              > */}
                       {/* Terminal Output */}
                       <div className="text-xs sm:text-sm">
                         {terminalHistory.map((line, index) => {
@@ -717,7 +707,6 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
 
                       {/* invisible marker */}
                       <div ref={bottomRef} />
-                      {/* </ScrollBar> */}
                     </div>
                   </ScrollArea>
 
@@ -817,7 +806,7 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
                 setIsClosed(false);
                 setIsMinimized(false);
               }}
-              className="px-4 py-2 rounded-md bg-gray-800 text-teal-400 border border-gray-600 hover:bg-gray-700 text-sm shadow"
+              className="px-4 py-2 rounded-md bg-gray-900 text-teal-400 border border-gray-600 hover:bg-gray-800 text-sm shadow transition-all duration-300"
             >
               Reopen Terminal
             </button>

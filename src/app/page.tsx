@@ -273,7 +273,7 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
 
   const handleCommandClick = (cmd: string): void => {
     if (!isTyping) {
-      setCurrentCommand(cmd);
+      // setCurrentCommand(cmd);
       executeCommand(cmd);
     }
   };
@@ -501,8 +501,6 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
                           setIsTyping(false);
                         }
                       }
-                    }}
-                    onKeyPress={(e) => {
                       if (e.key === "Enter") {
                         e.preventDefault();
                         if (currentCommand.trim() && !isTyping) {
@@ -513,7 +511,7 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
                     }}
                     className="flex-1 bg-transparent text-green-400 outline-none border-none text-xs sm:text-sm min-w-0"
                     placeholder={
-                      isTyping ? "Processing..." : "Type a command..."
+                      isTyping ? "Ctrl + C to stop" : "Type a command..."
                     }
                     autoComplete="off"
                     spellCheck="false"

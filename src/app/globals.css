@@ -134,3 +134,28 @@ body::-webkit-scrollbar-thumb {
   z-index: 3;
   overflow: hidden;
 }
+
+.custom-input {
+  caret-color: transparent; /* Hide default | caret */
+  position: relative;
+}
+
+.custom-input::after {
+  content: "_"; /* Underscore instead of | */
+  position: absolute;
+  right: 0; /* Place at the end of text */
+  animation: blink 1s steps(2, start) infinite;
+  color: lime; /* Neon hacker vibe */
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}

@@ -179,7 +179,7 @@ const Home: React.FC = () => {
         setIsTyping(false);
         if (callback) callback();
       }
-    }, 20);
+    }, 10);
   };
 
   const scrollToBottom = (): void => {

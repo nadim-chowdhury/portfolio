@@ -78,6 +78,7 @@ const Home: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const typingTimerRef = useRef<number | null>(null);
 
   const commands: Commands = {
     help: "Available commands: about, skills, experience, education, projects, contact, clear",
@@ -162,9 +163,14 @@ const Home: React.FC = () => {
   ];
 
   const typeWriter = (text: string, callback?: () => void): void => {
+    // If a previous typing interval is running, clear it first
+    if (typingTimerRef.current !== null) {
+      window.clearInterval(typingTimerRef.current);
+      typingTimerRef.current = null;
+    }
     setIsTyping(true);
     let i = 0;
-    const timer = setInterval(() => {
+    const timer = window.setInterval(() => {
       if (i < text.length) {
         setTerminalHistory((prev) => {
           const newHistory = [...prev];
@@ -175,11 +181,13 @@ const Home: React.FC = () => {
         });
         i++;
       } else {
-        clearInterval(timer);
+        window.clearInterval(timer);
+        typingTimerRef.current = null;
         setIsTyping(false);
         if (callback) callback();
       }
     }, 10);
+    typingTimerRef.current = timer;
   };
 
   const scrollToBottom = (): void => {
@@ -236,19 +244,19 @@ const Home: React.FC = () => {
     } else if (command === "contact") {
       const contactText = `Contact Information:
 
- Email: nadim-chowdhury@outlook.com
- Phone: +880 1971 258803
- Location: Dhaka, Bangladesh
- Portfolio: nadim.vercel.app
- LinkedIn: linkedin.com/in/nadim-chowdhury
- GitHub: github.com/nadim-chowdhury
- YouTube: youtube.com/@nadim-chowdhury`;
+Email: nadim-chowdhury@outlook.com
+Phone: +880 1971 258803
+Location: Dhaka, Bangladesh
+Portfolio: nadim.vercel.app
+LinkedIn: linkedin.com/in/nadim-chowdhury
+GitHub: github.com/nadim-chowdhury
+YouTube: youtube.com/@nadim-chowdhury`;
       typeWriter(contactText, scrollToBottom);
     } else if (command === "education") {
       const eduText = `Education:
 
- BSC (Department of Mathematics) - Habibullah Bahar University College (2019 - Dropout)
- HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
+BSC (Department of Mathematics) - Habibullah Bahar University College (2019 - Dropout)
+HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
       typeWriter(eduText, scrollToBottom);
     } else {
       setTerminalHistory((prev) => {
@@ -344,6 +352,15 @@ const Home: React.FC = () => {
     }
   }, [terminalHistory]);
 
+  // Cleanup any running typewriter interval on unmount
+  useEffect(() => {
+    return () => {
+      if (typingTimerRef.current !== null) {
+        window.clearInterval(typingTimerRef.current);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     scrollToBottom();
   }, [terminalHistory]);
@@ -402,7 +419,7 @@ const Home: React.FC = () => {
                         },
                         {
                           check: (l) => l.includes("Professional Experience:"),
-                          className: "text-purple-400 font-bold",
+                          className: "text-stone-300 font-bold",
                         },
                         {
                           check: (l) => l.includes("Technical Skills:"),
@@ -473,6 +490,18 @@ const Home: React.FC = () => {
                     type="text"
                     value={currentCommand}
                     onChange={(e) => setCurrentCommand(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.ctrlKey && (e.key === "c" || e.key === "C")) {
+                        e.preventDefault();
+                        if (isTyping) {
+                          if (typingTimerRef.current !== null) {
+                            window.clearInterval(typingTimerRef.current);
+                            typingTimerRef.current = null;
+                          }
+                          setIsTyping(false);
+                        }
+                      }
+                    }}
                     onKeyPress={(e) => {
                       if (e.key === "Enter") {
                         e.preventDefault();
@@ -486,7 +515,6 @@ const Home: React.FC = () => {
                     placeholder={
                       isTyping ? "Processing..." : "Type a command..."
                     }
-                    disabled={isTyping}
                     autoComplete="off"
                     spellCheck="false"
                   />

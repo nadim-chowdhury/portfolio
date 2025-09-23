@@ -616,8 +616,8 @@ const Home: React.FC = () => {
             {/* Terminal Body */}
             <div
               className={`bg-gray-950 ${
-                !isMinimized && "border-l border-r"
-              } border-gray-700 flex flex-col border rounded-b-lg`}
+                !isMinimized && "border-l border-r border-b"
+              } border-gray-700 flex flex-col rounded-b-lg`}
             >
               {!isMinimized && (
                 <div className="bg-graph flex flex-col justify-between">

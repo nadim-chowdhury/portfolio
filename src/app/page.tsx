@@ -587,7 +587,7 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
           <div
             className={`${
               isFullscreen
-                ? "w-full h-full max-w-none p-2 sm:p-4"
+                ? "w-full h-full max-w-none p-4 sm:p-6"
                 : "h-full flex-1 max-w-3xl p-4 sm:p-6"
             } rounded-lg overflow-hidden z-50`}
           >
@@ -596,21 +596,21 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
               <button
                 onClick={() => setIsClosed(true)}
                 aria-label="Close terminal"
-                className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full hover:bg-red-400 group"
+                className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-400 group"
               >
                 <X className="hidden group-hover:block h-full w-full p-[2px] text-black" />
               </button>
               <button
                 onClick={() => setIsMinimized((v) => !v)}
                 aria-label="Minimize terminal"
-                className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full hover:bg-yellow-400 group"
+                className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-400 group"
               >
                 <Minus className="hidden group-hover:block h-full w-full p-[2px] text-black" />
               </button>
               <button
                 onClick={() => setIsFullscreen((v) => !v)}
                 aria-label="Toggle fullscreen"
-                className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full hover:bg-green-400 group"
+                className="w-3 h-3 bg-green-500 rounded-full hover:bg-green-400 group"
               >
                 <Square className="hidden group-hover:block h-full w-full p-[2px] text-black" />
               </button>
@@ -627,13 +627,7 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
             >
               {!isMinimized && (
                 <div className="bg-graph flex flex-col justify-between">
-                  <ScrollArea
-                    className={`${
-                      isFullscreen
-                        ? "h-[calc(100vh-11rem)] sm:h-[calc(100vh-12rem)]"
-                        : "h-[calc(100vh-11rem)] sm:h-[calc(100vh-12rem)]"
-                    }`}
-                  >
+                  <ScrollArea className="h-[calc(100vh-12rem)] sm:h-[calc(100vh-12rem)]">
                     <div
                       ref={terminalRef}
                       className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1"
@@ -798,9 +792,9 @@ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
                 </div> */}
 
                     {/* Status Bar */}
-                    <div className="mt-2 sm:mt-4 text-xs text-gray-400 border-t border-gray-700 py-2">
-                      <div className="grid grid-cols-2 sm:grid-cols-4 place-items-center gap-1 sm:gap-0 mx-2 sm:mx-4">
-                        <span className="truncate">System: Ubuntu 22.04</span>
+                    <div className="mt-2 sm:mt-4 text-xs text-gray-300 border-t border-gray-700 py-2">
+                      <div className="flex items-center justify-between gap-2 sm:gap-0 mx-2 sm:mx-4">
+                        <span className="">System: Ubuntu 22.04</span>
                         <span>
                           Status: {isTyping ? "Processing..." : "Ready"}
                         </span>

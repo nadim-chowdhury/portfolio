@@ -380,39 +380,80 @@ const Home: React.FC = () => {
               > */}
                   {/* Terminal Output */}
                   <div className="text-xs sm:text-sm">
-                    {terminalHistory.map((line, index) => (
-                      <div
-                        key={index}
-                        className="whitespace-pre-wrap break-words"
-                      >
-                        {line.includes("visitor@nadim-portfolio:~$") ? (
-                          <div className="text-blue-400 my-4">{line}</div>
-                        ) : line.includes("NADIM CHOWDHURY") ? (
-                          <div className="text-green-400">{line}</div>
-                        ) : line.includes("Contact Information:") ||
-                          line.includes("Professional Experience:") ||
-                          line.includes("Technical Skills:") ||
-                          line.includes("Featured Projects:") ||
-                          line.includes("Education:") ? (
-                          <span className="text-amber-400 font-bold">
-                            {line}
-                          </span>
-                        ) : line.startsWith("   •") ? (
-                          <span className="text-gray-300">{line}</span>
-                        ) : line.startsWith("http") ? (
-                          <Link
-                            href={line.trim()}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-cyan-400 underline hover:text-cyan-300 break-all"
-                          >
-                            {line}
-                          </Link>
-                        ) : (
-                          <span className="text-lime-400">{line}</span>
-                        )}
-                      </div>
-                    ))}
+                    {terminalHistory.map((line, index) => {
+                      // Define matching rules
+                      const rules: {
+                        check: (line: string) => boolean;
+                        className: string;
+                        isBold?: boolean;
+                      }[] = [
+                        {
+                          check: (l) =>
+                            l.includes("visitor@nadim-portfolio:~$"),
+                          className: "text-blue-400 my-4",
+                        },
+                        {
+                          check: (l) => l.includes("NADIM CHOWDHURY"),
+                          className: "text-green-400",
+                        },
+                        {
+                          check: (l) => l.includes("Contact Information:"),
+                          className: "text-amber-400 font-bold",
+                        },
+                        {
+                          check: (l) => l.includes("Professional Experience:"),
+                          className: "text-purple-400 font-bold",
+                        },
+                        {
+                          check: (l) => l.includes("Technical Skills:"),
+                          className: "text-red-400 font-bold",
+                        },
+                        {
+                          check: (l) => l.includes("Featured Projects:"),
+                          className: "text-orange-400 font-bold",
+                        },
+                        {
+                          check: (l) => l.includes("Education:"),
+                          className: "text-zinc-400 font-bold",
+                        },
+                        {
+                          check: (l) => l.startsWith("   •"),
+                          className: "text-stone-300",
+                        },
+                        {
+                          check: (l) => l.startsWith("http"),
+                          className:
+                            "text-cyan-400 underline hover:text-cyan-300 break-all",
+                        },
+                      ];
+
+                      // Find matching rule
+                      const rule = rules.find((r) => r.check(line));
+
+                      return (
+                        <div
+                          key={index}
+                          className="whitespace-pre-wrap break-words my-4"
+                        >
+                          {line.startsWith("http") ? (
+                            <Link
+                              href={line.trim()}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={rule?.className || "text-lime-400"}
+                            >
+                              {line}
+                            </Link>
+                          ) : (
+                            <span
+                              className={rule?.className || "text-lime-400"}
+                            >
+                              {line}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
 
                   {/* invisible marker */}

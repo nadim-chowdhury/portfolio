@@ -1,6 +1,8 @@
 "use client";
 
 import MatrixCount from "@/components/MatrixCount";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import Link from "next/link";
 // import AdditionalProjects from "@/components/AdditionalProjects";
 // import Banner from "@/components/Banner";
 // import Education from "@/components/Education";
@@ -74,6 +76,7 @@ const Home: React.FC = () => {
   const [matrixCount, setMatrixCount] = useState<number>(10);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   const commands: Commands = {
     help: "Available commands: about, skills, experience, education, projects, contact, clear",
@@ -201,7 +204,7 @@ const Home: React.FC = () => {
       }
     } else if (command === "skills") {
       const skillsText = skills.join(", ");
-      typeWriter(`Technical Skills:\n${skillsText}`, scrollToBottom);
+      typeWriter(`Technical Skills:\n\n${skillsText}`, scrollToBottom);
     } else if (command === "experience") {
       let expText = "Professional Experience:\n\n";
       experience.forEach((exp, index) => {
@@ -220,20 +223,20 @@ const Home: React.FC = () => {
       typeWriter(projectText, scrollToBottom);
     } else if (command === "contact") {
       const contactText = `Contact Information:
-      
-                            Email: nadim-chowdhury@outlook.com
-                            Phone: +880 1971 258803
-                            Location: Dhaka, Bangladesh
-                            Portfolio: nadim.vercel.app
-                            LinkedIn: linkedin.com/in/nadim-chowdhury
-                            GitHub: github.com/nadim-chowdhury
-                            YouTube: youtube.com/@nadim-chowdhury`;
+
+ Email: nadim-chowdhury@outlook.com
+ Phone: +880 1971 258803
+ Location: Dhaka, Bangladesh
+ Portfolio: nadim.vercel.app
+ LinkedIn: linkedin.com/in/nadim-chowdhury
+ GitHub: github.com/nadim-chowdhury
+ YouTube: youtube.com/@nadim-chowdhury`;
       typeWriter(contactText, scrollToBottom);
     } else if (command === "education") {
       const eduText = `Education:
-      
-                            BSC (Department of Mathematics) - Habibullah Bahar University College (2019 - Dropout)
-                            HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
+
+ BSC (Department of Mathematics) - Habibullah Bahar University College (2019 - Dropout)
+ HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
       typeWriter(eduText, scrollToBottom);
     } else {
       setTerminalHistory((prev) => {
@@ -299,8 +302,12 @@ const Home: React.FC = () => {
     scrollToBottom();
   }, [terminalHistory]);
 
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [terminalHistory]);
+
   return (
-    <div className="bg-black text-green-400 font-mono">
+    <div className="">
       <div className="min-h-screen max-w-3xl mx-auto p-6 rounded-lg overflow-hidden flex flex-col z-50">
         {/* Terminal Header */}
         <div className="bg-gray-900 border border-gray-700 p-2 sm:p-3 flex items-center space-x-2 flex-shrink-0 rounded-t-lg">
@@ -314,46 +321,56 @@ const Home: React.FC = () => {
 
         {/* Terminal Body */}
         <div className="bg-black border-l border-r border-b border-gray-700 flex-1 flex flex-col min-h-0 rounded-b-lg">
-          <div
-            ref={terminalRef}
-            className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1"
-          >
-            {/* Terminal Output */}
-            <div className="text-xs sm:text-sm">
-              {terminalHistory.map((line, index) => (
-                <div key={index} className="whitespace-pre-wrap break-words">
-                  {line.includes("visitor@nadim-portfolio:~$") ? (
-                    <div className="text-blue-400">{line}</div>
-                  ) : line.includes("NADIM CHOWDHURY") ? (
-                    <div className="text-cyan-400">{line}</div>
-                  ) : line.includes("Contact Information:") ||
-                    line.includes("Professional Experience:") ||
-                    line.includes("Technical Skills:") ||
-                    line.includes("Featured Projects:") ||
-                    line.includes("Education:") ? (
-                    <span className="text-yellow-400 font-bold">{line}</span>
-                  ) : line.startsWith("   •") ? (
-                    <span className="text-gray-300">{line}</span>
-                  ) : line.startsWith("http") ? (
-                    <a
-                      href={line.trim()}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-cyan-400 underline hover:text-cyan-300 break-all"
-                    >
-                      {line}
-                    </a>
-                  ) : (
-                    <span className="text-green-400">{line}</span>
-                  )}
-                </div>
-              ))}
+          <ScrollArea className="h-[calc(100vh-306px)]">
+            <div
+              ref={terminalRef}
+              className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1"
+            >
+              {/* <ScrollBar
+                // orientation="vertical"
+                className="bg-transparent"
+              > */}
+              {/* Terminal Output */}
+              <div className="text-xs sm:text-sm">
+                {terminalHistory.map((line, index) => (
+                  <div key={index} className="whitespace-pre-wrap break-words">
+                    {line.includes("visitor@nadim-portfolio:~$") ? (
+                      <div className="text-blue-400 my-4">{line}</div>
+                    ) : line.includes("NADIM CHOWDHURY") ? (
+                      <div className="text-cyan-400">{line}</div>
+                    ) : line.includes("Contact Information:") ||
+                      line.includes("Professional Experience:") ||
+                      line.includes("Technical Skills:") ||
+                      line.includes("Featured Projects:") ||
+                      line.includes("Education:") ? (
+                      <span className="text-yellow-400 font-bold">{line}</span>
+                    ) : line.startsWith("   •") ? (
+                      <span className="text-gray-300">{line}</span>
+                    ) : line.startsWith("http") ? (
+                      <Link
+                        href={line.trim()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-cyan-400 underline hover:text-cyan-300 break-all"
+                      >
+                        {line}
+                      </Link>
+                    ) : (
+                      <span className="text-green-400">{line}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* invisible marker */}
+              <div ref={bottomRef} />
+              {/* </ScrollBar> */}
             </div>
-          </div>
+          </ScrollArea>
 
           {/* Command Input */}
-          <div className="flex-shrink-0 p-2 sm:p-4 border-t border-gray-800">
-            <div className="flex items-center">
+          <div className="flex-shrink-0 border-t border-gray-800">
+            <div className="flex items-center px-2 sm:px-4 pt-4">
               <span className="text-blue-400 mr-2 text-xs sm:text-sm flex-shrink-0">
                 visitor@nadim-portfolio:~$
               </span>
@@ -383,7 +400,7 @@ const Home: React.FC = () => {
             </div>
 
             {/* Quick Commands */}
-            <div className="mt-4 p-3 border border-gray-700 rounded bg-gray-900/20">
+            <div className="mt-4 p-3 border border-gray-700 rounded bg-gray-900/20 mx-2 sm:mx-4">
               <div className="text-yellow-400 mb-2 text-xs font-bold">
                 QUICK COMMANDS:
               </div>
@@ -412,7 +429,7 @@ const Home: React.FC = () => {
 
             {/* Status Bar */}
             <div className="mt-2 sm:mt-4 text-xs text-gray-500 border-t border-gray-700 pt-2">
-              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0 mx-2 sm:mx-4">
                 <span className="truncate">System: Ubuntu 22.04 LTS</span>
                 <span>Status: {isTyping ? "Processing..." : "Ready"}</span>
                 <span className="hidden sm:inline">
@@ -424,7 +441,7 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      <MatrixCount matrixCount={999} />
+      {/* <MatrixCount matrixCount={999} /> */}
     </div>
   );
 };

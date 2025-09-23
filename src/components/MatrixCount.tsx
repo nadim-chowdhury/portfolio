@@ -1,6 +1,6 @@
 export default function MatrixCount({ matrixCount }: { matrixCount: number }) {
   return (
-    <div className="fixed top-0 left-0 inset-0 w-full h-full pointer-events-none overflow-hidden z-10 opacity-30">
+    <div className="fixed top-0 left-0 inset-0 w-full h-full pointer-events-none overflow-hidden z-10 opacity-40">
       <style
         dangerouslySetInnerHTML={{
           __html: `

@@ -22,14 +22,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <section className="min-h-screen bg-gradient-to-tr from-teal-50 via-transparent to-teal-50 text-slate-700">
+        {/* <section className="min-h-screen bg-gradient-to-tr from-teal-50 via-transparent to-teal-50 text-slate-700"> */}
+        <section className="bg-black text-green-400 font-mono">
           {/* <Header /> */}
           {children}
           {/* <Footer /> */}
           {/* <CustomCursor /> */}
           {/* <CursorTrail /> */}
         </section>
-        {/* <MatrixCount matrixCount={1000} /> */}
+        <MatrixCount matrixCount={420} />
       </body>
     </html>
   );

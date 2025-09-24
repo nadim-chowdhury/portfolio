@@ -999,11 +999,11 @@ Example: alias ll='ls -la'`;
                             },
                             {
                               check: (l) => l.includes("NADIM CHOWDHURY"),
-                              className: "text-teal-400",
+                              className: "text-teal-300",
                             },
                             {
                               check: (l) => l.includes("Contact Information:"),
-                              className: "text-amber-400",
+                              className: "text-amber-300",
                             },
                             {
                               check: (l) =>
@@ -1012,31 +1012,31 @@ Example: alias ll='ls -la'`;
                             },
                             {
                               check: (l) => l.includes("Technical Skills:"),
-                              className: "text-red-400",
+                              className: "text-red-300",
                             },
                             {
                               check: (l) => l.includes("Featured Projects:"),
-                              className: "text-orange-400",
+                              className: "text-orange-300",
                             },
                             {
                               check: (l) => l.includes("Education:"),
-                              className: "text-cyan-400",
+                              className: "text-cyan-300",
                             },
                             {
                               check: (l) => l.includes("GitHub Statistics:"),
-                              className: "text-purple-400",
+                              className: "text-purple-300",
                             },
                             {
                               check: (l) => l.includes("Weather in"),
-                              className: "text-zinc-400",
+                              className: "text-zinc-300",
                             },
                             {
                               check: (l) => l.includes("Portfolio Statistics:"),
-                              className: "text-emerald-400",
+                              className: "text-lime-500",
                             },
                             {
                               check: (l) => l.includes("Custom Aliases:"),
-                              className: "text-yellow-400",
+                              className: "text-yellow-300",
                             },
                             {
                               check: (l) =>
@@ -1070,12 +1070,12 @@ Example: alias ll='ls -la'`;
                             },
                             {
                               check: (l) => l.includes("Last updated:"),
-                              className: "text-blue-200",
+                              className: "text-blue-300",
                             },
                             {
                               check: (l) =>
                                 l.includes("Thank you for visiting!"),
-                              className: "text-emerald-200",
+                              className: "text-emerald-300",
                             },
                             {
                               check: (l) => l.startsWith("   •"),
@@ -1084,7 +1084,7 @@ Example: alias ll='ls -la'`;
                             {
                               check: (l) => l.startsWith("http"),
                               className:
-                                "text-cyan-400 underline hover:text-cyan-300 break-all",
+                                "text-cyan-300 underline hover:text-cyan-200 break-all",
                             },
                           ];
 

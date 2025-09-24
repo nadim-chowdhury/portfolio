@@ -294,7 +294,7 @@ const Home: React.FC = () => {
   };
 
   const getPrompt = (): string => {
-    return `visitor@nadim-portfolio:${tilde(currentPath)}$`;
+    return `v1s1t0r@nadim's-portfolio:${tilde(currentPath)}$`;
   };
 
   const typeWriter = (text: string, callback?: () => void): void => {
@@ -609,7 +609,7 @@ const Home: React.FC = () => {
                 <Square className="hidden group-hover:block h-full w-full p-[2px] text-black" />
               </button>
               <span className="ml-2 sm:ml-4 text-gray-300 text-xs sm:text-sm truncate">
-                {`visitor@nadim-portfolio:${tilde(currentPath)}`}
+                {`v1s1t0r@nadim's-portfolio:${tilde(currentPath)}`}
               </span>
             </div>
 
@@ -637,8 +637,8 @@ const Home: React.FC = () => {
                           }[] = [
                             {
                               check: (l) =>
-                                l.includes("visitor@nadim-portfolio:"),
-                              className: "text-blue-400 my-4",
+                                l.includes("v1s1t0r@nadim's-portfolio:"),
+                              className: "text-blue-400",
                             },
                             {
                               check: (l) => l.includes("NADIM CHOWDHURY"),
@@ -646,24 +646,24 @@ const Home: React.FC = () => {
                             },
                             {
                               check: (l) => l.includes("Contact Information:"),
-                              className: "text-amber-400 font-bold",
+                              className: "text-amber-400",
                             },
                             {
                               check: (l) =>
                                 l.includes("Professional Experience:"),
-                              className: "text-stone-300 font-bold",
+                              className: "text-stone-300",
                             },
                             {
                               check: (l) => l.includes("Technical Skills:"),
-                              className: "text-red-400 font-bold",
+                              className: "text-red-400",
                             },
                             {
                               check: (l) => l.includes("Featured Projects:"),
-                              className: "text-orange-400 font-bold",
+                              className: "text-orange-400",
                             },
                             {
                               check: (l) => l.includes("Education:"),
-                              className: "text-zinc-400 font-bold",
+                              className: "text-cyan-400",
                             },
                             {
                               check: (l) => l.startsWith("   •"),
@@ -714,7 +714,7 @@ const Home: React.FC = () => {
                   <div className="flex-shrink-0 h-full border-t border-gray-800">
                     <div className="flex items-center px-2 sm:px-4 pt-4">
                       <span className="text-blue-400 mr-2 text-xs sm:text-sm flex-shrink-0">
-                        visitor@nadim-portfolio:~$
+                        v1s1t0r@nadim's-portfolio:~$
                       </span>
                       <input
                         ref={inputRef}

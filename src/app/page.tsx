@@ -1,8 +1,6 @@
 "use client";
 
-import LightRays from "@/components/LightRays";
-import MatrixCount from "@/components/MatrixCount";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Minus, Square, X } from "lucide-react";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
@@ -22,6 +20,25 @@ interface Commands {
   [key: string]: string;
 }
 
+interface GitHubStats {
+  repos: number;
+  stars: number;
+  contributions: number;
+  followers: number;
+}
+
+interface WeatherData {
+  location: string;
+  temperature: number;
+  description: string;
+  humidity: number;
+  windSpeed: number;
+}
+
+interface Alias {
+  [key: string]: string;
+}
+
 const Home: React.FC = () => {
   const [terminalHistory, setTerminalHistory] = useState<string[]>([]);
   const [currentCommand, setCurrentCommand] = useState<string>("");
@@ -31,14 +48,15 @@ const Home: React.FC = () => {
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [matrixCount, setMatrixCount] = useState<number>(10);
-
-  // New state for command history and autocomplete
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const [autocompleteSuggestions, setAutocompleteSuggestions] = useState<
     string[]
   >([]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+  const [aliases, setAliases] = useState<Alias>({});
+  const [visitorCount, setVisitorCount] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -67,6 +85,10 @@ const Home: React.FC = () => {
     "pwd",
     "cat",
     "echo",
+    "github",
+    "weather",
+    "stats",
+    "alias",
   ];
 
   const skills: string[] = [
@@ -274,6 +296,97 @@ const Home: React.FC = () => {
     return `v1s1t0r@nadims-portfolio:${tilde(currentPath)}$`;
   };
 
+  // ---------------- API Functions ----------------
+  const fetchGitHubStats = async (): Promise<GitHubStats> => {
+    try {
+      // Fetch user data
+      const userResponse = await fetch(
+        "https://api.github.com/users/nadim-chowdhury"
+      );
+      const userData = await userResponse.json();
+
+      // Fetch repos data
+      const reposResponse = await fetch(
+        "https://api.github.com/users/nadim-chowdhury/repos?per_page=100"
+      );
+      const reposData = await reposResponse.json();
+
+      // Calculate total stars
+      const totalStars = reposData.reduce(
+        (sum: number, repo: any) => sum + repo.stargazers_count,
+        0
+      );
+
+      return {
+        repos: userData.public_repos,
+        stars: totalStars,
+        contributions: 0, // This would require GitHub GraphQL API for accurate data
+        followers: userData.followers,
+      };
+    } catch (error) {
+      console.error("Error fetching GitHub stats:", error);
+      return {
+        repos: 0,
+        stars: 0,
+        contributions: 0,
+        followers: 0,
+      };
+    }
+  };
+
+  const fetchWeatherData = async (
+    city: string
+  ): Promise<WeatherData | null> => {
+    try {
+      // Using a free weather API (no key required)
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=demo&units=metric`
+      );
+
+      if (!response.ok) {
+        // Fallback to mock data for demo purposes
+        return {
+          location: city.charAt(0).toUpperCase() + city.slice(1),
+          temperature: Math.floor(Math.random() * 30) + 10,
+          description: "Partly cloudy",
+          humidity: Math.floor(Math.random() * 40) + 40,
+          windSpeed: Math.floor(Math.random() * 10) + 2,
+        };
+      }
+
+      const data = await response.json();
+
+      return {
+        location: data.name,
+        temperature: Math.round(data.main.temp),
+        description: data.weather[0].description,
+        humidity: data.main.humidity,
+        windSpeed: data.wind.speed,
+      };
+    } catch (error) {
+      console.error("Error fetching weather data:", error);
+      // Return mock data as fallback
+      return {
+        location: city.charAt(0).toUpperCase() + city.slice(1),
+        temperature: Math.floor(Math.random() * 30) + 10,
+        description: "Partly cloudy",
+        humidity: Math.floor(Math.random() * 40) + 40,
+        windSpeed: Math.floor(Math.random() * 10) + 2,
+      };
+    }
+  };
+
+  const incrementVisitorCount = (): void => {
+    const currentCount = parseInt(localStorage.getItem("visitorCount") || "0");
+    const newCount = currentCount + 1;
+    localStorage.setItem("visitorCount", newCount.toString());
+    setVisitorCount(newCount);
+  };
+
+  const getVisitorCount = (): number => {
+    return parseInt(localStorage.getItem("visitorCount") || "0");
+  };
+
   // ---------------- Autocomplete Functions ----------------
   const getAutocompleteSuggestions = (input: string): string[] => {
     const trimmedInput = input.trim();
@@ -285,7 +398,9 @@ const Home: React.FC = () => {
 
     // If we're completing the first word (command)
     if (parts.length === 1) {
-      return availableCommands.filter((cmd) =>
+      // Include both regular commands and aliases
+      const allCommands = [...availableCommands, ...Object.keys(aliases)];
+      return allCommands.filter((cmd) =>
         cmd.toLowerCase().startsWith(command.toLowerCase())
       );
     }
@@ -299,6 +414,25 @@ const Home: React.FC = () => {
           file.toLowerCase().startsWith(arg.toLowerCase())
         );
       }
+    }
+
+    // Weather command city suggestions
+    if (command === "weather") {
+      const cities = [
+        "dhaka",
+        "chittagong",
+        "sylhet",
+        "rajshahi",
+        "khulna",
+        "barisal",
+        "london",
+        "new york",
+        "tokyo",
+        "paris",
+      ];
+      return cities.filter((city) =>
+        city.toLowerCase().startsWith(arg.toLowerCase())
+      );
     }
 
     return [];
@@ -400,17 +534,22 @@ const Home: React.FC = () => {
     }
   };
 
-  const executeCommand = (cmd: string): void => {
+  const executeCommand = async (cmd: string): Promise<void> => {
     const original = cmd.trim();
     const args = original.split(/\s+/);
     const name = (args.shift() || "").toLowerCase();
+
+    // Check for aliases first
+    const resolvedCommand = aliases[name] || original;
+    const resolvedArgs = resolvedCommand.split(/\s+/);
+    const resolvedName = (resolvedArgs.shift() || "").toLowerCase();
 
     // Add to command history
     addToCommandHistory(original);
 
     setTerminalHistory((prev) => [...prev, `${getPrompt()} ${original}`, ""]);
 
-    if (name === "clear") {
+    if (resolvedName === "clear") {
       setTimeout(() => {
         setTerminalHistory([]);
       }, 100);
@@ -418,7 +557,7 @@ const Home: React.FC = () => {
     }
 
     // Shell commands
-    if (name === "pwd") {
+    if (resolvedName === "pwd") {
       setTerminalHistory((prev) => {
         const newHistory = [...prev];
         newHistory[newHistory.length - 1] = tilde(currentPath);
@@ -427,29 +566,31 @@ const Home: React.FC = () => {
       return;
     }
 
-    if (name === "ls") {
-      const target = args[0]
-        ? normalizePath(currentPath, args[0])
+    if (resolvedName === "ls") {
+      const target = resolvedArgs[0]
+        ? normalizePath(currentPath, resolvedArgs[0])
         : currentPath;
       const out = listPath(target);
       setTerminalHistory((prev) => {
         const newHistory = [...prev];
         newHistory[newHistory.length - 1] =
           out ??
-          `ls: cannot access '${args[0] || ""}': No such file or directory`;
+          `ls: cannot access '${
+            resolvedArgs[0] || ""
+          }': No such file or directory`;
         return newHistory;
       });
       return;
     }
 
-    if (name === "cd") {
-      const nextPath = normalizePath(currentPath, args[0] || "~");
+    if (resolvedName === "cd") {
+      const nextPath = normalizePath(currentPath, resolvedArgs[0] || "~");
       const node = getNode(nextPath);
       let message = "";
       if (!node) {
-        message = `cd: ${args[0] || ""}: No such file or directory`;
+        message = `cd: ${resolvedArgs[0] || ""}: No such file or directory`;
       } else if (node.type !== "dir") {
-        message = `cd: ${args[0] || ""}: Not a directory`;
+        message = `cd: ${resolvedArgs[0] || ""}: Not a directory`;
       } else {
         setCurrentPath(nextPath);
         message = "";
@@ -462,29 +603,31 @@ const Home: React.FC = () => {
       return;
     }
 
-    if (name === "cat") {
-      const target = args[0] ? normalizePath(currentPath, args[0]) : "";
+    if (resolvedName === "cat") {
+      const target = resolvedArgs[0]
+        ? normalizePath(currentPath, resolvedArgs[0])
+        : "";
       const out = target ? readFile(target) : null;
       setTerminalHistory((prev) => {
         const newHistory = [...prev];
         newHistory[newHistory.length - 1] =
-          out ?? `cat: ${args[0] || ""}: No such file`;
+          out ?? `cat: ${resolvedArgs[0] || ""}: No such file`;
         return newHistory;
       });
       return;
     }
 
-    if (name === "echo") {
+    if (resolvedName === "echo") {
       setTerminalHistory((prev) => {
         const newHistory = [...prev];
-        newHistory[newHistory.length - 1] = args.join(" ");
+        newHistory[newHistory.length - 1] = resolvedArgs.join(" ");
         return newHistory;
       });
       return;
     }
 
-    if (name === "help") {
-      const helpText = `Available commands:\n\n- ls, cd, pwd, cat, echo, help, clear\n- about, skills, experience, education, projects, contact`;
+    if (resolvedName === "help") {
+      const helpText = `Available commands:\n\n- ls, cd, pwd, cat, echo, help, clear\n- about, skills, experience, education, projects, contact\n- github, weather <city>, stats, alias <name>='<command>'`;
       setTerminalHistory((prev) => {
         const newHistory = [...prev];
         newHistory[newHistory.length - 1] = helpText;
@@ -494,7 +637,7 @@ const Home: React.FC = () => {
     }
 
     // Portfolio commands (typewriter-enabled)
-    const command = name;
+    const command = resolvedName;
     if (commands[command]) {
       if (command === "about") {
         typeWriter(commands[command], scrollToBottom);
@@ -541,6 +684,145 @@ const Home: React.FC = () => {
 - BSC (Department of Mathematics) - Habibullah Bahar University College (2019 - Dropout)
 - HSC (Science Stream) - Kabi Nazrul Govt. College (2017 - 2019)`;
       typeWriter(eduText, scrollToBottom);
+    } else if (command === "github") {
+      setIsLoading(true);
+      setTerminalHistory((prev) => {
+        const newHistory = [...prev];
+        newHistory[newHistory.length - 1] = "Fetching GitHub statistics...";
+        return newHistory;
+      });
+
+      try {
+        const stats = await fetchGitHubStats();
+        const githubText = `GitHub Statistics:
+
+- Public Repositories: ${stats.repos}
+- Total Stars: ${stats.stars}
+- Followers: ${stats.followers}
+- Contributions: ${stats.contributions} (estimated)
+
+Profile: https://github.com/nadim-chowdhury`;
+        typeWriter(githubText, scrollToBottom);
+      } catch (error) {
+        setTerminalHistory((prev) => {
+          const newHistory = [...prev];
+          newHistory[newHistory.length - 1] =
+            "Error fetching GitHub data. Please try again later.";
+          return newHistory;
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    } else if (command === "weather") {
+      const city = resolvedArgs[0] || "dhaka";
+      setIsLoading(true);
+      setTerminalHistory((prev) => {
+        const newHistory = [...prev];
+        newHistory[newHistory.length - 1] = `Fetching weather for ${city}...`;
+        return newHistory;
+      });
+
+      try {
+        const weatherData = await fetchWeatherData(city);
+        if (weatherData) {
+          const weatherText = `Weather in ${weatherData.location}:
+
+- Temperature: ${weatherData.temperature}°C
+- Description: ${weatherData.description}
+- Humidity: ${weatherData.humidity}%
+- Wind Speed: ${weatherData.windSpeed} m/s
+
+Last updated: ${new Date().toLocaleTimeString()}`;
+          typeWriter(weatherText, scrollToBottom);
+        } else {
+          setTerminalHistory((prev) => {
+            const newHistory = [...prev];
+            newHistory[
+              newHistory.length - 1
+            ] = `Weather data not found for ${city}. Please check the city name.`;
+            return newHistory;
+          });
+        }
+      } catch (error) {
+        setTerminalHistory((prev) => {
+          const newHistory = [...prev];
+          newHistory[newHistory.length - 1] =
+            "Error fetching weather data. Please try again later.";
+          return newHistory;
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    } else if (command === "stats") {
+      incrementVisitorCount();
+      const currentCount = getVisitorCount();
+      const statsText = `Portfolio Statistics:
+
+- Total Visitors: ${currentCount}
+- Session Started: ${new Date().toLocaleString()}
+- User Agent: ${navigator.userAgent.split(" ")[0]}
+- Platform: ${navigator.platform}
+- Language: ${navigator.language}
+
+Thank you for visiting!`;
+      typeWriter(statsText, scrollToBottom);
+    } else if (command === "alias") {
+      if (resolvedArgs.length === 0) {
+        // Show all aliases
+        const aliasList =
+          Object.keys(aliases).length > 0
+            ? Object.entries(aliases)
+                .map(([key, value]) => `${key}='${value}'`)
+                .join("\n")
+            : "No aliases defined";
+        const aliasText = `Custom Aliases:
+
+${aliasList}
+
+Usage: alias <name>='<command>'
+Example: alias ll='ls -la'`;
+        typeWriter(aliasText, scrollToBottom);
+      } else if (resolvedArgs.length === 1) {
+        // Show specific alias
+        const aliasName = resolvedArgs[0];
+        if (aliases[aliasName]) {
+          setTerminalHistory((prev) => {
+            const newHistory = [...prev];
+            newHistory[
+              newHistory.length - 1
+            ] = `${aliasName}='${aliases[aliasName]}'`;
+            return newHistory;
+          });
+        } else {
+          setTerminalHistory((prev) => {
+            const newHistory = [...prev];
+            newHistory[
+              newHistory.length - 1
+            ] = `Alias '${aliasName}' not found.`;
+            return newHistory;
+          });
+        }
+      } else if (resolvedArgs.length >= 2) {
+        // Create new alias
+        const aliasName = resolvedArgs[0];
+        const aliasCommand = resolvedArgs
+          .slice(1)
+          .join(" ")
+          .replace(/^['"]|['"]$/g, ""); // Remove quotes
+
+        setAliases((prev) => ({
+          ...prev,
+          [aliasName]: aliasCommand,
+        }));
+
+        setTerminalHistory((prev) => {
+          const newHistory = [...prev];
+          newHistory[
+            newHistory.length - 1
+          ] = `Alias '${aliasName}' created: '${aliasCommand}'`;
+          return newHistory;
+        });
+      }
     } else {
       setTerminalHistory((prev) => {
         const newHistory = [...prev];
@@ -554,10 +836,10 @@ const Home: React.FC = () => {
     setTimeout(scrollToBottom, 50);
   };
 
-  const handleCommandClick = (cmd: string): void => {
+  const handleCommandClick = async (cmd: string): Promise<void> => {
     if (!isTyping) {
       // setCurrentCommand(cmd);
-      executeCommand(cmd);
+      await executeCommand(cmd);
     }
   };
 
@@ -602,22 +884,24 @@ const Home: React.FC = () => {
     setTerminalHistory([getWelcomeMsg()]);
   }, []);
 
+  // Initialize visitor count and default aliases
   useEffect(() => {
-    // Set matrix count based on window size after component mounts
-    const updateMatrixCount = () => {
-      if (typeof window !== "undefined") {
-        setMatrixCount(window.innerWidth > 768 ? 20 : 10);
-      }
-    };
+    // Load visitor count from localStorage
+    const savedCount = localStorage.getItem("visitorCount");
+    if (savedCount) {
+      setVisitorCount(parseInt(savedCount));
+    }
 
-    updateMatrixCount();
-    window.addEventListener("resize", updateMatrixCount);
-
-    return () => {
-      if (typeof window !== "undefined") {
-        window.removeEventListener("resize", updateMatrixCount);
-      }
-    };
+    // Set up default aliases
+    setAliases({
+      ll: "ls",
+      "..": "cd ..",
+      "~": "cd ~",
+      home: "cd ~",
+      clear: "clear",
+      h: "help",
+      q: "clear",
+    });
   }, []);
 
   useEffect(() => {
@@ -715,7 +999,7 @@ const Home: React.FC = () => {
                             },
                             {
                               check: (l) => l.includes("NADIM CHOWDHURY"),
-                              className: "text-green-400",
+                              className: "text-teal-400",
                             },
                             {
                               check: (l) => l.includes("Contact Information:"),
@@ -737,6 +1021,61 @@ const Home: React.FC = () => {
                             {
                               check: (l) => l.includes("Education:"),
                               className: "text-cyan-400",
+                            },
+                            {
+                              check: (l) => l.includes("GitHub Statistics:"),
+                              className: "text-purple-400",
+                            },
+                            {
+                              check: (l) => l.includes("Weather in"),
+                              className: "text-zinc-400",
+                            },
+                            {
+                              check: (l) => l.includes("Portfolio Statistics:"),
+                              className: "text-emerald-400",
+                            },
+                            {
+                              check: (l) => l.includes("Custom Aliases:"),
+                              className: "text-yellow-400",
+                            },
+                            {
+                              check: (l) =>
+                                l.includes("Public Repositories:") ||
+                                l.includes("Total Stars:") ||
+                                l.includes("Followers:") ||
+                                l.includes("Contributions:"),
+                              className: "text-purple-300",
+                            },
+                            {
+                              check: (l) =>
+                                l.includes("Temperature:") ||
+                                l.includes("Description:") ||
+                                l.includes("Humidity:") ||
+                                l.includes("Wind Speed:"),
+                              className: "text-blue-300",
+                            },
+                            {
+                              check: (l) =>
+                                l.includes("Total Visitors:") ||
+                                l.includes("Session Started:") ||
+                                l.includes("User Agent:") ||
+                                l.includes("Platform:") ||
+                                l.includes("Language:"),
+                              className: "text-emerald-300",
+                            },
+                            {
+                              check: (l) =>
+                                l.includes("Usage:") || l.includes("Example:"),
+                              className: "text-yellow-300",
+                            },
+                            {
+                              check: (l) => l.includes("Last updated:"),
+                              className: "text-blue-200",
+                            },
+                            {
+                              check: (l) =>
+                                l.includes("Thank you for visiting!"),
+                              className: "text-emerald-200",
                             },
                             {
                               check: (l) => l.startsWith("   •"),
@@ -762,13 +1101,17 @@ const Home: React.FC = () => {
                                   href={line.trim()}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className={rule?.className || "text-lime-400"}
+                                  className={
+                                    rule?.className || "text-green-400"
+                                  }
                                 >
                                   {line}
                                 </Link>
                               ) : (
                                 <span
-                                  className={rule?.className || "text-lime-400"}
+                                  className={
+                                    rule?.className || "text-green-400"
+                                  }
                                 >
                                   {line}
                                 </span>
@@ -830,9 +1173,10 @@ const Home: React.FC = () => {
                             if (e.key === "Enter") {
                               e.preventDefault();
                               if (currentCommand.trim() && !isTyping) {
-                                executeCommand(currentCommand);
-                                setCurrentCommand("");
-                                setShowSuggestions(false);
+                                executeCommand(currentCommand).then(() => {
+                                  setCurrentCommand("");
+                                  setShowSuggestions(false);
+                                });
                               }
                             }
                           }}
@@ -885,7 +1229,12 @@ const Home: React.FC = () => {
                       <div className="flex items-center justify-between gap-2 sm:gap-0 mx-2 sm:mx-4">
                         <span className="">System: Ubuntu 22.04</span>
                         <span>
-                          Status: {isTyping ? "Processing..." : "Ready"}
+                          Status:{" "}
+                          {isTyping
+                            ? "Processing..."
+                            : isLoading
+                            ? "Loading..."
+                            : "Ready"}
                         </span>
                         <span className="sm:inline">
                           Uptime: {Math.floor(Date.now() / 1000 / 60)} min

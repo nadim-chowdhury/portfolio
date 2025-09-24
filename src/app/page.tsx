@@ -1341,6 +1341,11 @@ Type 'help' for commands.
                             },
                             {
                               check: (l: string) =>
+                                l.includes("Developer Evolution"),
+                              className: "text-violet-300",
+                            },
+                            {
+                              check: (l: string) =>
                                 l.includes("Professional Experience:"),
                               className: "text-stone-300",
                             },

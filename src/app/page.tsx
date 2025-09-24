@@ -294,7 +294,7 @@ const Home: React.FC = () => {
   };
 
   const getPrompt = (): string => {
-    return `v1s1t0r@nadim's-portfolio:${tilde(currentPath)}$`;
+    return `v1s1t0r@nadims-portfolio:${tilde(currentPath)}$`;
   };
 
   const typeWriter = (text: string, callback?: () => void): void => {
@@ -321,7 +321,7 @@ const Home: React.FC = () => {
         setIsTyping(false);
         if (callback) callback();
       }
-    }, 10);
+    }, 5);
     typingTimerRef.current = timer;
   };
 
@@ -511,10 +511,11 @@ const Home: React.FC = () => {
       } else if (width > 640) {
         // medium screen - remove some ASCII lines
         return `
+ ===============================================================
  NADIM CHOWDHURY - Software Developer | Cybersecurity Enthusiast
  System initialized. Type 'help' to see commands.
  Type 'about' to learn more about me.
-        `;
+ ===============================================================`;
       } else {
         // small screen - very compact
         return `
@@ -609,7 +610,7 @@ const Home: React.FC = () => {
                 <Square className="hidden group-hover:block h-full w-full p-[2px] text-black" />
               </button>
               <span className="ml-2 sm:ml-4 text-gray-300 text-xs sm:text-sm truncate">
-                {`v1s1t0r@nadim's-portfolio:${tilde(currentPath)}`}
+                {`v1s1t0r@nadims-portfolio:${tilde(currentPath)}`}
               </span>
             </div>
 
@@ -637,7 +638,7 @@ const Home: React.FC = () => {
                           }[] = [
                             {
                               check: (l) =>
-                                l.includes("v1s1t0r@nadim's-portfolio:"),
+                                l.includes("v1s1t0r@nadims-portfolio:"),
                               className: "text-blue-400",
                             },
                             {
@@ -714,7 +715,7 @@ const Home: React.FC = () => {
                   <div className="flex-shrink-0 h-full border-t border-gray-800">
                     <div className="flex items-center px-2 sm:px-4 pt-4">
                       <span className="text-blue-400 mr-2 text-xs sm:text-sm flex-shrink-0">
-                        v1s1t0r@nadim's-portfolio:~$
+                        v1s1t0r@nadims-portfolio:~$
                       </span>
                       <input
                         ref={inputRef}
@@ -747,7 +748,7 @@ const Home: React.FC = () => {
                         autoComplete="off"
                         spellCheck="false"
                       />
-                      <span className="text-green-400 animate-pulse ml-1 text-xs sm:text-sm">
+                      <span className="text-green-400 animate-pulse ml-1 text-[10px] sm:text-xs">
                         █
                       </span>
                     </div>

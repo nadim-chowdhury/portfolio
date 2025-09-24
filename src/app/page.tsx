@@ -5,55 +5,6 @@ import MatrixCount from "@/components/MatrixCount";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Minus, Square, X } from "lucide-react";
 import Link from "next/link";
-// import AdditionalProjects from "@/components/AdditionalProjects";
-// import Banner from "@/components/Banner";
-// import Education from "@/components/Education";
-// import Experiences from "@/components/Experiences";
-// import Heading from "@/components/Heading";
-// import MobileAppProjects from "@/components/MobileAppProjects";
-// import Projects from "@/components/Projects";
-// import Skills from "@/components/Skills";
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// import { AnimatePresence } from "framer-motion";
-
-// export default function Home() {
-//   return (
-//     <main className="container mx-auto">
-//       <Banner />
-//       <Skills />
-
-//       <div className="pt-16">
-//         <Heading title="Top Projects" />
-//         <AnimatePresence>
-//           <Tabs defaultValue="full-stack" className="">
-//             <div className="w-full flex items-center justify-center">
-//               <TabsList className="bg-gradient-to-r from-cyan-100 to-teal-100 h-11 px-2">
-//                 <TabsTrigger value="full-stack" className="">
-//                   Full Stack Projects
-//                 </TabsTrigger>
-//                 <TabsTrigger value="mobile-app">
-//                   Mobile App Projects
-//                 </TabsTrigger>
-//               </TabsList>
-//             </div>
-
-//             <TabsContent value="full-stack">
-//               <Projects />
-//             </TabsContent>
-//             <TabsContent value="mobile-app">
-//               <MobileAppProjects />
-//             </TabsContent>
-//           </Tabs>
-//         </AnimatePresence>
-//       </div>
-
-//       <Experiences />
-//       <AdditionalProjects />
-//       <Education />
-//     </main>
-//   );
-// }
-
 import React, { useState, useEffect, useRef } from "react";
 
 interface ExperienceItem {
@@ -80,6 +31,15 @@ const Home: React.FC = () => {
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [matrixCount, setMatrixCount] = useState<number>(10);
+
+  // New state for command history and autocomplete
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState<number>(-1);
+  const [autocompleteSuggestions, setAutocompleteSuggestions] = useState<
+    string[]
+  >([]);
+  const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -91,6 +51,23 @@ const Home: React.FC = () => {
       "As a self-learned creative and passionate programmer/developer I like to build and develop software for any platform. My hobbies are learning, improving skills, solving problems, and adapting to new technologies.",
     clear: "CLEAR_TERMINAL",
   };
+
+  // Available commands for autocomplete
+  const availableCommands = [
+    "help",
+    "about",
+    "skills",
+    "experience",
+    "education",
+    "projects",
+    "contact",
+    "clear",
+    "ls",
+    "cd",
+    "pwd",
+    "cat",
+    "echo",
+  ];
 
   const skills: string[] = [
     "HTML",
@@ -297,6 +274,98 @@ const Home: React.FC = () => {
     return `v1s1t0r@nadims-portfolio:${tilde(currentPath)}$`;
   };
 
+  // ---------------- Autocomplete Functions ----------------
+  const getAutocompleteSuggestions = (input: string): string[] => {
+    const trimmedInput = input.trim();
+    if (!trimmedInput) return [];
+
+    const parts = trimmedInput.split(/\s+/);
+    const command = parts[0];
+    const arg = parts[1] || "";
+
+    // If we're completing the first word (command)
+    if (parts.length === 1) {
+      return availableCommands.filter((cmd) =>
+        cmd.toLowerCase().startsWith(command.toLowerCase())
+      );
+    }
+
+    // If we're completing arguments for specific commands
+    if (command === "cd" || command === "cat" || command === "ls") {
+      const node = getNode(currentPath);
+      if (node && node.type === "dir") {
+        const files = Object.keys(node.children);
+        return files.filter((file) =>
+          file.toLowerCase().startsWith(arg.toLowerCase())
+        );
+      }
+    }
+
+    return [];
+  };
+
+  const handleTabCompletion = (): void => {
+    const suggestions = getAutocompleteSuggestions(currentCommand);
+
+    if (suggestions.length === 1) {
+      // Single match - complete it
+      const parts = currentCommand.trim().split(/\s+/);
+      if (parts.length === 1) {
+        // Completing command
+        setCurrentCommand(suggestions[0] + " ");
+      } else {
+        // Completing argument
+        const command = parts[0];
+        const newCommand = command + " " + suggestions[0];
+        setCurrentCommand(newCommand + " ");
+      }
+      setShowSuggestions(false);
+    } else if (suggestions.length > 1) {
+      // Multiple matches - show suggestions
+      setAutocompleteSuggestions(suggestions);
+      setShowSuggestions(true);
+    }
+  };
+
+  // ---------------- Command History Functions ----------------
+  const addToCommandHistory = (command: string): void => {
+    const trimmedCommand = command.trim();
+    if (
+      trimmedCommand &&
+      (!commandHistory.length ||
+        commandHistory[commandHistory.length - 1] !== trimmedCommand)
+    ) {
+      setCommandHistory((prev) => [...prev, trimmedCommand]);
+    }
+    setHistoryIndex(-1);
+  };
+
+  const navigateHistory = (direction: "up" | "down"): void => {
+    if (commandHistory.length === 0) return;
+
+    let newIndex = historyIndex;
+
+    if (direction === "up") {
+      if (historyIndex === -1) {
+        newIndex = commandHistory.length - 1;
+      } else if (historyIndex > 0) {
+        newIndex = historyIndex - 1;
+      }
+    } else {
+      if (historyIndex < commandHistory.length - 1) {
+        newIndex = historyIndex + 1;
+      } else {
+        newIndex = -1;
+        setCurrentCommand("");
+        setHistoryIndex(newIndex);
+        return;
+      }
+    }
+
+    setHistoryIndex(newIndex);
+    setCurrentCommand(commandHistory[newIndex]);
+  };
+
   const typeWriter = (text: string, callback?: () => void): void => {
     // If a previous typing interval is running, clear it first
     if (typingTimerRef.current !== null) {
@@ -335,6 +404,9 @@ const Home: React.FC = () => {
     const original = cmd.trim();
     const args = original.split(/\s+/);
     const name = (args.shift() || "").toLowerCase();
+
+    // Add to command history
+    addToCommandHistory(original);
 
     setTerminalHistory((prev) => [...prev, `${getPrompt()} ${original}`, ""]);
 
@@ -717,69 +789,96 @@ const Home: React.FC = () => {
                       <span className="text-blue-400 mr-2 text-xs sm:text-sm flex-shrink-0">
                         v1s1t0r@nadims-portfolio:~$
                       </span>
-                      <input
-                        ref={inputRef}
-                        type="text"
-                        value={currentCommand}
-                        onChange={(e) => setCurrentCommand(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.ctrlKey && (e.key === "c" || e.key === "C")) {
-                            e.preventDefault();
-                            if (isTyping) {
-                              if (typingTimerRef.current !== null) {
-                                window.clearInterval(typingTimerRef.current);
-                                typingTimerRef.current = null;
+                      <div className="flex-1 relative">
+                        <input
+                          ref={inputRef}
+                          type="text"
+                          value={currentCommand}
+                          onChange={(e) => {
+                            setCurrentCommand(e.target.value);
+                            setShowSuggestions(false);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.ctrlKey && (e.key === "c" || e.key === "C")) {
+                              e.preventDefault();
+                              if (isTyping) {
+                                if (typingTimerRef.current !== null) {
+                                  window.clearInterval(typingTimerRef.current);
+                                  typingTimerRef.current = null;
+                                }
+                                setIsTyping(false);
                               }
-                              setIsTyping(false);
                             }
-                          }
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            if (currentCommand.trim() && !isTyping) {
-                              executeCommand(currentCommand);
-                              setCurrentCommand("");
+
+                            // Tab completion
+                            if (e.key === "Tab") {
+                              e.preventDefault();
+                              handleTabCompletion();
                             }
+
+                            // Command history navigation
+                            if (e.key === "ArrowUp") {
+                              e.preventDefault();
+                              navigateHistory("up");
+                            }
+
+                            if (e.key === "ArrowDown") {
+                              e.preventDefault();
+                              navigateHistory("down");
+                            }
+
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              if (currentCommand.trim() && !isTyping) {
+                                executeCommand(currentCommand);
+                                setCurrentCommand("");
+                                setShowSuggestions(false);
+                              }
+                            }
+                          }}
+                          className="w-full bg-transparent text-green-400 outline-none border-none text-xs sm:text-sm min-w-0"
+                          placeholder={
+                            isTyping ? "Ctrl + C to stop" : "Type a command..."
                           }
-                        }}
-                        className="flex-1 bg-transparent text-green-400 outline-none border-none text-xs sm:text-sm min-w-0"
-                        placeholder={
-                          isTyping ? "Ctrl + C to stop" : "Type a command..."
-                        }
-                        autoComplete="off"
-                        spellCheck="false"
-                      />
+                          autoComplete="off"
+                          spellCheck="false"
+                        />
+
+                        {/* Autocomplete Suggestions */}
+                        {showSuggestions &&
+                          autocompleteSuggestions.length > 0 && (
+                            <div className="absolute top-full left-0 right-0 bg-gray-900 border border-gray-700 rounded-b-md shadow-lg z-10 max-h-32 overflow-y-auto">
+                              {autocompleteSuggestions.map(
+                                (suggestion, index) => (
+                                  <div
+                                    key={index}
+                                    className="px-3 py-1 text-xs text-gray-300 hover:bg-gray-800 cursor-pointer"
+                                    onClick={() => {
+                                      const parts = currentCommand
+                                        .trim()
+                                        .split(/\s+/);
+                                      if (parts.length === 1) {
+                                        setCurrentCommand(suggestion + " ");
+                                      } else {
+                                        const command = parts[0];
+                                        setCurrentCommand(
+                                          command + " " + suggestion + " "
+                                        );
+                                      }
+                                      setShowSuggestions(false);
+                                    }}
+                                  >
+                                    {suggestion}
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          )}
+                      </div>
                       <span className="text-green-400 animate-pulse ml-1 text-[10px] sm:text-xs">
                         █
                       </span>
                     </div>
-
-                    {/* Quick Commands */}
-                    {/* <div className="mt-4 p-3 border border-gray-700 rounded bg-gray-900/20 mx-2 sm:mx-4">
-                  <div className="text-yellow-400 mb-2 text-xs font-bold">
-                    QUICK COMMANDS:
-                  </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1 sm:gap-2 text-xs">
-                    {[
-                      "about",
-                      "skills",
-                      "experience",
-                      "projects",
-                      "education",
-                      "contact",
-                      "help",
-                      "clear",
-                    ].map((cmd) => (
-                      <button
-                        key={cmd}
-                        onClick={() => handleCommandClick(cmd)}
-                        className="text-cyan-400 hover:text-cyan-300 bg-gray-800 hover:bg-gray-700 px-1 sm:px-2 py-1 rounded border border-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed truncate"
-                        disabled={isTyping}
-                      >
-                        {cmd}
-                      </button>
-                    ))}
-                  </div>
-                </div> */}
 
                     {/* Status Bar */}
                     <div className="mt-2 sm:mt-4 text-xs text-gray-300 border-t border-gray-700 py-2">
@@ -814,21 +913,6 @@ const Home: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* <MatrixCount matrixCount={999} /> */}
-
-      {/* <LightRays
-        raysOrigin="top-center"
-        raysColor="#00ffff"
-        raysSpeed={1.5}
-        lightSpread={0.8}
-        rayLength={1.2}
-        followMouse={true}
-        mouseInfluence={0.1}
-        noiseAmount={0.1}
-        distortion={0.05}
-        className="custom-rays"
-      /> */}
     </div>
   );
 };

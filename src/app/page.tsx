@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Minus, Square, X } from "lucide-react";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
+import { motion } from "motion/react";
 
 interface ExperienceItem {
   role: string;
@@ -56,7 +57,6 @@ const Home: React.FC = () => {
   const [aliases, setAliases] = useState<Alias>({});
   const [visitorCount, setVisitorCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [lineColors, setLineColors] = useState<{ [key: number]: string }>({});
 
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -1260,6 +1260,19 @@ Type 'help' for commands.
     <div className="bg-gradient-to-r from-white/5 via-transparent to-white/5">
       <div className="min-h-screen flex items-center justify-center">
         {!isClosed && (
+          // <motion.div
+          //   key="terminal"
+          //   initial={{ opacity: 0 }} // fade in from transparent
+          //   animate={{
+          //     opacity: 1,
+          //     width: isFullscreen ? "100%" : "48rem", // fullscreen vs normal
+          //     height: "100%",
+          //     padding: isFullscreen ? "1.5rem" : "1rem", // smooth padding change
+          //   }}
+          //   exit={{ opacity: 0 }}
+          //   transition={{ duration: 0.3, ease: "linear" }} // linear for all
+          //   className="rounded-lg overflow-hidden z-50 bg-transparent"
+          // >
           <div
             className={`${
               isFullscreen
@@ -1552,9 +1565,16 @@ Type 'help' for commands.
               )}
             </div>
           </div>
+          // </motion.div>
         )}
         {isClosed && (
-          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} // start hidden
+            animate={{ opacity: 1, y: 0 }} // fade in + slide up
+            exit={{ opacity: 0, y: 20 }} // fade out + slide down
+            transition={{ duration: 0.3, ease: "linear" }}
+            className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50"
+          >
             <button
               onClick={() => {
                 setIsClosed(false);
@@ -1564,7 +1584,7 @@ Type 'help' for commands.
             >
               Reopen Terminal
             </button>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>

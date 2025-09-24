@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import CursorTrail from "@/components/CursorTrail";
-import CustomCursor from "@/components/CustomCursor";
-import MatrixCount from "@/components/MatrixCount";
-import LightRays from "@/components/LightRays";
+// import Header from "@/components/Header";
+// import Footer from "@/components/Footer";
+// import CursorTrail from "@/components/CursorTrail";
+// import CustomCursor from "@/components/CustomCursor";
+// import MatrixCount from "@/components/MatrixCount";
+// import LightRays from "@/components/LightRays";
 import LetterGlitch from "@/components/LetterGlitch";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { AnimatePresence } from "framer-motion";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,16 +32,17 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* <section className="min-h-screen bg-gradient-to-tr from-teal-50 via-transparent to-teal-50 text-slate-700"> */}
-          <section className="bg-gray-950 text-green-400 font-mono relative">
-            {/* <Header /> */}
-            {children}
-            {/* <Footer /> */}
-            {/* <CustomCursor /> */}
-            {/* <CursorTrail /> */}
+          <AnimatePresence>
+            {/* <section className="min-h-screen bg-gradient-to-tr from-teal-50 via-transparent to-teal-50 text-slate-700"> */}
+            <section className="bg-gray-950 text-green-400 font-mono relative">
+              {/* <Header /> */}
+              {children}
+              {/* <Footer /> */}
+              {/* <CustomCursor /> */}
+              {/* <CursorTrail /> */}
 
-            <div className="absolute top-0 left-0 right-0 w-full h-full opacity-40">
-              {/* <LightRays
+              <div className="absolute top-0 left-0 right-0 w-full h-full opacity-40">
+                {/* <LightRays
               raysOrigin="top-center"
               raysColor="#00ffff"
               raysSpeed={1.5}
@@ -52,16 +54,17 @@ export default function RootLayout({
               distortion={0.05}
               className="custom-rays"
             /> */}
-              <LetterGlitch
-                glitchSpeed={50}
-                centerVignette={true}
-                outerVignette={false}
-                smooth={true}
-              />
-            </div>
-          </section>
+                <LetterGlitch
+                  glitchSpeed={50}
+                  centerVignette={true}
+                  outerVignette={false}
+                  smooth={true}
+                />
+              </div>
+            </section>
 
-          {/* <MatrixCount matrixCount={50} /> */}
+            {/* <MatrixCount matrixCount={50} /> */}
+          </AnimatePresence>
         </ThemeProvider>
       </body>
     </html>

@@ -1324,7 +1324,7 @@ Type 'help' for commands.
                             {
                               check: (l: string) =>
                                 l.includes("NADIM CHOWDHURY"),
-                              className: "text-teal-300",
+                              className: "text-teal-400",
                             },
                             {
                               check: (l: string) =>
@@ -1375,6 +1375,11 @@ Type 'help' for commands.
                             {
                               check: (l: string) =>
                                 l.includes("Portfolio Statistics:"),
+                              className: "text-lime-500",
+                            },
+                            {
+                              check: (l: string) =>
+                                l.includes("Fortune Cookie"),
                               className: "text-lime-500",
                             },
                             {

@@ -1179,10 +1179,11 @@ Upcoming Features (Roadmap):
 The evolution never stops!`;
       typeWriter(evolutionText, scrollToBottom);
     } else if (
-      resolvedName === "rm" &&
-      resolvedArgs.length >= 2 &&
-      resolvedArgs[0] === "-rf" &&
-      resolvedArgs[1] === "./"
+      (resolvedName === "rm" &&
+        resolvedArgs.length >= 2 &&
+        resolvedArgs[0] === "-rf" &&
+        resolvedArgs[1] === "./") ||
+      resolvedName === "nano"
     ) {
       const fingerAsci = `
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀

@@ -626,8 +626,12 @@ function Terminal() {
     }
   };
 
+  useEffect(() => {
+    inputRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [history]);
+
   return (
-    <div
+    <ScrollArea
       ref={terminalRef}
       className="bg-black text-green-400 font-mono text-xs sm:text-sm h-full p-2 sm:p-4 overflow-y-auto cursor-text"
       onClick={handleTerminalClick}
@@ -667,7 +671,7 @@ function Terminal() {
           autoFocus
         />
       </div>
-    </div>
+    </ScrollArea>
   );
 }
 
@@ -1867,7 +1871,7 @@ function Desktop() {
 
       {/* Taskbar - Responsive */}
       <div
-        className={`absolute bottom-0 left-0 right-0 bg-gray-900 bg-opacity-95 border-t-2 border-green-500 p-2 backdrop-blur-sm ${
+        className={`absolute bottom-0 left-0 right-0 bg-gray-950 bg-opacity-95 border-t-2 border-green-500 p-2 backdrop-blur-sm ${
           isMobile
             ? "flex flex-col space-y-2"
             : "flex items-center justify-between"

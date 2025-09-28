@@ -716,7 +716,7 @@ const Home: React.FC = () => {
 - github, weather <city>, stats, alias <name>='<command>'
 - fortune, sudo hire nadim, exit
 - chatbot, simulate hack, time-travel, coffee, chai, roll-dice, flip-coin, evolution
-- rm -rf ./ (to remove everything)
+- rm -rf ./ (to delete directory)
 `;
       setTerminalHistory((prev) => {
         const newHistory = [...prev];

@@ -933,7 +933,7 @@ function Browser() {
   );
 
   return (
-    <div className="bg-gray-900 text-green-400 h-full">
+    <div className="bg-gray-950 text-green-400 h-full">
       {/* Browser Header */}
       <div className="bg-gray-900 p-2 border-b border-gray-700 flex items-center space-x-2">
         <div className="flex space-x-1">

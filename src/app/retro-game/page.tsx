@@ -23,43 +23,226 @@ import {
   Monitor,
 } from "lucide-react";
 
-const RetroGamePortfolio = () => {
-  const [playerPos, setPlayerPos] = useState({ x: 200, y: 200 });
-  const [currentSection, setCurrentSection] = useState(null);
-  const [gameStarted, setGameStarted] = useState(false);
-  const [nearBuilding, setNearBuilding] = useState(null);
-  const [showInstructions, setShowInstructions] = useState(true);
-  const [achievements, setAchievements] = useState(new Set());
-  const [visitedBuildings, setVisitedBuildings] = useState(new Set());
-  const [playerDirection, setPlayerDirection] = useState("down");
-  const [isMoving, setIsMoving] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [gameTime, setGameTime] = useState(0);
-  const [showAchievement, setShowAchievement] = useState(null);
-  const [screenSize, setScreenSize] = useState({ width: 800, height: 600 });
-  const [touchControls, setTouchControls] = useState({
+// Type definitions
+interface Position {
+  x: number;
+  y: number;
+}
+
+interface ScreenSize {
+  width: number;
+  height: number;
+}
+
+interface TouchControls {
+  x: number;
+  y: number;
+  active: boolean;
+}
+
+interface Building {
+  id: string;
+  name: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  color: string;
+  icon: React.ReactElement;
+  description: string;
+  doorX?: number;
+  doorY?: number;
+}
+
+interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+}
+
+interface Project {
+  name: string;
+  description: string;
+  tech: string[];
+  link?: string;
+  status: string;
+  featured?: boolean;
+}
+
+interface Experience {
+  position: string;
+  period: string;
+  company: string;
+  tasks: string[];
+  achievements?: string[];
+}
+
+interface Education {
+  degree: string;
+  institution: string;
+  period: string;
+  note?: string;
+  skills?: string[];
+}
+
+interface PersonalInfo {
+  birthDate: string;
+  nationality: string;
+  bloodGroup: string;
+  status: string;
+  interests: string[];
+}
+
+interface Stats {
+  projectsCompleted: string;
+  yearsExperience: string;
+  technologiesUsed: string;
+  clientsSatisfied: string;
+}
+
+interface SocialLinks {
+  linkedin: string;
+  github: string;
+  youtube: string;
+}
+
+interface ContactContent {
+  email: string;
+  phone: string;
+  location: string;
+  website: string;
+  timezone: string;
+  availability: string;
+  social: SocialLinks;
+  specialties: string[];
+}
+
+interface AboutContent {
+  intro: string;
+  skills: string[];
+  languages: string[];
+  personal: PersonalInfo;
+  stats: Stats;
+}
+
+interface PortfolioSection {
+  title: string;
+  content: any;
+}
+
+interface PortfolioData {
+  about: {
+    title: string;
+    content: AboutContent;
+  };
+  projects: {
+    title: string;
+    content: Project[];
+  };
+  experience: {
+    title: string;
+    content: Experience[];
+  };
+  education: {
+    title: string;
+    content: Education[];
+  };
+  contact: {
+    title: string;
+    content: ContactContent;
+  };
+}
+
+type SectionId = keyof PortfolioData | null;
+type WeatherEffect = "sunny" | "cloudy" | "rainy";
+type TimeOfDay = "day" | "evening" | "night";
+type Direction = "up" | "down" | "left" | "right";
+
+// Achievement system - moved outside component since it's constant
+const achievementList: Achievement[] = [
+  {
+    id: "first_visit",
+    name: "Explorer",
+    description: "Visited first building",
+    icon: "🏠",
+  },
+  {
+    id: "all_buildings",
+    name: "City Tourist",
+    description: "Visited all buildings",
+    icon: "🏛️",
+  },
+  {
+    id: "quick_explorer",
+    name: "Speed Runner",
+    description: "Visited all buildings in under 60 seconds",
+    icon: "⚡",
+  },
+  {
+    id: "time_traveler",
+    name: "Time Traveler",
+    description: "Played for over 2 minutes",
+    icon: "⏰",
+  },
+  {
+    id: "social_butterfly",
+    name: "Social Butterfly",
+    description: "Checked contact information",
+    icon: "📱",
+  },
+  {
+    id: "tech_enthusiast",
+    name: "Tech Enthusiast",
+    description: "Viewed all projects",
+    icon: "💻",
+  },
+];
+
+const RetroGamePortfolio: React.FC = () => {
+  const [playerPos, setPlayerPos] = useState<Position>({ x: 200, y: 200 });
+  const [currentSection, setCurrentSection] = useState<SectionId>(null);
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [nearBuilding, setNearBuilding] = useState<Building | null>(null);
+  const [showInstructions, setShowInstructions] = useState<boolean>(true);
+  const [achievements, setAchievements] = useState<Set<string>>(new Set());
+  const [visitedBuildings, setVisitedBuildings] = useState<Set<string>>(
+    new Set()
+  );
+  const [playerDirection, setPlayerDirection] = useState<Direction>("down");
+  const [isMoving, setIsMoving] = useState<boolean>(false);
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+  const [gameTime, setGameTime] = useState<number>(0);
+  const [showAchievement, setShowAchievement] = useState<Achievement | null>(
+    null
+  );
+  const [screenSize, setScreenSize] = useState<ScreenSize>({
+    width: 800,
+    height: 600,
+  });
+  const [touchControls, setTouchControls] = useState<TouchControls>({
     x: 0,
     y: 0,
     active: false,
   });
-  const [weatherEffect, setWeatherEffect] = useState("sunny");
-  const [timeOfDay, setTimeOfDay] = useState("day");
+  const [weatherEffect, setWeatherEffect] = useState<WeatherEffect>("sunny");
+  const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>("day");
 
-  const gameRef = useRef(null);
-  const achievementTimeoutRef = useRef(null);
+  const gameRef = useRef<HTMLDivElement>(null);
+  const achievementTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Screen size detection and responsive setup
   useEffect(() => {
-    const updateScreenSize = () => {
+    const updateScreenSize = (): void => {
       const width = Math.min(window.innerWidth, 1200);
       const height = Math.min(window.innerHeight, 800);
       setScreenSize({ width, height });
 
       // Reset player position based on screen size
-      setPlayerPos({
-        x: Math.min(playerPos.x, width - 40),
-        y: Math.min(playerPos.y, height - 80),
-      });
+      setPlayerPos((prev) => ({
+        x: Math.min(prev.x, width - 40),
+        y: Math.min(prev.y, height - 80),
+      }));
     };
 
     updateScreenSize();
@@ -67,8 +250,11 @@ const RetroGamePortfolio = () => {
     return () => window.removeEventListener("resize", updateScreenSize);
   }, []);
 
-  const isMobile = screenSize.width < 768;
-  const scale = Math.min(screenSize.width / 800, screenSize.height / 600);
+  const isMobile: boolean = screenSize.width < 768;
+  const scale: number = Math.min(
+    screenSize.width / 800,
+    screenSize.height / 600
+  );
 
   // Game timer
   useEffect(() => {
@@ -86,14 +272,14 @@ const RetroGamePortfolio = () => {
 
   useEffect(() => {
     const weatherTimer = setInterval(() => {
-      const weathers = ["sunny", "cloudy", "rainy"];
+      const weathers: WeatherEffect[] = ["sunny", "cloudy", "rainy"];
       setWeatherEffect(weathers[Math.floor(Math.random() * weathers.length)]);
     }, 15000);
     return () => clearInterval(weatherTimer);
   }, []);
 
   // Responsive building definitions
-  const buildings = [
+  const buildings: Building[] = [
     {
       id: "projects",
       name: "Code Library",
@@ -152,69 +338,37 @@ const RetroGamePortfolio = () => {
   ];
 
   // Add door positions to buildings
-  const buildingsWithDoors = buildings.map((building) => ({
+  const buildingsWithDoors: Building[] = buildings.map((building) => ({
     ...building,
     doorX: building.x + building.width / 2,
     doorY: building.y + building.height,
   }));
 
-  // Achievement system
-  const achievementList = [
-    {
-      id: "first_visit",
-      name: "Explorer",
-      description: "Visited first building",
-      icon: "🏠",
-    },
-    {
-      id: "all_buildings",
-      name: "City Tourist",
-      description: "Visited all buildings",
-      icon: "🏛️",
-    },
-    {
-      id: "quick_explorer",
-      name: "Speed Runner",
-      description: "Visited all buildings in under 60 seconds",
-      icon: "⚡",
-    },
-    {
-      id: "time_traveler",
-      name: "Time Traveler",
-      description: "Played for over 2 minutes",
-      icon: "⏰",
-    },
-    {
-      id: "social_butterfly",
-      name: "Social Butterfly",
-      description: "Checked contact information",
-      icon: "📱",
-    },
-    {
-      id: "tech_enthusiast",
-      name: "Tech Enthusiast",
-      description: "Viewed all projects",
-      icon: "💻",
-    },
-  ];
+  const unlockAchievement = useCallback(
+    (achievementId: string): void => {
+      if (!achievements.has(achievementId)) {
+        setAchievements(
+          (prev) => new Set([...Array.from(prev), achievementId])
+        );
+        const achievement = achievementList.find((a) => a.id === achievementId);
+        if (achievement) {
+          setShowAchievement(achievement);
 
-  const unlockAchievement = (achievementId) => {
-    if (!achievements.has(achievementId)) {
-      setAchievements((prev) => new Set([...prev, achievementId]));
-      const achievement = achievementList.find((a) => a.id === achievementId);
-      setShowAchievement(achievement);
-
-      if (achievementTimeoutRef.current)
-        clearTimeout(achievementTimeoutRef.current);
-      achievementTimeoutRef.current = setTimeout(
-        () => setShowAchievement(null),
-        3000
-      );
-    }
-  };
+          if (achievementTimeoutRef.current) {
+            clearTimeout(achievementTimeoutRef.current);
+          }
+          achievementTimeoutRef.current = setTimeout(
+            () => setShowAchievement(null),
+            3000
+          );
+        }
+      }
+    },
+    [achievements]
+  );
 
   // Portfolio data
-  const portfolioData = {
+  const portfolioData: PortfolioData = {
     about: {
       title: "About Nadim Chowdhury",
       content: {
@@ -403,9 +557,26 @@ const RetroGamePortfolio = () => {
     },
   };
 
+  // Building visit handler
+  const handleBuildingVisit = useCallback(
+    (buildingId: string): void => {
+      const newVisited = new Set([...Array.from(visitedBuildings), buildingId]);
+      setVisitedBuildings(newVisited);
+
+      if (visitedBuildings.size === 0) unlockAchievement("first_visit");
+      if (newVisited.size === buildingsWithDoors.length) {
+        unlockAchievement("all_buildings");
+        if (gameTime < 60) unlockAchievement("quick_explorer");
+      }
+      if (buildingId === "contact") unlockAchievement("social_butterfly");
+      if (buildingId === "projects") unlockAchievement("tech_enthusiast");
+    },
+    [visitedBuildings, buildingsWithDoors.length, unlockAchievement, gameTime]
+  );
+
   // Enhanced movement with bounds checking
   const handleKeyPress = useCallback(
-    (e) => {
+    (e: KeyboardEvent): void => {
       if (!gameStarted || currentSection) return;
 
       const moveSpeed = Math.max(15, screenSize.width * 0.025);
@@ -443,7 +614,7 @@ const RetroGamePortfolio = () => {
         case "enter":
         case " ":
           if (nearBuilding) {
-            setCurrentSection(nearBuilding.id);
+            setCurrentSection(nearBuilding.id as keyof PortfolioData);
             handleBuildingVisit(nearBuilding.id);
           }
           return;
@@ -476,29 +647,35 @@ const RetroGamePortfolio = () => {
       playerDirection,
       screenSize,
       isMobile,
+      buildingsWithDoors,
+      handleBuildingVisit,
     ]
   );
 
   // Touch controls
-  const handleTouchStart = (e) => {
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>): void => {
     if (!gameStarted || currentSection) return;
     e.preventDefault();
 
     const touch = e.touches[0];
-    const rect = gameRef.current.getBoundingClientRect();
-    setTouchControls({
-      x: touch.clientX - rect.left,
-      y: touch.clientY - rect.top,
-      active: true,
-    });
+    const rect = gameRef.current?.getBoundingClientRect();
+    if (rect) {
+      setTouchControls({
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top,
+        active: true,
+      });
+    }
   };
 
-  const handleTouchMove = (e) => {
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>): void => {
     if (!touchControls.active || !gameStarted || currentSection) return;
     e.preventDefault();
 
     const touch = e.touches[0];
-    const rect = gameRef.current.getBoundingClientRect();
+    const rect = gameRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
     const newX = touch.clientX - rect.left;
     const newY = touch.clientY - rect.top;
 
@@ -508,9 +685,9 @@ const RetroGamePortfolio = () => {
 
     if (Math.abs(deltaX) > threshold || Math.abs(deltaY) > threshold) {
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        handleKeyPress({ key: deltaX > 0 ? "d" : "a" });
+        handleKeyPress({ key: deltaX > 0 ? "d" : "a" } as KeyboardEvent);
       } else {
-        handleKeyPress({ key: deltaY > 0 ? "s" : "w" });
+        handleKeyPress({ key: deltaY > 0 ? "s" : "w" } as KeyboardEvent);
       }
 
       setTouchControls({
@@ -521,40 +698,25 @@ const RetroGamePortfolio = () => {
     }
   };
 
-  const handleTouchEnd = (e) => {
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>): void => {
     e.preventDefault();
     setTouchControls({ x: 0, y: 0, active: false });
-  };
-
-  // Building visit handler
-  const handleBuildingVisit = (buildingId) => {
-    const newVisited = new Set(visitedBuildings);
-    newVisited.add(buildingId);
-    setVisitedBuildings(newVisited);
-
-    if (visitedBuildings.size === 0) unlockAchievement("first_visit");
-    if (newVisited.size === buildingsWithDoors.length) {
-      unlockAchievement("all_buildings");
-      if (gameTime < 60) unlockAchievement("quick_explorer");
-    }
-    if (buildingId === "contact") unlockAchievement("social_butterfly");
-    if (buildingId === "projects") unlockAchievement("tech_enthusiast");
   };
 
   // Achievement check for time
   useEffect(() => {
     if (gameTime >= 120) unlockAchievement("time_traveler");
-  }, [gameTime]);
+  }, [gameTime, unlockAchievement]);
 
   // Proximity detection
   useEffect(() => {
-    let closest = null;
+    let closest: Building | null = null;
     let minDistance = Infinity;
 
     buildingsWithDoors.forEach((building) => {
       const distance = Math.sqrt(
-        Math.pow(playerPos.x - building.doorX, 2) +
-          Math.pow(playerPos.y - building.doorY, 2)
+        Math.pow(playerPos.x - (building.doorX || 0), 2) +
+          Math.pow(playerPos.y - (building.doorY || 0), 2)
       );
 
       const proximityThreshold = Math.max(40, screenSize.width * 0.05);
@@ -565,16 +727,17 @@ const RetroGamePortfolio = () => {
     });
 
     setNearBuilding(closest);
-  }, [playerPos, screenSize]);
+  }, [playerPos, screenSize, buildingsWithDoors]);
 
   // Event listeners
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
+    const keydownHandler = (e: KeyboardEvent) => handleKeyPress(e);
+    window.addEventListener("keydown", keydownHandler);
+    return () => window.removeEventListener("keydown", keydownHandler);
   }, [handleKeyPress]);
 
   // Time-based styling
-  const getTimeOfDayStyle = () => {
+  const getTimeOfDayStyle = (): string => {
     switch (timeOfDay) {
       case "evening":
         return "from-orange-400 via-red-400 to-purple-500";
@@ -585,7 +748,7 @@ const RetroGamePortfolio = () => {
     }
   };
 
-  const StartScreen = () => (
+  const StartScreen: React.FC = () => (
     <div className="fixed inset-0 bg-black text-green-400 flex items-center justify-center font-mono p-4 z-50">
       <div className="text-center p-6 border-2 border-green-400 bg-black max-w-md w-full mx-4">
         <div className="flex items-center justify-center mb-4">
@@ -635,7 +798,7 @@ const RetroGamePortfolio = () => {
     </div>
   );
 
-  const GameWorld = () => (
+  const GameWorld: React.FC = () => (
     <div
       ref={gameRef}
       className={`relative overflow-hidden bg-gradient-to-b ${getTimeOfDayStyle()}`}
@@ -899,7 +1062,7 @@ const RetroGamePortfolio = () => {
           {nearBuilding && (
             <button
               onClick={() => {
-                setCurrentSection(nearBuilding.id);
+                setCurrentSection(nearBuilding.id as keyof PortfolioData);
                 handleBuildingVisit(nearBuilding.id);
               }}
               className="bg-yellow-600 text-black px-4 py-2 rounded font-bold text-sm animate-pulse"
@@ -928,7 +1091,11 @@ const RetroGamePortfolio = () => {
     </div>
   );
 
-  const SectionModal = ({ section }) => {
+  interface SectionModalProps {
+    section: keyof PortfolioData;
+  }
+
+  const SectionModal: React.FC<SectionModalProps> = ({ section }) => {
     const data = portfolioData[section];
 
     return (
@@ -959,21 +1126,23 @@ const RetroGamePortfolio = () => {
                     <User className="w-10 h-10 text-white" />
                   </div>
                   <p className="text-green-300 leading-relaxed">
-                    {data.content.intro}
+                    {(data.content as AboutContent).intro}
                   </p>
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-black p-4 rounded">
-                  {Object.entries(data.content.stats).map(([key, value]) => (
-                    <div key={key} className="text-center">
-                      <div className="text-yellow-400 text-2xl font-bold">
-                        {value}
+                  {Object.entries((data.content as AboutContent).stats).map(
+                    ([key, value]) => (
+                      <div key={key} className="text-center">
+                        <div className="text-yellow-400 text-2xl font-bold">
+                          {value}
+                        </div>
+                        <div className="text-sm capitalize">
+                          {key.replace(/([A-Z])/g, " $1").trim()}
+                        </div>
                       </div>
-                      <div className="text-sm capitalize">
-                        {key.replace(/([A-Z])/g, " $1").trim()}
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
 
                 <div>
@@ -982,7 +1151,7 @@ const RetroGamePortfolio = () => {
                     Technical Skills
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                    {data.content.skills.map((skill, i) => (
+                    {(data.content as AboutContent).skills.map((skill, i) => (
                       <span
                         key={i}
                         className="bg-green-900 px-2 py-1 text-sm rounded hover:bg-green-700 transition-colors"
@@ -996,7 +1165,7 @@ const RetroGamePortfolio = () => {
                 <div>
                   <h3 className="text-lg mb-3 text-yellow-400">Languages</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {data.content.languages.map((lang, i) => (
+                    {(data.content as AboutContent).languages.map((lang, i) => (
                       <div
                         key={i}
                         className="text-green-300 bg-gray-800 px-3 py-2 rounded"
@@ -1012,27 +1181,37 @@ const RetroGamePortfolio = () => {
                     Personal Information
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-gray-800 p-4 rounded">
-                    <div>📅 Born: {data.content.personal.birthDate}</div>
                     <div>
-                      🏳️ Nationality: {data.content.personal.nationality}
+                      📅 Born:{" "}
+                      {(data.content as AboutContent).personal.birthDate}
                     </div>
                     <div>
-                      🩸 Blood Group: {data.content.personal.bloodGroup}
+                      🏳️ Nationality:{" "}
+                      {(data.content as AboutContent).personal.nationality}
                     </div>
-                    <div>💼 Status: {data.content.personal.status}</div>
+                    <div>
+                      🩸 Blood Group:{" "}
+                      {(data.content as AboutContent).personal.bloodGroup}
+                    </div>
+                    <div>
+                      💼 Status:{" "}
+                      {(data.content as AboutContent).personal.status}
+                    </div>
                   </div>
 
                   <div className="mt-4">
                     <h4 className="text-md mb-2 text-yellow-400">Interests</h4>
                     <div className="flex flex-wrap gap-2">
-                      {data.content.personal.interests.map((interest, i) => (
-                        <span
-                          key={i}
-                          className="bg-purple-900 px-3 py-1 text-sm rounded"
-                        >
-                          {interest}
-                        </span>
-                      ))}
+                      {(data.content as AboutContent).personal.interests.map(
+                        (interest, i) => (
+                          <span
+                            key={i}
+                            className="bg-purple-900 px-3 py-1 text-sm rounded"
+                          >
+                            {interest}
+                          </span>
+                        )
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1042,7 +1221,7 @@ const RetroGamePortfolio = () => {
             {section === "projects" && (
               <div className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {data.content.map((project, i) => (
+                  {(data.content as Project[]).map((project, i) => (
                     <div
                       key={i}
                       className={`border-2 p-4 rounded-lg transition-all hover:scale-105 ${
@@ -1101,7 +1280,7 @@ const RetroGamePortfolio = () => {
 
             {section === "experience" && (
               <div className="space-y-6">
-                {data.content.map((exp, i) => (
+                {(data.content as Experience[]).map((exp, i) => (
                   <div
                     key={i}
                     className="border border-green-600 p-6 rounded-lg bg-gray-800 bg-opacity-50"
@@ -1158,7 +1337,7 @@ const RetroGamePortfolio = () => {
 
             {section === "education" && (
               <div className="space-y-6">
-                {data.content.map((edu, i) => (
+                {(data.content as Education[]).map((edu, i) => (
                   <div
                     key={i}
                     className="border border-green-600 p-6 rounded-lg bg-gray-800 bg-opacity-50"
@@ -1209,7 +1388,9 @@ const RetroGamePortfolio = () => {
               <div className="space-y-6">
                 <div className="text-center bg-gradient-to-r from-green-900 to-blue-900 p-6 rounded-lg">
                   <h3 className="text-xl mb-2">Ready to collaborate?</h3>
-                  <p className="text-green-300">{data.content.availability}</p>
+                  <p className="text-green-300">
+                    {(data.content as ContactContent).availability}
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -1223,10 +1404,12 @@ const RetroGamePortfolio = () => {
                       <div>
                         <div className="text-sm text-gray-400">Email</div>
                         <a
-                          href={`mailto:${data.content.email}`}
+                          href={`mailto:${
+                            (data.content as ContactContent).email
+                          }`}
                           className="hover:text-green-300 transition-colors"
                         >
-                          {data.content.email}
+                          {(data.content as ContactContent).email}
                         </a>
                       </div>
                     </div>
@@ -1236,10 +1419,10 @@ const RetroGamePortfolio = () => {
                       <div>
                         <div className="text-sm text-gray-400">Phone</div>
                         <a
-                          href={`tel:${data.content.phone}`}
+                          href={`tel:${(data.content as ContactContent).phone}`}
                           className="hover:text-green-300 transition-colors"
                         >
-                          {data.content.phone}
+                          {(data.content as ContactContent).phone}
                         </a>
                       </div>
                     </div>
@@ -1248,9 +1431,9 @@ const RetroGamePortfolio = () => {
                       <MapPin className="w-5 h-5 text-yellow-400" />
                       <div>
                         <div className="text-sm text-gray-400">Location</div>
-                        <span>{data.content.location}</span>
+                        <span>{(data.content as ContactContent).location}</span>
                         <div className="text-xs text-gray-500">
-                          {data.content.timezone}
+                          {(data.content as ContactContent).timezone}
                         </div>
                       </div>
                     </div>
@@ -1260,12 +1443,14 @@ const RetroGamePortfolio = () => {
                       <div>
                         <div className="text-sm text-gray-400">Website</div>
                         <a
-                          href={`https://${data.content.website}`}
+                          href={`https://${
+                            (data.content as ContactContent).website
+                          }`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="hover:text-green-300 transition-colors"
                         >
-                          {data.content.website}
+                          {(data.content as ContactContent).website}
                         </a>
                       </div>
                     </div>
@@ -1278,7 +1463,9 @@ const RetroGamePortfolio = () => {
 
                     <div className="space-y-3">
                       <a
-                        href={`https://${data.content.social.linkedin}`}
+                        href={`https://${
+                          (data.content as ContactContent).social.linkedin
+                        }`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center space-x-3 bg-blue-900 bg-opacity-50 p-3 rounded hover:bg-opacity-70 transition-all"
@@ -1293,7 +1480,9 @@ const RetroGamePortfolio = () => {
                       </a>
 
                       <a
-                        href={`https://${data.content.social.github}`}
+                        href={`https://${
+                          (data.content as ContactContent).social.github
+                        }`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center space-x-3 bg-gray-700 bg-opacity-50 p-3 rounded hover:bg-opacity-70 transition-all"
@@ -1308,7 +1497,9 @@ const RetroGamePortfolio = () => {
                       </a>
 
                       <a
-                        href={`https://${data.content.social.youtube}`}
+                        href={`https://${
+                          (data.content as ContactContent).social.youtube
+                        }`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center space-x-3 bg-red-900 bg-opacity-50 p-3 rounded hover:bg-opacity-70 transition-all"
@@ -1330,15 +1521,17 @@ const RetroGamePortfolio = () => {
                     Specializations
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {data.content.specialties.map((specialty, i) => (
-                      <div
-                        key={i}
-                        className="flex items-center space-x-2 bg-green-900 bg-opacity-30 p-3 rounded"
-                      >
-                        <Zap className="w-4 h-4 text-yellow-400" />
-                        <span className="text-sm">{specialty}</span>
-                      </div>
-                    ))}
+                    {(data.content as ContactContent).specialties.map(
+                      (specialty, i) => (
+                        <div
+                          key={i}
+                          className="flex items-center space-x-2 bg-green-900 bg-opacity-30 p-3 rounded"
+                        >
+                          <Zap className="w-4 h-4 text-yellow-400" />
+                          <span className="text-sm">{specialty}</span>
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
@@ -1357,7 +1550,7 @@ const RetroGamePortfolio = () => {
 
   // ESC key handler
   useEffect(() => {
-    const handleEsc = (e) => {
+    const handleEsc = (e: KeyboardEvent): void => {
       if (e.key === "Escape" && currentSection) {
         setCurrentSection(null);
       }

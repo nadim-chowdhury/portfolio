@@ -1,4 +1,4 @@
-import { House, Binary } from "lucide-react";
+import { House, Binary, Gamepad } from "lucide-react";
 import { ComponentType } from "react";
 
 interface RouteItem {
@@ -20,5 +20,11 @@ export const routeData: RouteItem[] = [
     label: "Hacker OS",
     route: "/hacker-os",
     icon: Binary,
+  },
+  {
+    id: "2",
+    label: "Retro Game",
+    route: "/retro-game",
+    icon: Gamepad,
   },
 ];

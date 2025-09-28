@@ -5,6 +5,7 @@ import { Minus, Square, X } from "lucide-react";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
+import LetterGlitch from "@/components/LetterGlitch";
 
 interface ExperienceItem {
   role: string;
@@ -1586,6 +1587,15 @@ Type 'help' for commands.
             </button>
           </motion.div>
         )}
+      </div>
+
+      <div className="absolute top-0 left-0 right-0 bottom-0 w-full h-full opacity-40">
+        <LetterGlitch
+          glitchSpeed={50}
+          centerVignette={true}
+          outerVignette={false}
+          smooth={true}
+        />
       </div>
     </div>
   );

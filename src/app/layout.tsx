@@ -41,7 +41,7 @@ export default function RootLayout({
               {/* <CustomCursor /> */}
               {/* <CursorTrail /> */}
 
-              <div className="absolute top-0 left-0 right-0 w-full h-full opacity-40">
+              <div className="absolute top-0 left-0 right-0 bottom-0 w-full h-full opacity-40">
                 {/* <LightRays
               raysOrigin="top-center"
               raysColor="#00ffff"

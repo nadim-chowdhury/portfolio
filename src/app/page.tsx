@@ -1573,7 +1573,7 @@ Type 'help' for commands.
             animate={{ opacity: 1, y: 0 }} // fade in + slide up
             exit={{ opacity: 0, y: 20 }} // fade out + slide down
             transition={{ duration: 0.3, ease: "linear" }}
-            className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50"
+            className="fixed bottom-4 w-full z-50 flex items-center justify-center"
           >
             <button
               onClick={() => {

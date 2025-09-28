@@ -344,7 +344,7 @@ function Window({
   return (
     <div
       ref={windowRef}
-      className="absolute bg-gray-900 border border-green-500 rounded-lg shadow-2xl backdrop-blur-sm"
+      className="absolute bg-gray-950 border border-green-500 rounded-lg shadow-2xl backdrop-blur-sm"
       style={windowStyle}
     >
       {/* Window Header */}

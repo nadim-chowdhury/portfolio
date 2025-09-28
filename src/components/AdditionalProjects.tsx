@@ -3,7 +3,7 @@
 import { useAnimation, motion } from "framer-motion";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import { projects } from "@/utls/demoData";
+import { projects } from "@/utils/demoData";
 import Link from "next/link";
 import Heading from "./Heading";
 

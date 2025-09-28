@@ -1,6 +1,6 @@
 "use client";
 
-import { mySkills } from "@/utls/demoData";
+import { mySkills } from "@/utils/demoData";
 import Heading from "./Heading";
 import Image from "next/image";
 import { motion, useAnimation } from "framer-motion";

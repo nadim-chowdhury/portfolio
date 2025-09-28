@@ -1,6 +1,6 @@
 "use client";
 
-import { myProjects } from "@/utls/demoData";
+import { myProjects } from "@/utils/demoData";
 import Heading from "./Heading";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";

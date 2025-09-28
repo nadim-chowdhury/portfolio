@@ -3,7 +3,7 @@
 import { useAnimation, motion } from "framer-motion";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import { experiences } from "@/utls/demoData";
+import { experiences } from "@/utils/demoData";
 import Heading from "./Heading";
 
 const containerVariants = {

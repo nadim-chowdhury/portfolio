@@ -10,6 +10,8 @@ import "./globals.css";
 import LetterGlitch from "@/components/LetterGlitch";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AnimatePresence } from "framer-motion";
+import { routeData } from "@/utils/routeData";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} relative min-h-screen`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -65,6 +67,24 @@ export default function RootLayout({
 
             {/* <MatrixCount matrixCount={50} /> */}
           </AnimatePresence>
+
+          <div className="z-50 absolute top-0 right-0 bottom-0 h-full flex flex-col items-center justify-center">
+            <div className="flex flex-col gap-2 p-4 text-gray-200 opacity-60">
+              {routeData.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.id}
+                    href={item.route}
+                    className="flex items-center gap-3 px-3 py-3 rounded-full bg-gray-900 hover:bg-gray-800 hover:text-white transition-colors border border-gray-500"
+                  >
+                    <Icon className="w-5 h-5" />
+                    {/* <span className="text-sm font-medium">{item.label}</span> */}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         </ThemeProvider>
       </body>
     </html>

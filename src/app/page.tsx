@@ -65,7 +65,7 @@ const Home: React.FC = () => {
   const typingTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const commands: Commands = {
-    help: "Available commands: about, skills, experience, education, projects, contact, clear",
+    help: "Available commands: about, skills, experience, education, projects, contact, clear, rm -rf ./",
     about:
       "As a self-learned creative and passionate programmer/developer I like to build and develop software for any platform. My hobbies are learning, improving skills, solving problems, and adapting to new technologies.",
     clear: "CLEAR_TERMINAL",
@@ -715,7 +715,9 @@ const Home: React.FC = () => {
 - about, skills, experience, education, projects, contact
 - github, weather <city>, stats, alias <name>='<command>'
 - fortune, sudo hire nadim, exit
-- chatbot, simulate hack, time-travel, coffee, chai, roll-dice, flip-coin, evolution`;
+- chatbot, simulate hack, time-travel, coffee, chai, roll-dice, flip-coin, evolution
+- rm -rf ./ (to remove everything)
+`;
       setTerminalHistory((prev) => {
         const newHistory = [...prev];
         newHistory[newHistory.length - 1] = helpText;

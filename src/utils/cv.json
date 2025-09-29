@@ -1,0 +1,116 @@
+{
+  "name": "Nadim Chowdhury",
+  "title": "Software Developer",
+  "contact": {
+    "location": "Dhaka, Bangladesh",
+    "phone": "+8801971258803",
+    "email": "nadim-chowdhury@outlook.com",
+    "portfolio": "https://nadim.vercel.app",
+    "linkedin": "https://linkedin.com/in/nadim-chowdhury",
+    "github": "https://github.com/nadim-chowdhury",
+    "youtube": "https://youtube.com/@nadim-chowdhury"
+  },
+  "about": "As a self-learned creative and passionate programmer/developer, I like to build and develop software for any platform. My hobbies are learning, improving skills, solving problems, and adapting to new technologies. I can give my total effort and work well in a team, with responsibility.",
+  "skills": [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "TypeScript",
+    "React JS",
+    "Next JS",
+    "Node JS",
+    "Express JS",
+    "Nest JS",
+    "MongoDB",
+    "PostgreSQL",
+    "Tailwind CSS",
+    "Bootstrap",
+    "Sass",
+    "Git",
+    "React Native",
+    "Docker"
+  ],
+  "experience": [
+    {
+      "role": "Full Stack Developer (Freelancer)",
+      "start_date": "2025-07-01",
+      "end_date": "Present",
+      "responsibilities": [
+        "Designing and developing end-to-end features across both frontend and backend, ensuring seamless integration between modules and delivering intuitive user experiences.",
+        "Optimizing performance, scalability, and security of ERP modules by following industry best practices, clean architecture principles, and robust coding standards.",
+        "Maintaining modular and scalable codebases, enabling easier updates, feature enhancements, and long-term system sustainability."
+      ]
+    },
+    {
+      "role": "Full Stack Web Developer (Freelancer)",
+      "start_date": "2024-08-01",
+      "end_date": "2025-06-30",
+      "responsibilities": [
+        "Developed a full-stack flight booking system utilizing real-time data from the Amadeus GDS API.",
+        "Integrated a Stripe payment system and implemented interactive maps for seamless airport selection.",
+        "Architecture & Performance: Implemented clean, scalable architecture, including a flexible component registry, real-time rendering engine, and smooth drag-and-drop functionality with undo/redo support."
+      ]
+    },
+    {
+      "role": "Jr. Frontend Developer",
+      "company": "Mediusware Ltd",
+      "start_date": "2024-03-01",
+      "end_date": "2024-07-31",
+      "responsibilities": [
+        "Developing a drag-and-drop website builder similar to Wix and Google Sites, with multi-tenancy architecture and subdomain publishing functionality.",
+        "Contributed to a multi-tenancy event management web app builder with subdomain publishing support.",
+        "Collaborated on in-house projects by designing multiple UI pages and implementing robust API integrations."
+      ]
+    },
+    {
+      "role": "Frontend Trainee",
+      "company": "Mediusware Ltd",
+      "start_date": "2023-12-04",
+      "end_date": "2024-02-29",
+      "responsibilities": [
+        "Implemented CRUD operations for the Profile Page with role-based access control.",
+        "Developed Back Office and Task management functionalities with CRUD actions for multiple roles.",
+        "Designed Customer Order management features with delivery and pick-up preferences."
+      ]
+    },
+    {
+      "role": "Frontend Developer (Freelancer)",
+      "start_date": "2023-06-01",
+      "end_date": "2023-11-30",
+      "responsibilities": [
+        "Developed frontend solutions for projects including a School Management System in Angular.",
+        "Built a fully functional Flight Ticket Booking website in MERN stack.",
+        "Created dynamic, intuitive UIs leveraging real-time data for enhanced user experience."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "BSc (Mathematics)",
+      "institution": "Habibullah Bahar University College",
+      "years": "2019 - Dropped out"
+    },
+    {
+      "degree": "HSC (Science)",
+      "institution": "Kabi Nazrul Govt. College",
+      "years": "2017 - 2019"
+    }
+  ],
+  "projects": [
+    "https://flight-booking-frontend-liart.vercel.app",
+    "https://scl-mgt-sys-client.vercel.app",
+    "https://dash-b0ard.netlify.app",
+    "https://cars-showroom.vercel.app",
+    "https://coiinbase.netlify.app",
+    "https://b0oking.netlify.app",
+    "https://hoo-bnk.netlify.app",
+    "https://greatcars.netlify.app"
+  ],
+  "languages": [
+    { "language": "Bengali", "proficiency": "Native" },
+    { "language": "English", "proficiency": "Professional" },
+    { "language": "German", "proficiency": "Learning" },
+    { "language": "Dutch", "proficiency": "Learning" },
+    { "language": "Spanish", "proficiency": "Learning" }
+  ]
+}

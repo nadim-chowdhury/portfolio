@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nadim Chowdhury - CV</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.3;
+        color: #000;
+        background: #fff;
+        font-size: 11px;
+      }
+
+      .cv-container {
+        width: 210mm;
+        height: 297mm;
+        padding: 12mm;
+        margin: 0 auto;
+        overflow: hidden;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #000;
+      }
+
+      .header h1 {
+        font-size: 22px;
+        margin-bottom: 2px;
+        font-weight: bold;
+      }
+
+      .header .title {
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+
+      .contact-info {
+        font-size: 10px;
+        line-height: 1.2;
+      }
+
+      .contact-info a {
+        color: #000;
+        text-decoration: underline;
+      }
+
+      .projects-list a {
+        color: #000;
+        text-decoration: underline;
+      }
+
+      .section {
+        margin-bottom: 12px;
+      }
+
+      .section h2 {
+        font-size: 12px;
+        margin-bottom: 6px;
+        padding-bottom: 2px;
+        border-bottom: 1px solid #000;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+      .about-text {
+        text-align: justify;
+        font-size: 10px;
+        margin-bottom: 2px;
+      }
+
+      .skills-text {
+        font-size: 10px;
+        line-height: 1.4;
+      }
+
+      .experience-item,
+      .education-item {
+        margin-bottom: 8px;
+        page-break-inside: avoid;
+      }
+
+      .job-header {
+        margin-bottom: 3px;
+      }
+
+      .job-title {
+        font-weight: bold;
+        font-size: 11px;
+        display: inline;
+      }
+
+      .company {
+        font-weight: bold;
+        font-size: 11px;
+        display: inline;
+      }
+
+      .date-range {
+        font-size: 10px;
+        display: inline;
+        margin-left: 10px;
+      }
+
+      .location {
+        font-size: 10px;
+        display: inline;
+        margin-left: 10px;
+      }
+
+      .responsibilities {
+        margin-left: 0;
+        font-size: 10px;
+        margin-top: 3px;
+      }
+
+      .responsibilities li {
+        margin-bottom: 2px;
+        line-height: 1.3;
+        list-style-type: disc;
+        margin-left: 15px;
+      }
+
+      .projects-list {
+        font-size: 10px;
+        line-height: 1.4;
+      }
+
+      .languages-text {
+        font-size: 10px;
+        line-height: 1.4;
+      }
+
+      @media print {
+        body {
+          margin: 0;
+          padding: 0;
+        }
+
+        .cv-container {
+          width: 100%;
+          height: 100vh;
+          margin: 0;
+          padding: 12mm;
+        }
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cv-container">
+      <div class="header">
+        <h1>NADIM CHOWDHURY</h1>
+        <div class="title">Software Developer</div>
+        <div class="contact-info">
+          Dhaka, Bangladesh | +8801971258803 |
+          <a href="https://nadim.vercel.app" target="_blank"
+            >nadim.vercel.app</a
+          >
+          |
+          <a href="mailto:nadim-chowdhury@outlook.com"
+            >nadim-chowdhury@outlook.com</a
+          >
+          <br />
+          <a href="https://linkedin.com/in/nadim-chowdhury" target="_blank"
+            >linkedin.com/in/nadim-chowdhury</a
+          >
+          |
+          <a href="https://github.com/nadim-chowdhury" target="_blank"
+            >github.com/nadim-chowdhury</a
+          >
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Professional Summary</h2>
+        <p class="about-text">
+          Self-learned creative and passionate software developer with expertise
+          in full-stack development. Experienced in building web applications,
+          ERP systems, and booking platforms. Skilled in modern JavaScript
+          frameworks, database management, and API integration. Strong
+          problem-solving abilities with a focus on clean architecture and
+          scalable solutions. Proven track record in both team collaboration and
+          independent project delivery.
+        </p>
+      </div>
+
+      <div class="section">
+        <h2>Technical Skills</h2>
+        <div class="skills-text">
+          <strong>Frontend Technologies:</strong> HTML, CSS, JavaScript,
+          TypeScript, React JS, Next JS, Angular, React Native<br />
+          <strong>Backend Technologies:</strong> Node JS, Express JS, Nest JS<br />
+          <strong>Databases:</strong> MongoDB, PostgreSQL<br />
+          <strong>Styling Frameworks:</strong> Tailwind CSS, Bootstrap, Sass<br />
+          <strong>Tools & Others:</strong> Git, Docker, Stripe API, Amadeus GDS
+          API
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Professional Experience</h2>
+
+        <div class="experience-item">
+          <div class="job-header">
+            <span class="job-title">Full Stack Software Developer</span> |
+            <span class="company">Easy Fashion Ltd</span
+            ><span class="date-range">July 2025 - Present</span
+            ><span class="location">Dhaka, Bangladesh</span>
+          </div>
+          <ul class="responsibilities">
+            <li>
+              Design and develop end-to-end features across frontend and
+              backend, ensuring seamless integration between modules and
+              delivering intuitive user experiences
+            </li>
+            <li>
+              Optimize performance, scalability, and security of ERP modules by
+              following industry best practices, clean architecture principles,
+              and robust coding standards
+            </li>
+            <li>
+              Maintain modular and scalable codebases, enabling easier updates,
+              feature enhancements, and long-term system sustainability
+            </li>
+          </ul>
+        </div>
+
+        <div class="experience-item">
+          <div class="job-header">
+            <span class="job-title">Full Stack Web Developer</span> |
+            <span class="company">Freelancer</span
+            ><span class="date-range">August 2024 - June 2025</span
+            ><span class="location">Remote</span>
+          </div>
+          <ul class="responsibilities">
+            <li>
+              Developed full-stack flight booking system utilizing real-time
+              data from Amadeus GDS API
+            </li>
+            <li>
+              Integrated Stripe payment system and implemented interactive maps
+              for seamless airport selection
+            </li>
+            <li>
+              Implemented clean, scalable architecture including flexible
+              component registry, real-time rendering engine, and drag-and-drop
+              functionality with undo/redo support
+            </li>
+          </ul>
+        </div>
+
+        <div class="experience-item">
+          <div class="job-header">
+            <span class="job-title">Junior Frontend Developer</span> |
+            <span class="company">Mediusware Ltd</span
+            ><span class="date-range">December 2023 - July 2024</span
+            ><span class="location">Dhaka, Bangladesh</span>
+          </div>
+          <ul class="responsibilities">
+            <li>
+              Developed drag-and-drop website builder similar to Wix and Google
+              Sites with multi-tenancy architecture and subdomain publishing
+              functionality
+            </li>
+            <li>
+              Contributed to multi-tenancy event management web app builder with
+              subdomain publishing support
+            </li>
+            <li>
+              Collaborated on in-house projects by designing multiple UI pages
+              and implementing robust API integrations
+            </li>
+          </ul>
+        </div>
+
+        <div class="experience-item">
+          <div class="job-header">
+            <span class="job-title">Frontend Developer</span> |
+            <span class="company">Freelancer</span
+            ><span class="date-range">June 2023 - November 2023</span
+            ><span class="location">Remote</span>
+          </div>
+          <ul class="responsibilities">
+            <li>
+              Developed frontend solutions for projects including School
+              Management System in Angular
+            </li>
+            <li>
+              Built fully functional Flight Ticket Booking website using MERN
+              stack
+            </li>
+            <li>
+              Created dynamic, intuitive user interfaces leveraging real-time
+              data for enhanced user experience
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Education</h2>
+        <ul class="responsibilities">
+          <li>
+            <strong>Bachelor of Science in Mathematics</strong> | Habibullah
+            Bahar University College | 2019 - Discontinued
+          </li>
+          <li>
+            <strong>Higher Secondary Certificate in Science</strong> | Kabi
+            Nazrul Government College | 2017 - 2019
+          </li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Key Projects</h2>
+        <ul class="responsibilities">
+          <li>
+            <strong>Flight Booking System:</strong>
+            <a
+              href="https://flight-booking-frontend-liart.vercel.app"
+              target="_blank"
+              >https://flight-booking-frontend-liart.vercel.app</a
+            >
+            - Full-stack application with Amadeus GDS API integration and Stripe
+            payments
+          </li>
+          <li>
+            <strong>School Management System:</strong>
+            <a href="https://scl-mgt-sys-client.vercel.app" target="_blank"
+              >https://scl-mgt-sys-client.vercel.app</a
+            >
+            - Comprehensive Angular-based educational platform
+          </li>
+          <li>
+            <strong>Dashboard Application:</strong>
+            <a href="https://dash-b0ard.netlify.app" target="_blank"
+              >https://dash-b0ard.netlify.app</a
+            >
+            - Administrative dashboard with data visualization
+          </li>
+          <li>
+            <strong>Cars Showroom:</strong>
+            <a href="https://cars-showroom.vercel.app" target="_blank"
+              >https://cars-showroom.vercel.app</a
+            >
+            - Automotive showcase platform with interactive features
+          </li>
+          <li>
+            <strong>Coinbase Clone:</strong>
+            <a href="https://coiinbase.netlify.app" target="_blank"
+              >https://coiinbase.netlify.app</a
+            >
+            - Cryptocurrency platform interface
+          </li>
+          <li>
+            <strong>Booking Platform:</strong>
+            <a href="https://b0oking.netlify.app" target="_blank"
+              >https://b0oking.netlify.app</a
+            >
+            - Reservation and booking system implementation
+          </li>
+          <li>
+            <strong>Banking Application:</strong>
+            <a href="https://hoo-bnk.netlify.app" target="_blank"
+              >https://hoo-bnk.netlify.app</a
+            >
+            - Financial services web application
+          </li>
+          <li>
+            <strong>Great Cars:</strong>
+            <a href="https://greatcars.netlify.app" target="_blank"
+              >https://greatcars.netlify.app</a
+            >
+            - Automotive marketplace platform
+          </li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Languages</h2>
+        <div class="languages-text">
+          <strong>Bengali:</strong> Native |
+          <strong>English:</strong> Professional |
+          <strong>German:</strong> Learning | <strong>Dutch:</strong> Learning |
+          <strong>Spanish:</strong> Learning
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

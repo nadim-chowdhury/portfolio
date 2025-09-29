@@ -32,7 +32,8 @@
   ],
   "experience": [
     {
-      "role": "Full Stack Developer (Freelancer)",
+      "role": "Full Stack Software Developer",
+      "company": "Easy Fashion Ltd",
       "start_date": "2025-07-01",
       "end_date": "Present",
       "responsibilities": [
@@ -42,7 +43,8 @@
       ]
     },
     {
-      "role": "Full Stack Web Developer (Freelancer)",
+      "role": "Full Stack Web Developer",
+      "company": "Freelancer",
       "start_date": "2024-08-01",
       "end_date": "2025-06-30",
       "responsibilities": [
@@ -54,7 +56,7 @@
     {
       "role": "Jr. Frontend Developer",
       "company": "Mediusware Ltd",
-      "start_date": "2024-03-01",
+      "start_date": "2023-12-01",
       "end_date": "2024-07-31",
       "responsibilities": [
         "Developing a drag-and-drop website builder similar to Wix and Google Sites, with multi-tenancy architecture and subdomain publishing functionality.",
@@ -63,18 +65,8 @@
       ]
     },
     {
-      "role": "Frontend Trainee",
-      "company": "Mediusware Ltd",
-      "start_date": "2023-12-04",
-      "end_date": "2024-02-29",
-      "responsibilities": [
-        "Implemented CRUD operations for the Profile Page with role-based access control.",
-        "Developed Back Office and Task management functionalities with CRUD actions for multiple roles.",
-        "Designed Customer Order management features with delivery and pick-up preferences."
-      ]
-    },
-    {
-      "role": "Frontend Developer (Freelancer)",
+      "role": "Frontend Developer",
+      "company": "Freelancer",
       "start_date": "2023-06-01",
       "end_date": "2023-11-30",
       "responsibilities": [

@@ -1,108 +1,185 @@
 {
   "name": "Nadim Chowdhury",
-  "title": "Software Developer",
+  "title": "Full Stack Software Developer",
   "contact": {
     "location": "Dhaka, Bangladesh",
-    "phone": "+8801971258803",
+    "phone": "+880 1971 258803",
     "email": "nadim-chowdhury@outlook.com",
     "portfolio": "https://nadim.vercel.app",
     "linkedin": "https://linkedin.com/in/nadim-chowdhury",
     "github": "https://github.com/nadim-chowdhury",
     "youtube": "https://youtube.com/@nadim-chowdhury"
   },
-  "about": "As a self-learned creative and passionate programmer/developer, I like to build and develop software for any platform. My hobbies are learning, improving skills, solving problems, and adapting to new technologies. I can give my total effort and work well in a team, with responsibility.",
-  "skills": [
-    "HTML",
-    "CSS",
-    "JavaScript",
-    "TypeScript",
-    "React JS",
-    "Next JS",
-    "Node JS",
-    "Express JS",
-    "Nest JS",
-    "MongoDB",
-    "PostgreSQL",
-    "Tailwind CSS",
-    "Bootstrap",
-    "Sass",
-    "Git",
-    "React Native",
-    "Docker"
-  ],
+  "summary": "Self-taught and passionate Full Stack Developer with a strong command of modern web technologies including JavaScript, TypeScript, React.js, Next.js, NestJS, and Node.js. Experienced in building large-scale ERP systems, SaaS platforms, and interactive business applications with clean architecture and scalable design. Adept at collaborating in agile teams, delivering user-centric solutions, and continuously learning new technologies to stay ahead in a fast-evolving ecosystem.",
+  "skills": {
+    "frontend": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "TypeScript",
+      "React.js",
+      "Next.js",
+      "Angular",
+      "Tailwind CSS",
+      "Bootstrap",
+      "Sass",
+      "Ant Design"
+    ],
+    "backend": ["Node.js", "Express.js", "NestJS"],
+    "database": ["PostgreSQL", "MongoDB"],
+    "mobile": ["React Native", "Flutter"],
+    "tools": [
+      "Git",
+      "GitHub",
+      "Docker",
+      "Postman",
+      "Swagger",
+      "GraphQL",
+      "REST API"
+    ],
+    "architecture": [
+      "Clean Architecture",
+      "Modular Codebase",
+      "Multi-Tenancy",
+      "Scalable System Design"
+    ]
+  },
   "experience": [
     {
-      "role": "Full Stack Software Developer",
+      "title": "Full Stack Software Developer",
       "company": "Easy Fashion Ltd",
-      "start_date": "2025-07-01",
+      "type": "Full-time",
+      "start_date": "Jul 2025",
       "end_date": "Present",
+      "duration": "4 months",
+      "description": "Contributing to the development of a large-scale ERP system integrating modules like POS, Inventory, Production, and HRM, ensuring smooth, scalable, and efficient business workflows.",
       "responsibilities": [
-        "Designing and developing end-to-end features across both frontend and backend, ensuring seamless integration between modules and delivering intuitive user experiences.",
-        "Optimizing performance, scalability, and security of ERP modules by following industry best practices, clean architecture principles, and robust coding standards.",
-        "Maintaining modular and scalable codebases, enabling easier updates, feature enhancements, and long-term system sustainability."
+        "Design and develop end-to-end features across frontend and backend, ensuring seamless module integration and intuitive user experiences.",
+        "Implement and consume REST APIs for efficient, secure, and reliable data communication.",
+        "Optimize performance, scalability, and security using best practices and clean architecture principles.",
+        "Collaborate with cross-functional teams including developers, testers, and project managers.",
+        "Maintain modular, scalable codebases for long-term system sustainability."
       ]
     },
     {
-      "role": "Full Stack Web Developer",
-      "company": "Freelancer",
-      "start_date": "2024-08-01",
-      "end_date": "2025-06-30",
+      "title": "Full Stack Web Developer",
+      "company": "Freelance",
+      "type": "Freelance",
+      "start_date": "Aug 2024",
+      "end_date": "Jun 2025",
+      "duration": "11 months",
+      "description": "Developed full-stack web applications and SaaS platforms focusing on performance, scalability, and real-world business needs.",
+      "projects": [
+        {
+          "name": "Full-Stack Flight Booking System",
+          "details": "Developed with Next.js (frontend) and NestJS (backend), featuring secure role-based access, CRUD operations for airlines, airports, planes, and routes, and user authentication for smooth booking experiences."
+        },
+        {
+          "name": "Drag-and-Drop Website Builder (SaaS)",
+          "details": "Built a full-featured visual editor with reusable components, responsive design, real-time style editing, project dashboard, and integrated billing/subscription system."
+        }
+      ],
       "responsibilities": [
-        "Developed a full-stack flight booking system utilizing real-time data from the Amadeus GDS API.",
-        "Integrated a Stripe payment system and implemented interactive maps for seamless airport selection.",
-        "Architecture & Performance: Implemented clean, scalable architecture, including a flexible component registry, real-time rendering engine, and smooth drag-and-drop functionality with undo/redo support."
+        "Built scalable full-stack applications with clean, modular architecture.",
+        "Implemented flexible component registries and real-time rendering.",
+        "Delivered smooth drag-and-drop editing with undo/redo functionality.",
+        "Ensured optimized performance and code maintainability."
       ]
     },
     {
-      "role": "Jr. Frontend Developer",
+      "title": "Junior Frontend Developer",
       "company": "Mediusware Ltd",
-      "start_date": "2023-12-01",
-      "end_date": "2024-07-31",
+      "type": "Full-time",
+      "start_date": "Mar 2024",
+      "end_date": "Jul 2024",
+      "duration": "5 months",
+      "description": "Contributed to the development of a drag-and-drop website builder and event management system with a focus on modern UI/UX and frontend performance.",
       "responsibilities": [
-        "Developing a drag-and-drop website builder similar to Wix and Google Sites, with multi-tenancy architecture and subdomain publishing functionality.",
-        "Contributed to a multi-tenancy event management web app builder with subdomain publishing support.",
-        "Collaborated on in-house projects by designing multiple UI pages and implementing robust API integrations."
+        "Developed drag-and-drop website builder with multi-tenancy and subdomain publishing.",
+        "Implemented responsive UI with React.js, Ant Design, and Bootstrap.",
+        "Connected multiple pages with GraphQL APIs for dynamic data rendering.",
+        "Collaborated on event management software ensuring seamless integration.",
+        "Delivered maintainable and scalable code following clean design principles."
       ]
     },
     {
-      "role": "Frontend Developer",
-      "company": "Freelancer",
-      "start_date": "2023-06-01",
-      "end_date": "2023-11-30",
+      "title": "Frontend Trainee",
+      "company": "Mediusware Ltd",
+      "type": "Internship",
+      "start_date": "Dec 2023",
+      "end_date": "Feb 2024",
+      "duration": "3 months",
+      "description": "Assisted in the development of an e-commerce platform and led frontend implementation of several key modules.",
       "responsibilities": [
-        "Developed frontend solutions for projects including a School Management System in Angular.",
-        "Built a fully functional Flight Ticket Booking website in MERN stack.",
-        "Created dynamic, intuitive UIs leveraging real-time data for enhanced user experience."
+        "Developed Profile Page CRUD with role-based access control.",
+        "Built task management and customer order modules with logical rendering.",
+        "Led the creation of a dynamic home page with animations.",
+        "Implemented Preferences Page logic ensuring seamless user interactions."
+      ]
+    },
+    {
+      "title": "Frontend Developer",
+      "company": "Freelance",
+      "type": "Freelance",
+      "start_date": "Jun 2023",
+      "end_date": "Nov 2023",
+      "duration": "6 months",
+      "description": "Delivered multiple client projects with modern, responsive UI and real-time data handling.",
+      "responsibilities": [
+        "Developed a School Management System using Angular with dynamic dashboards for students, teachers, and admins.",
+        "Built a Flight Ticket Booking website with complete frontend functionality.",
+        "Created user-friendly interfaces optimized for usability and accessibility."
+      ]
+    },
+    {
+      "title": "Web Developer",
+      "company": "Self-employed",
+      "type": "Self-learning / Practice",
+      "start_date": "Sep 2022",
+      "end_date": "May 2023",
+      "duration": "9 months",
+      "description": "Focused on mastering the MERN stack through hands-on projects to strengthen full-stack development expertise.",
+      "responsibilities": [
+        "Built multiple full-stack apps including task managers, authentication systems, and CRUD-based solutions.",
+        "Practiced REST API design, database modeling, and deployment.",
+        "Enhanced debugging, optimization, and version control skills."
       ]
     }
   ],
   "education": [
     {
-      "degree": "BSc (Mathematics)",
+      "degree": "BSc in Mathematics (Dropped Out)",
       "institution": "Habibullah Bahar University College",
-      "years": "2019 - Dropped out"
+      "duration": "2019 - Dropout"
     },
     {
-      "degree": "HSC (Science)",
+      "degree": "HSC in Science",
       "institution": "Kabi Nazrul Govt. College",
-      "years": "2017 - 2019"
+      "duration": "2017 - 2019"
     }
   ],
   "projects": [
-    "https://flight-booking-frontend-liart.vercel.app",
-    "https://scl-mgt-sys-client.vercel.app",
-    "https://dash-b0ard.netlify.app",
-    "https://cars-showroom.vercel.app",
-    "https://coiinbase.netlify.app",
-    "https://b0oking.netlify.app",
-    "https://hoo-bnk.netlify.app",
-    "https://greatcars.netlify.app"
+    {
+      "name": "Flight Booking App",
+      "url": "https://flight-booking-frontend-liart.vercel.app"
+    },
+    {
+      "name": "School Management System",
+      "url": "https://scl-mgt-sys-client.vercel.app"
+    },
+    { "name": "Dashboard App", "url": "https://dash-b0ard.netlify.app" },
+    { "name": "Cars Showroom", "url": "https://cars-showroom.vercel.app" },
+    { "name": "Coiinbase", "url": "https://coiinbase.netlify.app" },
+    { "name": "Booking Platform", "url": "https://b0oking.netlify.app" },
+    { "name": "Hoo Bank", "url": "https://hoo-bnk.netlify.app" },
+    { "name": "Great Cars", "url": "https://greatcars.netlify.app" }
   ],
-  "languages": [
-    { "language": "Bengali", "proficiency": "Native" },
-    { "language": "English", "proficiency": "Professional" },
-    { "language": "German", "proficiency": "Learning" },
-    { "language": "Dutch", "proficiency": "Learning" },
-    { "language": "Spanish", "proficiency": "Learning" }
+  "soft_skills": [
+    "Team Collaboration",
+    "Problem Solving",
+    "Agile Development",
+    "Continuous Learning",
+    "Attention to Detail",
+    "Time Management"
   ]
 }

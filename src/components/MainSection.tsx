@@ -23,7 +23,7 @@ export default function MainSection({
         {/* <CursorTrail /> */}
       </div>
 
-      <div className="z-50 absolute top-0 right-0 h-full">
+      {/* <div className="z-50 absolute top-0 right-0 h-full">
         <div className="flex flex-col gap-2 p-4 text-gray-200 opacity-60">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -46,12 +46,11 @@ export default function MainSection({
                   className="flex items-center justify-center gap-3 px-3 py-3 rounded-full bg-gray-900 hover:bg-gray-800 hover:text-white transition-colors border border-gray-500"
                 >
                   <Icon className="w-5 h-5 mx-auto" />
-                  {/* <span className="text-sm font-medium">{item.label}</span> */}
                 </Link>
               );
             })}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

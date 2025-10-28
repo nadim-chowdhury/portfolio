@@ -1300,6 +1300,10 @@ Type 'help' for commands.
 
   return (
     <div className="bg-gradient-to-r from-white/5 via-transparent to-white/5">
+      {/* <div>
+        <Link href="./nadim-chowdhury-resume.pdf">Download CV</Link>
+      </div> */}
+
       <div className="min-h-screen flex items-center justify-center">
         {!isClosed && (
           // <motion.div

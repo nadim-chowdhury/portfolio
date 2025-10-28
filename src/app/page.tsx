@@ -1,10 +1,10 @@
 "use client";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Minus, Square, X } from "lucide-react";
+import { Minus, Square, X, Copy, Check, HelpCircle, Download, Star, Search, Palette } from "lucide-react";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import LetterGlitch from "@/components/LetterGlitch";
 
 interface ExperienceItem {
@@ -59,6 +59,16 @@ const Home: React.FC = () => {
   const [visitorCount, setVisitorCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // New state for enhanced features
+  const [showHelp, setShowHelp] = useState<boolean>(false);
+  const [showThemePicker, setShowThemePicker] = useState<boolean>(false);
+  const [currentTheme, setCurrentTheme] = useState<string>("matrix");
+  const [copiedLine, setCopiedLine] = useState<number>(-1);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [showFavorites, setShowFavorites] = useState<boolean>(false);
+  const [commandSearch, setCommandSearch] = useState<string>("");
+  const [typingStats, setTypingStats] = useState({ commands: 0, chars: 0 });
+
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -101,7 +111,56 @@ const Home: React.FC = () => {
     "flip-coin",
     "evolution",
     "rm -rf ./",
+    "export",
+    "theme",
+    "favorites",
   ];
+
+  // Theme configurations
+  const themes = {
+    matrix: {
+      name: "Matrix",
+      bg: "bg-gray-950",
+      text: "text-green-400",
+      border: "border-gray-700",
+      prompt: "text-blue-400",
+      header: "bg-gray-900",
+    },
+    cyberpunk: {
+      name: "Cyberpunk",
+      bg: "bg-purple-950",
+      text: "text-cyan-400",
+      border: "border-purple-700",
+      prompt: "text-pink-400",
+      header: "bg-purple-900",
+    },
+    ocean: {
+      name: "Ocean",
+      bg: "bg-blue-950",
+      text: "text-teal-300",
+      border: "border-blue-700",
+      prompt: "text-cyan-400",
+      header: "bg-blue-900",
+    },
+    hacker: {
+      name: "Hacker",
+      bg: "bg-black",
+      text: "text-lime-400",
+      border: "border-lime-700",
+      prompt: "text-lime-500",
+      header: "bg-gray-900",
+    },
+    sunset: {
+      name: "Sunset",
+      bg: "bg-orange-950",
+      text: "text-orange-200",
+      border: "border-orange-700",
+      prompt: "text-yellow-400",
+      header: "bg-orange-900",
+    },
+  };
+
+  const theme = themes[currentTheme as keyof typeof themes] || themes.matrix;
 
   const skills: string[] = [
     "HTML",
@@ -586,6 +645,49 @@ const Home: React.FC = () => {
     setCurrentCommand(commandHistory[newIndex]);
   };
 
+  // New utility functions
+  const copyToClipboard = async (text: string, lineIndex: number): Promise<void> => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedLine(lineIndex);
+      setTimeout(() => setCopiedLine(-1), 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
+
+  const exportTerminalSession = (): void => {
+    const sessionData = {
+      timestamp: new Date().toISOString(),
+      history: terminalHistory,
+      commands: commandHistory,
+      theme: currentTheme,
+    };
+
+    const dataStr = JSON.stringify(sessionData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `terminal-session-${Date.now()}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const toggleFavorite = (command: string): void => {
+    setFavorites((prev) =>
+      prev.includes(command)
+        ? prev.filter((c) => c !== command)
+        : [...prev, command]
+    );
+  };
+
+  const filteredCommands = commandSearch
+    ? availableCommands.filter((cmd) =>
+        cmd.toLowerCase().includes(commandSearch.toLowerCase())
+      )
+    : availableCommands;
+
   const typeWriter = (text: string, callback?: () => void): void => {
     if (typingTimerRef.current) {
       clearInterval(typingTimerRef.current);
@@ -627,6 +729,12 @@ const Home: React.FC = () => {
     const resolvedCommand = aliases[name] || original;
     const resolvedArgs = resolvedCommand.split(/\s+/);
     const resolvedName = (resolvedArgs.shift() || "").toLowerCase();
+
+    // Update typing stats
+    setTypingStats((prev) => ({
+      commands: prev.commands + 1,
+      chars: prev.chars + original.length,
+    }));
 
     addToCommandHistory(original);
     setTerminalHistory((prev) => [...prev, `${getPrompt()} ${original}`, ""]);
@@ -1216,6 +1324,53 @@ The evolution never stops!`;
         const newHistory = [...prev, fingerAsci];
         return newHistory;
       });
+    } else if (command === "export") {
+      exportTerminalSession();
+      setTerminalHistory((prev) => {
+        const newHistory = [...prev];
+        newHistory[newHistory.length - 1] =
+          "Terminal session exported successfully! Check your downloads folder.";
+        return newHistory;
+      });
+    } else if (command === "theme") {
+      if (resolvedArgs.length === 0) {
+        const themeList = Object.keys(themes)
+          .map((t) => `  • ${themes[t as keyof typeof themes].name} (${t})`)
+          .join("\n");
+        const themeText = `Available Themes:\n\n${themeList}\n\nCurrent: ${theme.name}\n\nUsage: theme <name>\nExample: theme cyberpunk`;
+        typeWriter(themeText, scrollToBottom);
+      } else {
+        const newTheme = resolvedArgs[0].toLowerCase();
+        if (themes[newTheme as keyof typeof themes]) {
+          setCurrentTheme(newTheme);
+          localStorage.setItem("terminalTheme", newTheme);
+          setTerminalHistory((prev) => {
+            const newHistory = [...prev];
+            newHistory[newHistory.length - 1] = `Theme changed to: ${
+              themes[newTheme as keyof typeof themes].name
+            }`;
+            return newHistory;
+          });
+        } else {
+          setTerminalHistory((prev) => {
+            const newHistory = [...prev];
+            newHistory[newHistory.length - 1] = `Theme "${newTheme}" not found. Type 'theme' to see available themes.`;
+            return newHistory;
+          });
+        }
+      }
+    } else if (command === "favorites") {
+      if (favorites.length === 0) {
+        setTerminalHistory((prev) => {
+          const newHistory = [...prev];
+          newHistory[newHistory.length - 1] =
+            "No favorite commands yet. Click the star icon next to any command output to add it to favorites!";
+          return newHistory;
+        });
+      } else {
+        const favText = `Favorite Commands:\n\n${favorites.map((f, i) => `${i + 1}. ${f}`).join("\n")}`;
+        typeWriter(favText, scrollToBottom);
+      }
     } else {
       setTerminalHistory((prev) => {
         const newHistory = [...prev];

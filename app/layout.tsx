@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import StoreProvider from "@/components/providers/store-provider";
-import { Home } from "lucide-react";
+// import { Home } from "lucide-react";
 // import NavMenu from "@/components/common/nav-menu";
 
 const inter = Inter({
@@ -18,32 +18,32 @@ export const metadata: Metadata = {
   description: "Portfolio of Nadim Chowdhury - Full Stack Developer",
 };
 
-const navMenu = [
-  {
-    id: 1,
-    label: "Home",
-    icon: <Home />,
-    route: "/",
-  },
-  {
-    id: 2,
-    label: "V2",
-    icon: <Home />,
-    route: "/v2",
-  },
-  {
-    id: 3,
-    label: "V3",
-    icon: <Home />,
-    route: "/v3",
-  },
-  {
-    id: 4,
-    label: "Danger",
-    icon: <Home />,
-    route: "/x",
-  },
-];
+// const navMenu = [
+//   {
+//     id: 1,
+//     label: "Home",
+//     icon: <Home />,
+//     route: "/",
+//   },
+//   {
+//     id: 2,
+//     label: "V2",
+//     icon: <Home />,
+//     route: "/v2",
+//   },
+//   {
+//     id: 3,
+//     label: "V3",
+//     icon: <Home />,
+//     route: "/v3",
+//   },
+//   {
+//     id: 4,
+//     label: "Danger",
+//     icon: <Home />,
+//     route: "/x",
+//   },
+// ];
 
 export default function RootLayout({
   children,

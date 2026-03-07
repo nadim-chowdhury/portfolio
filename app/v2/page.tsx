@@ -1377,7 +1377,7 @@ export default function PortfolioV2() {
             fontSize: 10,
             letterSpacing: "0.15em",
             textTransform: "uppercase",
-            color: "#6b5f52",
+            color: "#ada194",
           }}
         >
           © 2025 Nadim Chowdhury · Dhaka, BD
@@ -1398,7 +1398,7 @@ export default function PortfolioV2() {
               style={{
                 fontSize: 10,
                 letterSpacing: "0.15em",
-                color: "#6b5f52",
+                color: "#ada194",
                 textDecoration: "none",
                 transition: "color 0.2s",
               }}

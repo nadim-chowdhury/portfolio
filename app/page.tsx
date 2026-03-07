@@ -1156,10 +1156,10 @@ export default function Home() {
           alignItems: "center",
         }}
       >
-        <p style={{ fontSize: 11, color: "#333", letterSpacing: "0.1em" }}>
+        <p style={{ fontSize: 11, color: "#777", letterSpacing: "0.1em" }}>
           © 2025 Nadim Chowdhury
         </p>
-        <p style={{ fontSize: 11, color: "#333", letterSpacing: "0.1em" }}>
+        <p style={{ fontSize: 11, color: "#777", letterSpacing: "0.1em" }}>
           Full Stack Developer · Dhaka, BD
         </p>
       </footer>

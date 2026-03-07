@@ -1675,7 +1675,7 @@ export default function PortfolioV3() {
             fontFamily: "'Orbitron',sans-serif",
             fontSize: 10,
             letterSpacing: "0.15em",
-            color: "#e0f0f0",
+            color: "#a2d2d2",
           }}
         >
           NC::DEV © 2025

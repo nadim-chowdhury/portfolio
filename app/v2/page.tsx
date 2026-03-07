@@ -3,16 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef, ReactNode, RefObject } from "react";
 
-const NAV_ITEMS = [
-  "about",
-  "experience",
-  "projects",
-  "skills",
-  "contact",
-  "v2",
-  "v3",
-  "danger",
-];
+const NAV_ITEMS = ["about", "experience", "projects", "skills", "contact"];
 
 const SKILLS = [
   "HTML",
@@ -181,8 +172,14 @@ function Cursor() {
   const pos = useRef({ x: 0, y: 0 });
   const ringPos = useRef({ x: 0, y: 0 });
   const raf = useRef<number | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
+    setIsDesktop(window.matchMedia("(pointer: fine)").matches);
+  }, []);
+
+  useEffect(() => {
+    if (!isDesktop) return;
     const move = (e: MouseEvent) => {
       pos.current = { x: e.clientX, y: e.clientY };
     };
@@ -205,7 +202,9 @@ function Cursor() {
       window.removeEventListener("mousemove", move);
       if (raf.current !== null) cancelAnimationFrame(raf.current);
     };
-  }, []);
+  }, [isDesktop]);
+
+  if (!isDesktop) return null;
 
   return (
     <>
@@ -247,6 +246,14 @@ export default function PortfolioV2() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -262,16 +269,11 @@ export default function PortfolioV2() {
   }, []);
 
   const scrollTo = (id: string) => {
-    if (id === "v2") {
-      router.push("/v2");
-    } else if (id === "v3") {
-      router.push("/v3");
-    } else if (id === "danger") {
-      router.push("/terminal");
-    } else {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-      setMenuOpen(false);
-    }
+    setMenuOpen(false);
+    if (id === "v2") router.push("/v2");
+    else if (id === "v3") router.push("/v3");
+    else if (id === "danger") router.push("/terminal");
+    else document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   const copyEmail = () => {
@@ -280,8 +282,7 @@ export default function PortfolioV2() {
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 
-  // suppress unused warning for menuOpen
-  void menuOpen;
+  const isDesktopCursor = !isMobile;
 
   return (
     <div
@@ -290,7 +291,7 @@ export default function PortfolioV2() {
         color: "#e8e8e8",
         fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif",
         minHeight: "100vh",
-        cursor: "none",
+        cursor: isDesktopCursor ? "none" : "auto",
         overflowX: "hidden",
       }}
     >
@@ -300,30 +301,194 @@ export default function PortfolioV2() {
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
-        a { cursor: none !important; }
-        button { cursor: none !important; }
-        .nav-link { position: relative; font-size: 13px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: #666; background: none; border: none; padding: 4px 0; transition: color 0.2s; }
-        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: #00d4aa; transition: width 0.3s ease; }
+
+        .nav-link {
+          position: relative; font-size: 13px; font-weight: 400;
+          letter-spacing: 0.08em; text-transform: uppercase;
+          color: #666; background: none; border: none;
+          padding: 4px 0; transition: color 0.2s;
+          cursor: pointer;
+        }
+        .nav-link::after {
+          content: ''; position: absolute; bottom: 0; left: 0;
+          width: 0; height: 1px; background: #00d4aa; transition: width 0.3s ease;
+        }
         .nav-link:hover, .nav-link.active { color: #e8e8e8; }
         .nav-link:hover::after, .nav-link.active::after { width: 100%; }
-        .skill-tag { background: #141414; border: 1px solid #222; padding: 6px 14px; border-radius: 2px; font-size: 12px; letter-spacing: 0.05em; color: #888; transition: all 0.2s; }
+
+        .skill-tag {
+          background: #141414; border: 1px solid #222; padding: 6px 14px;
+          border-radius: 2px; font-size: 12px; letter-spacing: 0.05em;
+          color: #888; transition: all 0.2s;
+        }
         .skill-tag:hover { border-color: #00d4aa; color: #00d4aa; background: rgba(0,212,170,0.04); }
-        .exp-card { border-left: 1px solid #1e1e1e; padding-left: 24px; position: relative; transition: border-color 0.3s; }
-        .exp-card::before { content: ''; position: absolute; left: -4px; top: 6px; width: 7px; height: 7px; border-radius: 50%; background: #1e1e1e; border: 1px solid #333; transition: all 0.3s; }
+
+        .exp-card {
+          border-left: 1px solid #1e1e1e; padding-left: 24px;
+          position: relative; transition: border-color 0.3s;
+        }
+        .exp-card::before {
+          content: ''; position: absolute; left: -4px; top: 6px;
+          width: 7px; height: 7px; border-radius: 50%;
+          background: #1e1e1e; border: 1px solid #333; transition: all 0.3s;
+        }
         .exp-card:hover { border-color: #00d4aa; }
         .exp-card:hover::before { background: #00d4aa; border-color: #00d4aa; }
-        .proj-card { background: #0e0e0e; border: 1px solid #1a1a1a; padding: 28px; transition: all 0.3s; position: relative; overflow: hidden; }
-        .proj-card::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 1px; background: #00d4aa; transition: width 0.4s ease; }
+
+        .proj-card {
+          background: #0e0e0e; border: 1px solid #1a1a1a; padding: 28px;
+          transition: all 0.3s; position: relative; overflow: hidden;
+        }
+        .proj-card::before {
+          content: ''; position: absolute; top: 0; left: 0;
+          width: 0; height: 1px; background: #00d4aa; transition: width 0.4s ease;
+        }
         .proj-card:hover { border-color: #2a2a2a; transform: translateY(-2px); }
         .proj-card:hover::before { width: 100%; }
-        .btn-primary { background: #00d4aa; color: #0a0a0a; padding: 12px 28px; font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; border: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+
+        .btn-primary {
+          background: #00d4aa; color: #0a0a0a; padding: 12px 28px;
+          font-size: 13px; font-weight: 500; letter-spacing: 0.08em;
+          text-transform: uppercase; border: none; transition: all 0.2s;
+          display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+        }
         .btn-primary:hover { background: #fff; }
-        .btn-outline { background: transparent; color: #888; padding: 12px 28px; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid #2a2a2a; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+
+        .btn-outline {
+          background: transparent; color: #888; padding: 12px 28px;
+          font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+          border: 1px solid #2a2a2a; transition: all 0.2s;
+          display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+        }
         .btn-outline:hover { border-color: #00d4aa; color: #00d4aa; }
-        .noise { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); }
+
+        /* Hamburger */
+        .hamburger {
+          display: none; background: none; border: none;
+          cursor: pointer; padding: 4px;
+          flex-direction: column; gap: 5px;
+        }
+        .hamburger span {
+          display: block; height: 1.5px; background: #e8e8e8; transition: all 0.3s;
+        }
+        .hamburger span:nth-child(1) { width: 24px; }
+        .hamburger span:nth-child(2) { width: 18px; }
+        .hamburger span:nth-child(3) { width: 24px; }
+        .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); width: 24px; }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); width: 24px; }
+
+        /* Mobile menu */
+        .mobile-menu {
+          position: fixed; inset: 0; z-index: 200;
+          background: rgba(10,10,10,0.98); backdrop-filter: blur(20px);
+          display: flex; flex-direction: column;
+          align-items: center; justify-content: center; gap: 32px;
+          transform: translateX(100%);
+          transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        .mobile-menu.open { transform: translateX(0); }
+        .mobile-nav-btn {
+          background: none; border: none; cursor: pointer;
+          font-family: 'Instrument Serif', serif;
+          font-size: clamp(28px, 7vw, 44px);
+          color: #e8e8e8; letter-spacing: -0.02em;
+          transition: color 0.2s;
+        }
+        .mobile-nav-btn:hover { color: #00d4aa; }
+
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+        /* ── TABLET (768–1023px) ── */
+        @media (min-width: 768px) and (max-width: 1023px) {
+          .hamburger { display: flex !important; }
+          .desktop-nav { display: none !important; }
+          .desktop-hire-btn { display: none !important; }
+
+          .hero-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
+          .hero-stats { max-width: 480px !important; }
+
+          .contact-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
+          .skills-area-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+          nav { padding: 16px 32px !important; }
+          .section-wrap { padding: 80px 32px !important; }
+          .hero-section { padding: 100px 32px 80px !important; }
+          footer { padding: 24px 32px !important; }
+        }
+
+        /* ── MOBILE (< 768px) ── */
+        @media (max-width: 767px) {
+          .hamburger { display: flex !important; }
+          .desktop-nav { display: none !important; }
+          .desktop-hire-btn { display: none !important; }
+
+          nav { padding: 14px 20px !important; }
+          .nav-logo { font-size: 24px !important; }
+
+          .hero-section { padding: 88px 20px 64px !important; min-height: 100svh !important; }
+          .hero-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .hero-cta { flex-direction: column !important; align-items: flex-start !important; }
+          .hero-cta .btn-primary, .hero-cta .btn-outline { width: 100% !important; justify-content: center !important; }
+
+          .section-wrap { padding: 64px 20px !important; }
+
+          .contact-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .skills-area-grid { grid-template-columns: 1fr !important; }
+
+          .exp-card { padding-left: 16px !important; }
+
+          footer { padding: 20px 20px !important; flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
+        }
       `}</style>
 
       <Cursor />
+
+      {/* MOBILE MENU */}
+      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+        <button
+          onClick={() => setMenuOpen(false)}
+          style={{
+            position: "absolute",
+            top: 16,
+            right: 20,
+            background: "none",
+            border: "none",
+            fontSize: 32,
+            cursor: "pointer",
+            color: "#666",
+            lineHeight: 1,
+          }}
+        >
+          ×
+        </button>
+        {NAV_ITEMS.map((item) => (
+          <button
+            key={item}
+            className="mobile-nav-btn"
+            onClick={() => scrollTo(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <a
+          href="mailto:nadim-chowdhury@outlook.com"
+          style={{
+            fontSize: 11,
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
+            color: "#00d4aa",
+            textDecoration: "none",
+            marginTop: 8,
+          }}
+        >
+          Hire Me ↗
+        </a>
+      </div>
 
       {/* NAV */}
       <nav
@@ -346,16 +511,18 @@ export default function PortfolioV2() {
         }}
       >
         <div
+          className="nav-logo"
           style={{
             fontFamily: "'Instrument Serif', serif",
             fontSize: 32,
-            // letterSpacing: "-0.02em",
             color: "#e8e8e8",
           }}
         >
           Nadim<span style={{ color: "#00d4aa" }}>.</span>
         </div>
-        <div style={{ display: "flex", gap: 36 }}>
+
+        {/* Desktop links */}
+        <div className="desktop-nav" style={{ display: "flex", gap: 36 }}>
           {NAV_ITEMS.map((item) => (
             <button
               key={item}
@@ -366,18 +533,32 @@ export default function PortfolioV2() {
             </button>
           ))}
         </div>
+
+        {/* Desktop CTA */}
         <a
           href="mailto:nadim-chowdhury@outlook.com"
-          className="btn-primary"
+          className="btn-primary desktop-hire-btn"
           style={{ textDecoration: "none", fontSize: 11 }}
         >
           Hire Me ↗
         </a>
+
+        {/* Hamburger */}
+        <button
+          className={`hamburger ${menuOpen ? "open" : ""}`}
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label="Toggle menu"
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </nav>
 
       {/* HERO */}
       <section
         id="about"
+        className="hero-section"
         style={{
           minHeight: "100vh",
           display: "flex",
@@ -412,6 +593,7 @@ export default function PortfolioV2() {
 
         <div style={{ maxWidth: 1100, width: "100%", margin: "0 auto" }}>
           <div
+            className="hero-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
@@ -419,67 +601,72 @@ export default function PortfolioV2() {
               alignItems: "center",
             }}
           >
-            <div>
-              <div
+            {/* Left */}
+            <div
+              style={{
+                opacity: 0,
+                animation: "fadeUp 0.8s ease 0.1s forwards",
+              }}
+            >
+              <p
                 style={{
-                  opacity: 0,
-                  animation: "fadeUp 0.8s ease 0.1s forwards",
+                  fontSize: 11,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: "#00d4aa",
+                  marginBottom: 20,
                 }}
               >
-                <p
-                  style={{
-                    fontSize: 11,
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    color: "#00d4aa",
-                    marginBottom: 20,
-                  }}
+                Available for work
+              </p>
+              <h1
+                style={{
+                  fontFamily: "'Instrument Serif', serif",
+                  fontSize: "clamp(44px, 6vw, 80px)",
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.03em",
+                  color: "#e8e8e8",
+                  marginBottom: 24,
+                }}
+              >
+                Nadim
+                <br />
+                <span style={{ fontStyle: "italic", color: "#555" }}>
+                  Chowdhury
+                </span>
+              </h1>
+              <p
+                style={{
+                  fontSize: "clamp(13px, 1.5vw, 15px)",
+                  lineHeight: 1.8,
+                  color: "#666",
+                  maxWidth: 420,
+                  marginBottom: 40,
+                }}
+              >
+                Full Stack Developer specializing in building large-scale ERP
+                systems, SaaS platforms, and interactive business applications
+                with clean, scalable architecture.
+              </p>
+              <div
+                className="hero-cta"
+                style={{ display: "flex", gap: 12, flexWrap: "wrap" }}
+              >
+                <button
+                  className="btn-primary"
+                  onClick={() => scrollTo("projects")}
                 >
-                  Available for work
-                </p>
-                <h1
-                  style={{
-                    fontFamily: "'Instrument Serif', serif",
-                    fontSize: "clamp(52px, 6vw, 80px)",
-                    lineHeight: 1.05,
-                    letterSpacing: "-0.03em",
-                    color: "#e8e8e8",
-                    marginBottom: 24,
-                  }}
-                >
-                  Nadim
-                  <br />
-                  <span style={{ fontStyle: "italic", color: "#555" }}>
-                    Chowdhury
-                  </span>
-                </h1>
-                <p
-                  style={{
-                    fontSize: 15,
-                    lineHeight: 1.8,
-                    color: "#666",
-                    maxWidth: 420,
-                    marginBottom: 40,
-                  }}
-                >
-                  Full Stack Developer specializing in building large-scale ERP
-                  systems, SaaS platforms, and interactive business applications
-                  with clean, scalable architecture.
-                </p>
-                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                  <button
-                    className="btn-primary"
-                    onClick={() => scrollTo("projects")}
-                  >
-                    View Work ↓
-                  </button>
-                  <button className="btn-outline" onClick={copyEmail}>
-                    {copiedEmail ? "Copied!" : "Copy Email"}
-                  </button>
-                </div>
+                  View Work ↓
+                </button>
+                <button className="btn-outline" onClick={copyEmail}>
+                  {copiedEmail ? "Copied!" : "Copy Email"}
+                </button>
               </div>
             </div>
+
+            {/* Right: stats */}
             <div
+              className="hero-stats"
               style={{
                 opacity: 0,
                 animation: "fadeUp 0.8s ease 0.3s forwards",
@@ -525,7 +712,14 @@ export default function PortfolioV2() {
                     </span>
                   </div>
                 ))}
-                <div style={{ marginTop: 32, display: "flex", gap: 16 }}>
+                <div
+                  style={{
+                    marginTop: 32,
+                    display: "flex",
+                    gap: 16,
+                    flexWrap: "wrap",
+                  }}
+                >
                   {(
                     [
                       {
@@ -577,14 +771,12 @@ export default function PortfolioV2() {
             </div>
           </div>
         </div>
-        <style>{`
-          @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-        `}</style>
       </section>
 
       {/* EXPERIENCE */}
       <section
         id="experience"
+        className="section-wrap"
         style={{ padding: "100px 48px", borderTop: "1px solid #111" }}
       >
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
@@ -610,7 +802,7 @@ export default function PortfolioV2() {
               <h2
                 style={{
                   fontFamily: "'Instrument Serif', serif",
-                  fontSize: "clamp(32px, 4vw, 48px)",
+                  fontSize: "clamp(28px, 4vw, 48px)",
                   letterSpacing: "-0.02em",
                 }}
               >
@@ -635,7 +827,7 @@ export default function PortfolioV2() {
                     <div>
                       <h3
                         style={{
-                          fontSize: 16,
+                          fontSize: "clamp(14px, 1.5vw, 16px)",
                           fontWeight: 400,
                           color: "#e8e8e8",
                           marginBottom: 4,
@@ -659,6 +851,7 @@ export default function PortfolioV2() {
                         color: "#444",
                         letterSpacing: "0.08em",
                         textTransform: "uppercase",
+                        whiteSpace: "nowrap",
                       }}
                     >
                       {exp.period}
@@ -702,6 +895,7 @@ export default function PortfolioV2() {
       {/* PROJECTS */}
       <section
         id="projects"
+        className="section-wrap"
         style={{ padding: "100px 48px", borderTop: "1px solid #111" }}
       >
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
@@ -727,7 +921,7 @@ export default function PortfolioV2() {
               <h2
                 style={{
                   fontFamily: "'Instrument Serif', serif",
-                  fontSize: "clamp(32px, 4vw, 48px)",
+                  fontSize: "clamp(28px, 4vw, 48px)",
                   letterSpacing: "-0.02em",
                 }}
               >
@@ -738,13 +932,13 @@ export default function PortfolioV2() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
               gap: 8,
             }}
           >
             {PROJECTS.map((proj, i) => (
               <AnimatedSection key={i} delay={i * 0.1}>
-                <div className="proj-card">
+                <div className="proj-card" style={{ height: "100%" }}>
                   <div
                     style={{
                       display: "flex",
@@ -755,7 +949,7 @@ export default function PortfolioV2() {
                   >
                     <h3
                       style={{
-                        fontSize: 16,
+                        fontSize: "clamp(14px, 1.5vw, 16px)",
                         fontWeight: 400,
                         color: "#e8e8e8",
                       }}
@@ -771,6 +965,8 @@ export default function PortfolioV2() {
                         color: "#333",
                         textDecoration: "none",
                         transition: "color 0.2s",
+                        flexShrink: 0,
+                        marginLeft: 12,
                       }}
                       onMouseEnter={(e) =>
                         ((e.currentTarget as HTMLAnchorElement).style.color =
@@ -832,6 +1028,7 @@ export default function PortfolioV2() {
       {/* SKILLS */}
       <section
         id="skills"
+        className="section-wrap"
         style={{ padding: "100px 48px", borderTop: "1px solid #111" }}
       >
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
@@ -857,7 +1054,7 @@ export default function PortfolioV2() {
               <h2
                 style={{
                   fontFamily: "'Instrument Serif', serif",
-                  fontSize: "clamp(32px, 4vw, 48px)",
+                  fontSize: "clamp(28px, 4vw, 48px)",
                   letterSpacing: "-0.02em",
                 }}
               >
@@ -874,9 +1071,9 @@ export default function PortfolioV2() {
               ))}
             </div>
           </AnimatedSection>
-
           <AnimatedSection delay={0.2}>
             <div
+              className="skills-area-grid"
               style={{
                 marginTop: 60,
                 display: "grid",
@@ -942,6 +1139,7 @@ export default function PortfolioV2() {
       {/* CONTACT */}
       <section
         id="contact"
+        className="section-wrap"
         style={{ padding: "100px 48px 60px", borderTop: "1px solid #111" }}
       >
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
@@ -967,7 +1165,7 @@ export default function PortfolioV2() {
               <h2
                 style={{
                   fontFamily: "'Instrument Serif', serif",
-                  fontSize: "clamp(32px, 4vw, 48px)",
+                  fontSize: "clamp(28px, 4vw, 48px)",
                   letterSpacing: "-0.02em",
                 }}
               >
@@ -977,6 +1175,7 @@ export default function PortfolioV2() {
           </AnimatedSection>
           <AnimatedSection delay={0.1}>
             <div
+              className="contact-grid"
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
@@ -987,7 +1186,7 @@ export default function PortfolioV2() {
               <div>
                 <p
                   style={{
-                    fontSize: 15,
+                    fontSize: "clamp(13px, 1.5vw, 15px)",
                     color: "#555",
                     lineHeight: 1.9,
                     marginBottom: 40,
@@ -1037,10 +1236,11 @@ export default function PortfolioV2() {
                             background: "none",
                             border: "none",
                             color: "#888",
-                            fontSize: 14,
+                            fontSize: "clamp(12px, 1.4vw, 14px)",
                             fontFamily: "'DM Sans', sans-serif",
                             borderBottom: "1px solid #222",
                             paddingBottom: 2,
+                            cursor: "pointer",
                           }}
                           onMouseEnter={(e) => {
                             (e.currentTarget as HTMLButtonElement).style.color =
@@ -1060,18 +1260,17 @@ export default function PortfolioV2() {
                           {value}
                         </button>
                       ) : (
-                        <button
+                        <p
                           style={{
-                            background: "none",
-                            // border: "none",
+                            fontSize: "clamp(12px, 1.4vw, 14px)",
                             color: "#888",
-                            fontSize: 14,
                             borderBottom: "1px solid #222",
                             paddingBottom: 2,
+                            display: "inline",
                           }}
                         >
                           {value}
-                        </button>
+                        </p>
                       )}
                     </div>
                   ))}
@@ -1125,7 +1324,7 @@ export default function PortfolioV2() {
                       ).style.borderColor = "#181818")
                     }
                   >
-                    <div>
+                    <div style={{ minWidth: 0 }}>
                       <p
                         style={{
                           fontSize: 14,
@@ -1135,9 +1334,28 @@ export default function PortfolioV2() {
                       >
                         {label}
                       </p>
-                      <p style={{ fontSize: 11, color: "#444" }}>{sub}</p>
+                      <p
+                        style={{
+                          fontSize: 11,
+                          color: "#444",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {sub}
+                      </p>
                     </div>
-                    <span style={{ color: "#333", fontSize: 18 }}>↗</span>
+                    <span
+                      style={{
+                        color: "#333",
+                        fontSize: 18,
+                        flexShrink: 0,
+                        marginLeft: 12,
+                      }}
+                    >
+                      ↗
+                    </span>
                   </a>
                 ))}
               </div>
@@ -1154,6 +1372,8 @@ export default function PortfolioV2() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          flexWrap: "wrap",
+          gap: 8,
         }}
       >
         <p style={{ fontSize: 11, color: "#777", letterSpacing: "0.1em" }}>

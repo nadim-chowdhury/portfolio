@@ -56,7 +56,7 @@ export default function RootLayout({
       className={cn("font-sans", inter.variable)}
       suppressHydrationWarning
     >
-      <body className="antialiased relative">
+      <body className="antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

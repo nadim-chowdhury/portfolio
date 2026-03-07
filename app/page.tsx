@@ -1,1817 +1,2474 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState, useEffect, useRef, ReactNode, RefObject } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import type { CSSProperties } from "react";
 
-const SKILLS_LEFT = [
-  "JavaScript",
-  "TypeScript",
-  "React.js",
-  "Next.js",
-  "Tailwind CSS",
-  "Bootstrap",
-];
-const SKILLS_RIGHT = [
-  "Express.js",
-  "Nest.js",
-  "PostgreSQL",
-  "MongoDB",
-  "GraphQL",
-  "REST API",
-];
+interface Theme {
+  name: string;
+  bg: string;
+  surface: string;
+  surfaceHigh: string;
+  border: string;
+  text: string;
+  dim: string;
+  muted: string;
+  accent: string;
+  accentSoft: string;
+  green: string;
+  red: string;
+  yellow: string;
+  blue: string;
+  prompt: string;
+  cursor: string;
+}
 
-interface Experience {
+type LineType =
+  | "br"
+  | "divider"
+  | "banner"
+  | "tags"
+  | "expcard"
+  | "projrow"
+  | "neofetch"
+  | "themerow"
+  | "out"
+  | "hdr"
+  | "dim"
+  | "acc"
+  | "ok"
+  | "err"
+  | "warn"
+  | "link"
+  | "cmd"
+  | "code"
+  | "clear";
+
+interface ExpEntry {
+  n: string;
   role: string;
-  company: string;
+  co: string;
   period: string;
   type: string;
+  stack: string[];
   desc: string;
 }
 
-interface Project {
-  idx: string;
+interface ProjectEntry {
+  id: string;
   name: string;
+  cat: string;
   url: string;
-  tech: string;
-  desc: string;
   year: string;
+  stack: string[];
+  desc: string;
 }
 
-const EXPERIENCE: Experience[] = [
-  {
-    role: "Full Stack Software Developer",
-    company: "Easy Fashion Ltd",
-    period: "Jul ~ Nov 2025",
-    type: "Full-time",
-    desc: "End-to-end feature development across frontend and backend. Modular, scalable codebases in close collaboration with cross-functional teams.",
-  },
-  {
-    role: "Full Stack Web Developer",
-    company: "Freelance",
-    period: "Aug 2024 ~ Jun 2025",
-    type: "Contract",
-    desc: "Built airline booking platform (Next.js + NestJS) with role-based auth. Created a full visual editor with real-time style editing, dashboard, and billing.",
-  },
-  {
-    role: "Junior Frontend Developer",
-    company: "Mediusware Ltd",
-    period: "Mar ~ Jul 2024",
-    type: "Full-time",
-    desc: "Drag-and-drop website builder with multi-tenancy and subdomain publishing. Connected GraphQL APIs for dynamic rendering.",
-  },
-  {
-    role: "Frontend Trainee",
-    company: "Mediusware Ltd",
-    period: "Dec 2023 ~ Feb 2024",
-    type: "Internship",
-    desc: "Profile CRUD with RBAC, task management and customer order modules, and Preferences Page logic.",
-  },
-  {
-    role: "Frontend Developer",
-    company: "Freelance",
-    period: "Sep 2022 ~ Nov 2023",
-    type: "Freelance",
-    desc: "Built task managers, auth systems, and CRUD apps. Practiced REST API design, DB modeling, deployment, and version control.",
-  },
-];
+interface TagsMeta {
+  items: string[];
+}
+interface NeofetchMeta {
+  theme: Theme;
+}
+interface ThemeRowMeta {
+  key: string;
+  th: Theme;
+  current: boolean;
+}
 
-const PROJECTS: Project[] = [
-  {
-    idx: "01",
-    name: "Collabier SaaS",
-    url: "collabier-sass-x.vercel.app",
-    tech: "Next.js · NestJS · PostgreSQL",
-    desc: "Visual editor platform with real-time style editing, reusable components, project dashboard, and integrated billing system.",
-    year: "2025",
-  },
-  {
-    idx: "02",
-    name: "Flight Booking",
-    url: "flight-booking-x.vercel.app",
-    tech: "Next.js · NestJS · REST API",
-    desc: "Secure airline booking system with role-based access control, CRUD for airlines, airports, planes, and routes.",
-    year: "2024",
-  },
-  {
-    idx: "03",
-    name: "School Management",
-    url: "scl-mgt-sys-client.vercel.app",
-    tech: "React.js · Node.js · MongoDB",
-    desc: "Comprehensive school management: student records, scheduling, teacher dashboards, and grade management.",
-    year: "2024",
-  },
-  {
-    idx: "04",
-    name: "Dashboard UI",
-    url: "dash-b0ard.netlify.app",
-    tech: "React.js · Tailwind CSS",
-    desc: "Modern analytics dashboard with charts, data tables, dark mode support, and fully responsive layout.",
-    year: "2023",
-  },
-];
+type LineMeta =
+  | ExpEntry
+  | ProjectEntry
+  | TagsMeta
+  | NeofetchMeta
+  | ThemeRowMeta
+  | null;
 
-const MARQUEE_ITEMS = [
-  "React.js",
-  "Next.js",
-  "Express.js",
-  "Nest.js",
-  "PostgreSQL",
-  "MongoDB",
-  "GraphQL",
-  "REST API",
-];
+interface Line {
+  id: number;
+  text: string;
+  type: LineType;
+  url: string | null;
+  meta: LineMeta;
+}
 
-function useInView(
-  threshold = 0.1,
-): [RefObject<HTMLDivElement | null>, boolean] {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [inView, setInView] = useState(false);
+interface BootEntry {
+  t: number;
+  text: string;
+  type: string;
+}
+interface SequenceEntry {
+  t: number;
+  text: string;
+  type: string;
+}
+
+function TerminalBackground({ accent, bg }: { accent: string; bg: string }) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const accentRef = useRef(accent);
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) setInView(true);
-      },
-      { threshold },
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
-  return [ref, inView];
-}
-
-type RevealDir = "up" | "left" | "right";
-
-interface RevealProps {
-  children: ReactNode;
-  delay?: number;
-  dir?: RevealDir;
-}
-
-function Reveal({ children, delay = 0, dir = "up" }: RevealProps) {
-  const [ref, inView] = useInView();
-  const transforms: Record<RevealDir, string> = {
-    up: "translateY(40px)",
-    left: "translateX(-30px)",
-    right: "translateX(30px)",
-  };
-  return (
-    <div
-      ref={ref}
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? "none" : transforms[dir],
-        transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
-function Marquee() {
-  return (
-    <div
-      style={{
-        overflow: "hidden",
-        borderTop: "1px solid #e0d9cf",
-        borderBottom: "1px solid #e0d9cf",
-        padding: "14px 0",
-        background: "#f5f0e8",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          animation: "marquee 22s linear infinite",
-          gap: 0,
-          whiteSpace: "nowrap",
-        }}
-      >
-        {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map(
-          (item, i) => (
-            <span
-              key={i}
-              style={{
-                fontSize: 11,
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                color: "#b5a99a",
-                paddingRight: 48,
-                fontFamily: "'Syne', sans-serif",
-              }}
-            >
-              {item}{" "}
-              <span style={{ color: "#d4c9b8", marginRight: 48 }}>·</span>
-            </span>
-          ),
-        )}
-      </div>
-      <style>{`@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-33.33%); } }`}</style>
-    </div>
-  );
-}
-
-interface NumberCounterProps {
-  target: number;
-  label: string;
-}
-
-function NumberCounter({ target, label }: NumberCounterProps) {
-  const [count, setCount] = useState(0);
-  const [ref, inView] = useInView();
-  useEffect(() => {
-    if (!inView) return;
-    let start = 0;
-    const step = Math.ceil(target / 40);
-    const t = setInterval(() => {
-      start += step;
-      if (start >= target) {
-        setCount(target);
-        clearInterval(t);
-      } else setCount(start);
-    }, 30);
-    return () => clearInterval(t);
-  }, [inView, target]);
-  return (
-    <div ref={ref} style={{ textAlign: "center" }}>
-      <p
-        style={{
-          fontFamily: "'Playfair Display', serif",
-          fontSize: "clamp(40px,5vw,64px)",
-          color: "#1a1410",
-          lineHeight: 1,
-          marginBottom: 8,
-        }}
-      >
-        {count}
-        <span style={{ color: "#c17f3a", fontSize: "0.6em" }}>+</span>
-      </p>
-      <p
-        style={{
-          fontSize: 11,
-          letterSpacing: "0.15em",
-          textTransform: "uppercase",
-          color: "#b5a99a",
-          fontFamily: "'Syne', sans-serif",
-        }}
-      >
-        {label}
-      </p>
-    </div>
-  );
-}
-
-export default function Home() {
-  const router = useRouter();
-
-  const [activeExp, setActiveExp] = useState(0);
-  const [navSolid, setNavSolid] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [expAccordionOpen, setExpAccordionOpen] = useState<number | null>(0);
-
-  // Detect if mobile for experience accordion vs tabs
-  const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
+    accentRef.current = accent;
+  }, [accent]);
 
   useEffect(() => {
-    const checkSize = () => {
-      setIsMobile(window.innerWidth < 640);
-      setIsTablet(window.innerWidth >= 640 && window.innerWidth < 1024);
-    };
-    checkSize();
-    window.addEventListener("resize", checkSize);
-    return () => window.removeEventListener("resize", checkSize);
-  }, []);
+    const canvas: any = canvasRef.current;
+    if (!canvas) return;
+    const ctx: any = canvas.getContext("2d");
+    if (!ctx) return;
+    const bgHex = bg;
 
-  useEffect(() => {
-    const onScroll = () => {
-      setNavSolid(window.scrollY > 60);
-      const sections = ["home", "experience", "projects", "skills", "contact"];
-      const found = [...sections].reverse().find((id) => {
-        const el = document.getElementById(id);
-        return el && el.getBoundingClientRect().top <= 100;
-      });
-      if (found) setActiveSection(found);
-    };
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const scrollTo = (id: string) => {
-    setMobileMenuOpen(false);
-    if (id === "v2") {
-      router.push("/v2");
-    } else if (id === "v3") {
-      router.push("/v3");
-    } else if (id === "danger") {
-      router.push("/terminal");
-    } else {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    function hexToRgb(hex: string): [number, number, number] {
+      const h = hex.replace("#", "");
+      const n = parseInt(
+        h.length === 3
+          ? h
+              .split("")
+              .map((c) => c + c)
+              .join("")
+          : h,
+        16,
+      );
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
     }
-  };
 
-  const NAV_ITEMS = ["home", "about", "experience", "projects", "contact"];
+    const CELL = 32;
+    const FONT_SIZE = 11;
+    const BINARY_CHARS: readonly string[] = ["0", "1"];
+
+    type Drop = {
+      x: number;
+      y: number;
+      speed: number;
+      chars: string[];
+      opacity: number;
+      length: number;
+    };
+    let drops: Drop[] = [];
+    let cols = 0;
+    let rows = 0;
+    let animId = 0;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      cols = Math.ceil(canvas.width / CELL);
+      rows = Math.ceil(canvas.height / CELL);
+      drops = [];
+      for (let i = 0; i < cols; i++) {
+        if (Math.random() < 0.35) spawnDrop(i, -Math.random() * rows);
+      }
+    }
+
+    function spawnDrop(col: number, startY?: number) {
+      const length = 4 + Math.floor(Math.random() * 10);
+      drops.push({
+        x: col,
+        y: startY ?? -Math.random() * rows,
+        speed: 0.04 + Math.random() * 0.08,
+        length,
+        opacity: 0.15 + Math.random() * 0.35,
+        chars: Array.from(
+          { length },
+          () => BINARY_CHARS[Math.floor(Math.random() * 2)] ?? "0",
+        ),
+      });
+    }
+
+    function drawGrid(accentHex: string) {
+      const [r, g, b] = hexToRgb(accentHex);
+      ctx.strokeStyle = `rgba(${r},${g},${b},0.055)`;
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      for (let x = 0; x <= canvas.width; x += CELL) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+      }
+      for (let y = 0; y <= canvas.height; y += CELL) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+      }
+      ctx.stroke();
+      ctx.strokeStyle = `rgba(${r},${g},${b},0.11)`;
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      for (let x = 0; x <= canvas.width; x += CELL * 4) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+      }
+      for (let y = 0; y <= canvas.height; y += CELL * 4) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+      }
+      ctx.stroke();
+      ctx.fillStyle = `rgba(${r},${g},${b},0.18)`;
+      for (let x = 0; x <= canvas.width; x += CELL * 4) {
+        for (let y = 0; y <= canvas.height; y += CELL * 4) {
+          ctx.beginPath();
+          ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+
+    function drawBinary(accentHex: string) {
+      const [r, g, b] = hexToRgb(accentHex);
+      ctx.font = `${FONT_SIZE}px 'JetBrains Mono', monospace`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      for (const drop of drops) {
+        for (let i = 0; i < drop.chars.length; i++) {
+          const row = Math.floor(drop.y) - i;
+          if (row < 0 || row > rows) continue;
+          const headAlpha =
+            i === 0 ? drop.opacity : drop.opacity * (1 - i / drop.length);
+          if (headAlpha < 0.01) continue;
+          ctx.fillStyle = `rgba(${r},${g},${b},${headAlpha.toFixed(3)})`;
+          ctx.fillText(
+            drop.chars[i] ?? "0",
+            drop.x * CELL + CELL / 2,
+            row * CELL + CELL / 2,
+          );
+        }
+      }
+    }
+
+    let frame = 0;
+    function animate() {
+      animId = requestAnimationFrame(animate);
+      frame++;
+      const [br, bg2, bb] = hexToRgb(bgHex);
+      ctx.fillStyle = `rgba(${br},${bg2},${bb},1)`;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      drawGrid(accentRef.current);
+      drawBinary(accentRef.current);
+      for (let i = drops.length - 1; i >= 0; i--) {
+        drops[i].y += drops[i].speed;
+        if (frame % 8 === 0 && Math.random() < 0.3) {
+          const ci = Math.floor(Math.random() * drops[i].chars.length);
+          drops[i].chars[ci] =
+            BINARY_CHARS[Math.floor(Math.random() * 2)] ?? "0";
+        }
+        if (drops[i].y - drops[i].length > rows) drops.splice(i, 1);
+      }
+      if (frame % 20 === 0) {
+        const col = Math.floor(Math.random() * cols);
+        const alreadyActive = drops.some(
+          (d) => d.x === col && d.y > 0 && d.y < rows,
+        );
+        if (!alreadyActive) spawnDrop(col, 0);
+      }
+    }
+
+    resize();
+    window.addEventListener("resize", resize);
+    animate();
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", resize);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bg]);
 
   return (
-    <div
+    <canvas
+      ref={canvasRef}
       style={{
-        background: "#faf6ef",
-        color: "#1a1410",
-        fontFamily: "'Syne', sans-serif",
-        overflowX: "hidden",
+        position: "fixed",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+        zIndex: 0,
       }}
-    >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Syne:wght@300;400;500;600&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        ::-webkit-scrollbar { width: 3px; }
-        ::-webkit-scrollbar-track { background: #faf6ef; }
-        ::-webkit-scrollbar-thumb { background: #d4c9b8; }
+    />
+  );
+}
 
-        .nav-item {
-          background: none; border: none;
-          font-family: 'Syne', sans-serif;
-          font-size: 11px; letter-spacing: 0.12em;
-          text-transform: uppercase; color: #b5a99a;
-          transition: color 0.2s; cursor: pointer;
-          padding: 4px 0; position: relative;
-        }
-        .nav-item::after {
-          content: ''; position: absolute; bottom: 0; left: 0;
-          width: 0; height: 1px; background: #c17f3a; transition: width 0.3s;
-        }
-        .nav-item:hover { color: #1a1410; }
-        .nav-item.active { color: #1a1410; }
-        .nav-item:hover::after, .nav-item.active::after { width: 100%; }
+const THEMES: Record<string, Theme> = {
+  ghost: {
+    name: "Ghost",
+    bg: "#0C0C0F",
+    surface: "#111116",
+    surfaceHigh: "#16161C",
+    border: "#1E1E28",
+    text: "#E2E2E8",
+    dim: "#2A2A38",
+    muted: "#5A5A6A",
+    accent: "#7C6AF7",
+    accentSoft: "rgba(124,106,247,0.12)",
+    green: "#4ADE80",
+    red: "#F87171",
+    yellow: "#FCD34D",
+    blue: "#60A5FA",
+    prompt: "#7C6AF7",
+    cursor: "#7C6AF7",
+  },
+  ash: {
+    name: "Ash",
+    bg: "#101012",
+    surface: "#141417",
+    surfaceHigh: "#18181C",
+    border: "#222228",
+    text: "#D4D4DC",
+    dim: "#2A2A32",
+    muted: "#585868",
+    accent: "#38BDF8",
+    accentSoft: "rgba(56,189,248,0.1)",
+    green: "#34D399",
+    red: "#FB7185",
+    yellow: "#FDE68A",
+    blue: "#818CF8",
+    prompt: "#38BDF8",
+    cursor: "#38BDF8",
+  },
+  ember: {
+    name: "Ember",
+    bg: "#0E0A08",
+    surface: "#130F0C",
+    surfaceHigh: "#181310",
+    border: "#241E18",
+    text: "#E8DDD5",
+    dim: "#2A2018",
+    muted: "#6A5A50",
+    accent: "#F97316",
+    accentSoft: "rgba(249,115,22,0.1)",
+    green: "#86EFAC",
+    red: "#FCA5A5",
+    yellow: "#FDE68A",
+    blue: "#93C5FD",
+    prompt: "#F97316",
+    cursor: "#F97316",
+  },
+  mint: {
+    name: "Mint",
+    bg: "#080E0C",
+    surface: "#0C1210",
+    surfaceHigh: "#101614",
+    border: "#162018",
+    text: "#D8EDE5",
+    dim: "#162018",
+    muted: "#4A7060",
+    accent: "#34D399",
+    accentSoft: "rgba(52,211,153,0.1)",
+    green: "#34D399",
+    red: "#F87171",
+    yellow: "#FCD34D",
+    blue: "#67E8F9",
+    prompt: "#34D399",
+    cursor: "#34D399",
+  },
+  rose: {
+    name: "Rose",
+    bg: "#0F0A0C",
+    surface: "#150E10",
+    surfaceHigh: "#1A1215",
+    border: "#281820",
+    text: "#EDD8E0",
+    dim: "#281820",
+    muted: "#7A4A58",
+    accent: "#F472B6",
+    accentSoft: "rgba(244,114,182,0.1)",
+    green: "#86EFAC",
+    red: "#FCA5A5",
+    yellow: "#FDE68A",
+    blue: "#93C5FD",
+    prompt: "#F472B6",
+    cursor: "#F472B6",
+  },
+};
 
-        /* Experience tabs (desktop) */
-        .exp-tab {
-          background: none; border: none; text-align: left;
-          font-family: 'Syne', sans-serif; cursor: pointer;
-          padding: 18px 24px; border-left: 2px solid transparent;
-          transition: all 0.3s; width: 100%;
-        }
-        .exp-tab:hover { background: rgba(193,127,58,0.04); }
-        .exp-tab.active-tab { border-left-color: #c17f3a; background: rgba(193,127,58,0.06); }
-
-        /* Experience accordion (mobile) */
-        .exp-accordion-btn {
-          background: none; border: none; text-align: left;
-          font-family: 'Syne', sans-serif; cursor: pointer;
-          padding: 18px 20px;
-          border-bottom: 1px solid #e0d9cf;
-          transition: all 0.3s; width: 100%;
-          display: flex; align-items: center; justify-content: space-between;
-        }
-        .exp-accordion-btn.open { background: rgba(193,127,58,0.06); border-left: 3px solid #c17f3a; }
-
-        /* Project rows */
-        .proj-row {
-          display: grid;
-          grid-template-columns: 48px 1fr 48px;
-          align-items: center; padding: 20px 0;
-          border-bottom: 1px solid #e8e1d4;
-          cursor: pointer; transition: all 0.3s; gap: 16px;
-          text-decoration: none; color: inherit;
-        }
-        .proj-row:hover { padding-left: 10px; }
-        .proj-row:hover .proj-name { color: #c17f3a; }
-        .proj-row:hover .proj-arrow { opacity: 1; transform: translate(0,0); }
-        .proj-arrow { opacity: 0; transform: translate(-6px,0); transition: all 0.3s; color: #c17f3a; }
-
-        /* Contact links */
-        .contact-link {
-          display: flex; align-items: center; justify-content: space-between;
-          padding: 20px 0; border-bottom: 1px solid #e8e1d4;
-          text-decoration: none; color: inherit; transition: all 0.2s;
-        }
-        .contact-link:hover { padding-left: 12px; }
-        .contact-link:hover .cl-label { color: #c17f3a; }
-
-        /* Mobile menu overlay */
-        .mobile-menu {
-          position: fixed; inset: 0; z-index: 200;
-          background: rgba(250,246,239,0.98);
-          backdrop-filter: blur(20px);
-          display: flex; flex-direction: column;
-          align-items: center; justify-content: center;
-          gap: 32px;
-          transform: translateX(100%);
-          transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
-        }
-        .mobile-menu.open { transform: translateX(0); }
-        .mobile-nav-item {
-          background: none; border: none;
-          font-family: 'Playfair Display', serif;
-          font-size: clamp(28px, 6vw, 42px);
-          color: #1a1410; cursor: pointer;
-          letter-spacing: -0.02em;
-          transition: color 0.2s;
-        }
-        .mobile-nav-item:hover { color: #c17f3a; }
-
-        /* Hamburger */
-        .hamburger {
-          display: none; background: none; border: none;
-          cursor: pointer; padding: 4px; flex-direction: column;
-          gap: 5px; align-items: flex-end;
-        }
-        .hamburger span {
-          display: block; height: 1.5px; background: #1a1410;
-          transition: all 0.3s;
-        }
-        .hamburger span:nth-child(1) { width: 24px; }
-        .hamburger span:nth-child(2) { width: 18px; }
-        .hamburger span:nth-child(3) { width: 24px; }
-        .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); width: 24px; }
-        .hamburger.open span:nth-child(2) { opacity: 0; }
-        .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); width: 24px; }
-
-        /* Animations */
-        @keyframes slideIn {
-          from { opacity:0; transform:translateY(32px); }
-          to { opacity:1; transform:translateY(0); }
-        }
-        @keyframes fadeIn {
-          from { opacity:0; transform:translateX(16px); }
-          to { opacity:1; transform:translateX(0); }
-        }
-        @keyframes pulse {
-          0%,100% { opacity:1; }
-          50% { opacity:0.4; }
-        }
-        @keyframes marquee {
-          from { transform: translateX(0); }
-          to { transform: translateX(-33.33%); }
-        }
-        @keyframes accordionOpen {
-          from { opacity:0; transform:translateY(-8px); }
-          to { opacity:1; transform:translateY(0); }
-        }
-
-        /* ─── TABLET (640–1023px) ─── */
-        @media (min-width: 640px) and (max-width: 1023px) {
-          .hamburger { display: flex !important; }
-          .desktop-nav-links { display: none !important; }
-          .desktop-github-btn { display: none !important; }
-
-          .hero-section { padding: 0 32px !important; }
-          .hero-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
-          .hero-code-block { display: none !important; }
-          .hero-text { max-width: 100% !important; }
-
-          .about-section { padding: 80px 32px !important; }
-          .about-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
-          .stats-grid { grid-template-columns: repeat(4, 1fr) !important; }
-
-          .exp-section { padding: 80px 32px !important; }
-          .exp-layout { grid-template-columns: 220px 1fr !important; }
-
-          .projects-section { padding: 80px 32px !important; }
-          .proj-row { grid-template-columns: 48px 1fr 140px 80px 48px !important; gap: 16px !important; }
-
-          .skills-section { padding: 60px 32px !important; }
-
-          .contact-section { padding: 80px 32px !important; }
-          .contact-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
-
-          nav { padding: 0 32px !important; }
-          footer { padding: 20px 32px !important; }
-        }
-
-        /* ─── MOBILE (< 640px) ─── */
-        @media (max-width: 639px) {
-          .hamburger { display: flex !important; }
-          .desktop-nav-links { display: none !important; }
-          .desktop-github-btn { display: none !important; }
-
-          nav { padding: 0 20px !important; height: 56px !important; }
-          .nav-logo { font-size: 24px !important; }
-
-          .hero-section { padding: 0 20px !important; min-height: 100svh !important; }
-          .hero-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
-          .hero-code-block { display: none !important; }
-          .hero-cta-row { flex-direction: column !important; align-items: flex-start !important; gap: 20px !important; }
-
-          .about-section { padding: 64px 20px !important; }
-          .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
-          .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
-
-          .exp-section { padding: 64px 20px !important; }
-          /* On mobile, experience uses accordion — hide tab layout */
-          .exp-tab-layout { display: none !important; }
-          .exp-accordion-layout { display: block !important; }
-
-          .projects-section { padding: 64px 20px !important; }
-          .proj-header-row { display: none !important; }
-          .proj-row {
-            grid-template-columns: 40px 1fr 40px !important;
-            gap: 12px !important; padding: 18px 0 !important;
-          }
-          .proj-tech-col, .proj-year-col { display: none !important; }
-
-          .skills-section { padding: 48px 20px !important; }
-
-          .contact-section { padding: 64px 20px !important; }
-          .contact-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
-
-          footer { padding: 20px 20px !important; flex-direction: column !important; align-items: flex-start !important; gap: 16px !important; }
-          .footer-links { width: 100%; justify-content: flex-start !important; }
-
-          .section-number { display: none !important; }
-        }
-      `}</style>
-
-      {/* MOBILE MENU */}
-      <div className={`mobile-menu ${mobileMenuOpen ? "open" : ""}`}>
-        <button
-          onClick={() => setMobileMenuOpen(false)}
-          style={{
-            position: "absolute",
-            top: 16,
-            right: 20,
-            background: "none",
-            border: "none",
-            fontSize: 32,
-            cursor: "pointer",
-            color: "#1a1410",
-            lineHeight: 1,
-          }}
-        >
-          ×
-        </button>
-        {NAV_ITEMS.map((s) => (
-          <button
-            key={s}
-            className="mobile-nav-item"
-            onClick={() => scrollTo(s)}
-          >
-            {s}
-          </button>
-        ))}
-        <a
-          href="https://github.com/nadim-chowdhury"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            fontSize: 11,
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            color: "#c17f3a",
-            textDecoration: "none",
-            marginTop: 8,
-          }}
-        >
-          GitHub ↗
-        </a>
-      </div>
-
-      {/* NAV */}
-      <nav
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 100,
-          padding: "0 48px",
-          height: 64,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          background: navSolid ? "rgba(250,246,239,0.95)" : "transparent",
-          backdropFilter: navSolid ? "blur(16px)" : "none",
-          borderBottom: navSolid
-            ? "1px solid #e8e1d4"
-            : "1px solid transparent",
-          transition: "all 0.5s",
-        }}
-      >
-        <div
-          className="nav-logo"
-          style={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: 32,
-            fontWeight: 500,
-            color: "#1a1410",
-            fontStyle: "italic",
-          }}
-        >
-          Nadim<span style={{ color: "#c17f3a", fontStyle: "normal" }}>.</span>
-        </div>
-
-        {/* Desktop nav links */}
-        <div className="desktop-nav-links" style={{ display: "flex", gap: 40 }}>
-          {NAV_ITEMS.map((s) => (
-            <button
-              key={s}
-              className={`nav-item ${activeSection === s ? "active" : ""}`}
-              onClick={() => scrollTo(s)}
-            >
-              {s}
-            </button>
-          ))}
-        </div>
-
-        {/* Desktop GitHub button */}
-        <a
-          href="https://github.com/nadim-chowdhury"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="desktop-github-btn"
-          style={{
-            fontSize: 11,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            color: "#1a1410",
-            textDecoration: "none",
-            border: "1px solid #d4c9b8",
-            padding: "8px 20px",
-            transition: "all 0.2s",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.background = "#1a1410";
-            (e.currentTarget as HTMLAnchorElement).style.color = "#faf6ef";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.background =
-              "transparent";
-            (e.currentTarget as HTMLAnchorElement).style.color = "#1a1410";
-          }}
-        >
-          GitHub ↗
-        </a>
-
-        {/* Hamburger (mobile/tablet) */}
-        <button
-          className={`hamburger ${mobileMenuOpen ? "open" : ""}`}
-          onClick={() => setMobileMenuOpen((v) => !v)}
-          aria-label="Toggle menu"
-        >
-          <span />
-          <span />
-          <span />
-        </button>
-      </nav>
-
-      {/* HERO */}
-      <section
-        id="home"
-        className="hero-section"
-        style={{
-          minHeight: "100vh",
-          padding: "0 48px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            right: -20,
-            top: "50%",
-            transform: "translateY(-50%) rotate(90deg)",
-            fontFamily: "'Playfair Display', serif",
-            fontSize: "clamp(80px,14vw,200px)",
-            color: "rgba(193,127,58,0.04)",
-            letterSpacing: "-0.05em",
-            whiteSpace: "nowrap",
-            pointerEvents: "none",
-            userSelect: "none",
-          }}
-        >
-          Developer
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "radial-gradient(circle, #d4c9b8 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-            opacity: 0.35,
-            pointerEvents: "none",
-          }}
-        />
-
-        <div
-          className="hero-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 80,
-            alignItems: "center",
-            maxWidth: 1100,
-            width: "100%",
-            margin: "0 auto",
-            position: "relative",
-            paddingTop: 80, // offset for fixed nav
-          }}
-        >
-          {/* Left: Text */}
-          <div
-            className="hero-text"
-            style={{
-              opacity: 0,
-              animation: "slideIn 1s cubic-bezier(0.16,1,0.3,1) 0.1s forwards",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                marginBottom: 32,
-              }}
-            >
-              <div style={{ width: 32, height: 1, background: "#c17f3a" }} />
-              <span
-                style={{
-                  fontSize: 11,
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  color: "#c17f3a",
-                }}
-              >
-                Full Stack Developer
-              </span>
-            </div>
-            <h1
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "clamp(48px,6.5vw,96px)",
-                lineHeight: 0.95,
-                letterSpacing: "-0.03em",
-                color: "#1a1410",
-                marginBottom: 32,
-              }}
-            >
-              Nadim
-              <br />
-              <em style={{ color: "#c17f3a" }}>Chowdhury</em>
-            </h1>
-            <p
-              style={{
-                fontSize: "clamp(13px,1.5vw,15px)",
-                lineHeight: 1.85,
-                color: "#8a7f72",
-                maxWidth: 420,
-                marginBottom: 48,
-                fontWeight: 300,
-              }}
-            >
-              Self-taught full stack developer from Dhaka, Bangladesh. Building
-              scalable SaaS platforms, ERP systems, and interactive business
-              apps since 2022.
-            </p>
-            <div
-              className="hero-cta-row"
-              style={{
-                display: "flex",
-                gap: 16,
-                flexWrap: "wrap",
-                alignItems: "center",
-              }}
-            >
-              <button
-                onClick={() => scrollTo("projects")}
-                style={{
-                  background: "#1a1410",
-                  color: "#faf6ef",
-                  border: "none",
-                  padding: "14px 32px",
-                  fontSize: 11,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  cursor: "pointer",
-                  transition: "background 0.2s",
-                  whiteSpace: "nowrap",
-                }}
-                onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLButtonElement).style.background =
-                    "#c17f3a")
-                }
-                onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLButtonElement).style.background =
-                    "#1a1410")
-                }
-              >
-                View Projects
-              </button>
-              <a
-                href="mailto:nadim-chowdhury@outlook.com"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  color: "#8a7f72",
-                  fontSize: 11,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  textDecoration: "none",
-                  borderBottom: "1px solid #d4c9b8",
-                  paddingBottom: 2,
-                  transition: "color 0.2s, border-color 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.color =
-                    "#c17f3a";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                    "#c17f3a";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.color =
-                    "#8a7f72";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                    "#d4c9b8";
-                }}
-              >
-                Send Email ↗
-              </a>
-            </div>
-          </div>
-
-          {/* Right: Code block */}
-          <div
-            className="hero-code-block"
-            style={{
-              opacity: 0,
-              animation: "slideIn 1s cubic-bezier(0.16,1,0.3,1) 0.35s forwards",
-            }}
-          >
-            <div
-              style={{
-                background: "#f0ebe0",
-                border: "1px solid #e0d9cf",
-                padding: "40px",
-                position: "relative",
-              }}
-            >
-              <div style={{ display: "flex", gap: 6, marginBottom: 24 }}>
-                {(["#e8a0a0", "#e8d4a0", "#a0d4a0"] as string[]).map((c, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: "50%",
-                      background: c,
-                    }}
-                  />
-                ))}
-                <span
-                  style={{
-                    fontSize: 10,
-                    color: "#b5a99a",
-                    letterSpacing: "0.1em",
-                    marginLeft: 8,
-                    fontFamily: "monospace",
-                  }}
-                >
-                  nadim.config.ts
-                </span>
-              </div>
-              <pre
-                style={{
-                  fontFamily: "'Fira Code', 'Courier New', monospace",
-                  fontSize: 12,
-                  lineHeight: 1.8,
-                  color: "#6b6058",
-                  overflowX: "auto",
-                }}
-              >
-                {`const developer = {
+const ME = {
   name: "Nadim Chowdhury",
   role: "Full Stack Developer",
   location: "Dhaka, Bangladesh",
-  experience: "3+ years",
-  
-  stack: {
-    frontend: ["React", "Next.js"],
-    backend: ["NestJS", "Express"],
-    db: ["PostgreSQL", "MongoDB"],
+  email: "nadim-chowdhury@outlook.com",
+  phone: "+880 1971 258803",
+  github: "github.com/nadim-chowdhury",
+  linkedin: "linkedin.com/in/nadim-chowdhury",
+  web: "nadim.vercel.app",
+} as const;
+
+const SKILLS: Record<string, string[]> = {
+  frontend: [
+    "React.js",
+    "Next.js",
+    "Angular",
+    "TypeScript",
+    "JavaScript",
+    "Tailwind CSS",
+    "Bootstrap",
+    "Sass",
+    "Ant Design",
+    "Framer Motion",
+  ],
+  backend: [
+    "Node.js",
+    "NestJS",
+    "Express.js",
+    "GraphQL",
+    "REST API",
+    "WebSockets",
+    "tRPC",
+  ],
+  database: ["PostgreSQL", "MongoDB", "Prisma", "TypeORM", "Redis", "Supabase"],
+  mobile: ["React Native", "Flutter", "Expo"],
+  devops: [
+    "Docker",
+    "Git",
+    "GitHub Actions",
+    "Vercel",
+    "Netlify",
+    "CI/CD",
+    "Linux",
+  ],
+  tools: ["Postman", "Swagger", "Figma", "VS Code", "Jira", "Notion"],
+};
+
+const EXP: ExpEntry[] = [
+  {
+    n: "01",
+    role: "Full Stack Software Developer",
+    co: "Easy Fashion Ltd",
+    period: "Jul 2025 – Nov 2025",
+    type: "Full-time",
+    stack: ["React", "NestJS", "PostgreSQL", "Docker"],
+    desc: "End-to-end feature development, modular scalable codebases, agile cross-functional collaboration.",
   },
-  
-  status: `}
-                <span style={{ color: "#c17f3a" }}>"Open to work 🟢"</span>
-                {`,
-  email: "nadim@outlook.com"
-}`}
-              </pre>
-            </div>
-          </div>
-        </div>
-      </section>
+  {
+    n: "02",
+    role: "Full Stack Web Developer",
+    co: "Freelance",
+    period: "Aug 2024 – Jun 2025",
+    type: "Contract",
+    stack: ["Next.js", "NestJS", "PostgreSQL", "Stripe"],
+    desc: "Airline booking platform + visual editor with real-time editing, RBAC, billing & subscription.",
+  },
+  {
+    n: "03",
+    role: "Junior Frontend Developer",
+    co: "Mediusware Ltd",
+    period: "Mar 2024 – Jul 2024",
+    type: "Full-time",
+    stack: ["React", "GraphQL", "TypeScript", "Tailwind"],
+    desc: "Drag-and-drop website builder with multi-tenancy, subdomain publishing, GraphQL APIs.",
+  },
+  {
+    n: "04",
+    role: "Frontend Trainee",
+    co: "Mediusware Ltd",
+    period: "Dec 2023 – Feb 2024",
+    type: "Internship",
+    stack: ["React", "REST API", "Ant Design"],
+    desc: "Profile CRUD with RBAC, task management and customer order modules.",
+  },
+  {
+    n: "05",
+    role: "Frontend Developer",
+    co: "Freelance",
+    period: "Sep 2022 – Nov 2023",
+    type: "Freelance",
+    stack: ["React", "Node.js", "MongoDB", "Express"],
+    desc: "Full-stack apps, REST API design, DB modeling, deployment, version control.",
+  },
+];
 
-      <Marquee />
+const PROJECTS: ProjectEntry[] = [
+  {
+    id: "collabier",
+    name: "Collabier SaaS",
+    cat: "SaaS Platform",
+    url: "collabier-sass-x.vercel.app",
+    year: "2025",
+    stack: ["Next.js", "NestJS", "PostgreSQL", "Stripe"],
+    desc: "Visual editor platform with real-time style editing, reusable components, project dashboard, and integrated billing.",
+  },
+  {
+    id: "flightbook",
+    name: "Flight Booking",
+    cat: "Booking System",
+    url: "flight-booking-x.vercel.app",
+    year: "2024",
+    stack: ["Next.js", "NestJS", "JWT", "REST API"],
+    desc: "Secure airline booking with RBAC, CRUD for airlines/airports/planes/routes, smooth auth.",
+  },
+  {
+    id: "schoolsys",
+    name: "School Mgmt Sys",
+    cat: "ERP Platform",
+    url: "scl-mgt-sys-client.vercel.app",
+    year: "2024",
+    stack: ["React.js", "Node.js", "MongoDB"],
+    desc: "School ERP with student records, scheduling, teacher dashboards, grade management.",
+  },
+  {
+    id: "dashboard",
+    name: "Dashboard UI",
+    cat: "Analytics",
+    url: "dash-b0ard.netlify.app",
+    year: "2023",
+    stack: ["React.js", "Tailwind CSS", "Recharts"],
+    desc: "Modern analytics dashboard with charts, dark mode, responsive layout.",
+  },
+];
 
-      {/* ABOUT / STATS */}
-      <section
-        id="about"
-        className="about-section"
-        style={{ padding: "120px 48px" }}
-      >
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div
-            className="about-grid"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 80,
-              alignItems: "start",
-            }}
-          >
-            <Reveal>
-              <p
-                style={{
-                  fontSize: 11,
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  color: "#c17f3a",
-                  marginBottom: 24,
-                }}
-              >
-                About Me
-              </p>
-              <h2
-                style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: "clamp(26px,3.5vw,48px)",
-                  lineHeight: 1.2,
-                  letterSpacing: "-0.02em",
-                  marginBottom: 32,
-                  color: "#1a1410",
-                }}
-              >
-                Crafting digital
-                <br />
-                <em>experiences</em> that
-                <br />
-                actually work.
-              </h2>
-              <p
-                style={{
-                  fontSize: "clamp(13px,1.4vw,14px)",
-                  lineHeight: 1.9,
-                  color: "#8a7f72",
-                  marginBottom: 20,
-                  fontWeight: 300,
-                }}
-              >
-                I'm a self-taught developer with a passion for clean
-                architecture and scalable design. My journey started in 2022
-                with freelance projects, and I've since worked at product
-                companies building everything from drag-and-drop builders to
-                full ERP systems.
-              </p>
-              <p
-                style={{
-                  fontSize: "clamp(13px,1.4vw,14px)",
-                  lineHeight: 1.9,
-                  color: "#8a7f72",
-                  fontWeight: 300,
-                }}
-              >
-                I dropped out of my Mathematics degree to pursue software
-                development full-time — a decision I've never regretted. I
-                thrive in agile environments and love the intersection of
-                elegant UI and robust backend logic.
-              </p>
-            </Reveal>
-            <div>
-              <div
-                className="stats-grid"
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2,1fr)",
-                  gap: 1,
-                  marginBottom: 40,
-                }}
-              >
-                {(
-                  [
-                    { n: 3, l: "Years Exp." },
-                    { n: 20, l: "Projects" },
-                    { n: 15, l: "Technologies" },
-                    { n: 5, l: "Roles Held" },
-                  ] as { n: number; l: string }[]
-                ).map(({ n, l }) => (
-                  <div
-                    key={l}
-                    style={{
-                      background: "#f0ebe0",
-                      padding: "32px 24px",
-                      textAlign: "center",
-                    }}
-                  >
-                    <NumberCounter target={n} label={l} />
-                  </div>
-                ))}
-              </div>
-              <Reveal delay={0.2}>
-                <div
-                  style={{
-                    background: "#f0ebe0",
-                    padding: "24px",
-                    borderLeft: "3px solid #c17f3a",
-                  }}
-                >
-                  <p
-                    style={{
-                      fontSize: 13,
-                      lineHeight: 1.8,
-                      color: "#8a7f72",
-                      fontStyle: "italic",
-                      fontFamily: "'Playfair Display', serif",
-                    }}
-                  >
-                    "I believe great software is 20% code and 80% understanding
-                    the problem. I spend as much time thinking as I do typing."
-                  </p>
-                </div>
-              </Reveal>
-            </div>
-          </div>
-        </div>
-      </section>
+const CMDS = [
+  "help",
+  "about",
+  "whoami",
+  "skills",
+  "exp",
+  "experience",
+  "projects",
+  "project",
+  "contact",
+  "links",
+  "open",
+  "email",
+  "theme",
+  "themes",
+  "clear",
+  "cls",
+  "date",
+  "ls",
+  "pwd",
+  "cat",
+  "echo",
+  "history",
+  "neofetch",
+  "banner",
+  "matrix",
+  "hack",
+  "joke",
+  "quote",
+  "weather",
+  "calc",
+  "ping",
+  "curl",
+  "sudo",
+  "vim",
+  "nano",
+  "git",
+  "npm",
+  "node",
+  "python",
+  "exit",
+  "rm",
+  "fortune",
+  "cowsay",
+  "yes",
+  "sl",
+];
 
-      {/* EXPERIENCE */}
-      <section
-        id="experience"
-        className="exp-section"
+const JOKES = [
+  "Why do programmers prefer dark mode? Because light attracts bugs. 🐛",
+  "A SQL query walks into a bar, walks up to two tables and asks... 'Can I join you?' 🍺",
+  "Why do Java developers wear glasses? Because they can't C#. 👓",
+  "There are 10 types of people: those who understand binary, and those who don't. 💻",
+  "Why did the developer go broke? Because he used up all his cache. 💸",
+  "How many programmers does it take to change a light bulb? None — it's a hardware problem.",
+  "Programming is 10% writing code and 90% figuring out why it doesn't work. 🤔",
+  "The best thing about a Boolean is even if you're wrong, you're only off by a bit.",
+];
+
+const QUOTES: { q: string; a: string }[] = [
+  {
+    q: "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
+    a: "Martin Fowler",
+  },
+  { q: "First, solve the problem. Then, write the code.", a: "John Johnson" },
+  {
+    q: "Code is like humor. When you have to explain it, it's bad.",
+    a: "Cory House",
+  },
+  { q: "Make it work, make it right, make it fast.", a: "Kent Beck" },
+  {
+    q: "Debugging is twice as hard as writing the code in the first place.",
+    a: "Brian Kernighan",
+  },
+];
+
+const RM_RF_SEQUENCE: SequenceEntry[] = [
+  {
+    t: 0,
+    text: "💀 rm: cannot remove './': Permission denied (you wish)",
+    type: "err",
+  },
+  {
+    t: 400,
+    text: "🚨 WARNING: Initiating self-destruct sequence...",
+    type: "warn",
+  },
+  {
+    t: 900,
+    text: "💣 Deleting node_modules... (1,247,893 files)",
+    type: "err",
+  },
+  { t: 1400, text: "🔥 Burning your career choices...", type: "err" },
+  {
+    t: 1900,
+    text: "😱 Erasing 3 years of Stack Overflow bookmarks...",
+    type: "err",
+  },
+  {
+    t: 2400,
+    text: "🗑️  Removing all semicolons from JavaScript files...",
+    type: "warn",
+  },
+  {
+    t: 2900,
+    text: "💔 Deleting git history... (goodbye, 847 commits)",
+    type: "err",
+  },
+  {
+    t: 3400,
+    text: "🤡 Removing all TODO comments... (found 2,341)",
+    type: "warn",
+  },
+  { t: 3900, text: "☠️  Killing all localhost:3000 processes...", type: "err" },
+  { t: 4400, text: "🌚 Summoning the void...", type: "dim" },
+  { t: 4900, text: "", type: "br" },
+  { t: 5000, text: "😂 Just kidding. I'm using --dry-run mode.", type: "ok" },
+  {
+    t: 5400,
+    text: "✅ Your portfolio is safe. Your career too. Probably.",
+    type: "ok",
+  },
+  { t: 5800, text: "🍵 Go touch some grass, friend.", type: "acc" },
+  { t: 6200, text: "", type: "br" },
+];
+
+const HACK_SEQUENCE: SequenceEntry[] = [
+  {
+    t: 0,
+    text: "[>] Initializing Nadim's elite hacking suite...",
+    type: "acc",
+  },
+  {
+    t: 300,
+    text: "[>] Bypassing firewall........................ DONE ✓",
+    type: "ok",
+  },
+  {
+    t: 700,
+    text: "[>] Injecting SQL into coffee machine......... DONE ✓",
+    type: "ok",
+  },
+  {
+    t: 1100,
+    text: "[>] Mining crypto on your GPU................. DONE ✓",
+    type: "warn",
+  },
+  {
+    t: 1500,
+    text: "[>] Downloading entire internet............... 2% ▓░░░░░░░░░",
+    type: "acc",
+  },
+  {
+    t: 1900,
+    text: "[>] Stealing your WiFi password............... ********* ✓",
+    type: "err",
+  },
+  {
+    t: 2300,
+    text: "[>] Installing npm packages................... [████████░░] 82%",
+    type: "acc",
+  },
+  {
+    t: 2700,
+    text: "[>] Reticulating splines...................... DONE ✓",
+    type: "ok",
+  },
+  {
+    t: 3100,
+    text: "[>] Reversing polarity........................ DONE ✓",
+    type: "ok",
+  },
+  {
+    t: 3500,
+    text: "[>] Overclocking the mainframe................ nice try",
+    type: "warn",
+  },
+  { t: 3900, text: "", type: "br" },
+  {
+    t: 4000,
+    text: "ACCESS GRANTED 🎉 — Welcome, fellow developer.",
+    type: "ok",
+  },
+  {
+    t: 4400,
+    text: "Hack complete. You've successfully deployed a landing page.",
+    type: "dim",
+  },
+  { t: 4800, text: "", type: "br" },
+];
+
+let _id = 0;
+function mkLine(
+  text: string,
+  type: LineType = "out",
+  url: string | null = null,
+  meta: LineMeta = null,
+): Line {
+  return { text, type, url, meta, id: ++_id };
+}
+const BR = (): Line => mkLine("", "br");
+const DIM = (t: string): Line => mkLine(t, "dim");
+const ACC = (t: string): Line => mkLine(t, "acc");
+const OK = (t: string): Line => mkLine(t, "ok");
+const ERR = (t: string): Line => mkLine(t, "err");
+const WARN = (t: string): Line => mkLine(t, "warn");
+const LNK = (t: string, u: string): Line => mkLine(t, "link", u);
+const OUT = (t: string): Line => mkLine(t, "out");
+const TAGS = (items: string[]): Line =>
+  mkLine("", "tags", null, { items } as TagsMeta);
+const DIV = (label = ""): Line => mkLine(label, "divider");
+const CODE = (t: string): Line => mkLine(t, "code");
+
+function safeCalc(expr: string): number | null {
+  try {
+    const cleaned = expr.replace(/[^0-9+\-*/().,% ]/g, "").trim();
+    if (!cleaned) return null;
+    // eslint-disable-next-line no-new-func
+    const result = new Function(`"use strict"; return (${cleaned})`)();
+    return typeof result === "number" && isFinite(result) ? result : null;
+  } catch {
+    return null;
+  }
+}
+
+function run(
+  raw: string,
+  theme: Theme,
+  setTheme: (t: Theme) => void,
+  hist: string[],
+  addLines: (lines: Line[]) => void,
+): Line[] {
+  const parts = raw.trim().split(/\s+/);
+  const cmd = parts[0].toLowerCase();
+  const args = parts.slice(1);
+  if (!cmd) return [];
+
+  if (cmd === "rm") {
+    setTimeout(() => {
+      RM_RF_SEQUENCE.forEach(({ t, text, type }) => {
+        setTimeout(
+          () =>
+            addLines([type === "br" ? BR() : mkLine(text, type as LineType)]),
+          t,
+        );
+      });
+    }, 0);
+    return [
+      BR(),
+      WARN("  ⚠️  Dangerous command detected. Engaging safety protocol..."),
+      BR(),
+    ];
+  }
+
+  switch (cmd) {
+    case "help":
+      return [
+        BR(),
+        DIV("COMMANDS"),
+        BR(),
+        ACC("  PORTFOLIO"),
+        OUT("  about · whoami           Developer profile & bio"),
+        OUT(
+          `  skills [category]        Tech stack  ·  ${Object.keys(SKILLS).join(" | ")}`,
+        ),
+        OUT("  exp · experience         Full work history"),
+        OUT("  projects                 All projects overview"),
+        OUT(
+          `  project <id>             Project deep-dive  ·  ${PROJECTS.map((p) => p.id).join(" | ")}`,
+        ),
+        OUT("  contact                  Contact information"),
+        OUT("  links                    Social & portfolio links"),
+        OUT("  neofetch                 System info card"),
+        BR(),
+        ACC("  TERMINAL"),
+        OUT(
+          `  theme [name]             Show or switch theme  ·  ${Object.keys(THEMES).join(" | ")}`,
+        ),
+        OUT("  themes                   List all themes with preview"),
+        OUT("  clear · cls              Clear terminal"),
+        OUT("  history                  Command history"),
+        OUT("  date                     Current datetime"),
+        OUT("  echo <text>              Print text"),
+        OUT("  calc <expr>              Calculator  ·  e.g. calc 2+2*10"),
+        OUT("  ping <host>              Ping simulation"),
+        OUT("  curl <url>               Curl simulation"),
+        OUT(
+          "  cat <file>               Read file  ·  README.md | package.json",
+        ),
+        OUT("  ls · pwd                 Filesystem navigation"),
+        OUT("  open <url>               Open URL in browser"),
+        OUT("  email                    Copy email to clipboard"),
+        BR(),
+        ACC("  FUN"),
+        OUT("  joke · quote · fortune   Random content 😄"),
+        OUT("  cowsay <text>            ASCII cow 🐄"),
+        OUT("  banner                   Show ASCII banner"),
+        OUT("  matrix                   🐇 Follow the white rabbit"),
+        OUT("  hack                     Initiate hacking sequence 💻"),
+        OUT("  sl                       🚂 Something special..."),
+        OUT("  sudo · vim · rm -rf ./   Easter eggs"),
+        BR(),
+        DIM(
+          "  Shortcuts: ↑↓ history · Tab autocomplete · Ctrl+L clear · Ctrl+C cancel",
+        ),
+        BR(),
+      ];
+
+    case "about":
+    case "whoami":
+      return [
+        BR(),
+        DIV("PROFILE"),
+        BR(),
+        mkLine(`  ${ME.name}`, "hdr"),
+        DIM(`  ${ME.role}  ·  ${ME.location}`),
+        BR(),
+        OUT("  Experience   3+ years  ·  2022 to present"),
+        OUT("  Projects     20+ deployed across web & mobile"),
+        OUT("  Focus        SaaS · ERP · Interactive Business Apps"),
+        OUT("  Stack        React · Next.js · NestJS · Node.js · PostgreSQL"),
+        BR(),
+        OUT("  Dropped out of Mathematics to pursue software full-time."),
+        BR(),
+        OK("  ● OPEN TO WORK  ·  Full-time · Freelance · Contract"),
+        BR(),
+      ];
+
+    case "skills": {
+      const cat = args[0]?.toLowerCase();
+      if (cat) {
+        if (!SKILLS[cat])
+          return [
+            BR(),
+            ERR(`  Unknown category '${cat}'`),
+            DIM(`  Available: ${Object.keys(SKILLS).join("  ·  ")}`),
+            BR(),
+          ];
+        return [BR(), DIV(cat.toUpperCase()), BR(), TAGS(SKILLS[cat]), BR()];
+      }
+      const rows: Line[] = [BR(), DIV("TECH STACK"), BR()];
+      Object.entries(SKILLS).forEach(([k, v]) => {
+        rows.push(ACC(`  ${k.toUpperCase().padEnd(12)}`));
+        rows.push(TAGS(v));
+        rows.push(BR());
+      });
+      return rows;
+    }
+
+    case "exp":
+    case "experience": {
+      const rows: Line[] = [BR(), DIV("EXPERIENCE"), BR()];
+      EXP.forEach((e) => {
+        rows.push(mkLine("", "expcard", null, e));
+        rows.push(BR());
+      });
+      return rows;
+    }
+
+    case "projects": {
+      const rows: Line[] = [BR(), DIV("PROJECTS"), BR()];
+      PROJECTS.forEach((p) => {
+        rows.push(mkLine("", "projrow", `https://${p.url}`, p));
+        rows.push(BR());
+      });
+      rows.push(
+        DIM(
+          `  Run  project <id>  for details  ·  ${PROJECTS.map((p) => p.id).join(" · ")}`,
+        ),
+        BR(),
+      );
+      return rows;
+    }
+
+    case "project": {
+      const id = args[0]?.toLowerCase();
+      const p = PROJECTS.find((x) => x.id === id);
+      if (!p)
+        return [
+          BR(),
+          ERR(`  project '${id ?? ""}' not found`),
+          DIM(`  IDs: ${PROJECTS.map((p) => p.id).join("  ·  ")}`),
+          BR(),
+        ];
+      return [
+        BR(),
+        DIV(p.name.toUpperCase()),
+        BR(),
+        OUT(`  ${p.cat}  ·  ${p.year}`),
+        BR(),
+        DIM("  Description"),
+        OUT(`  ${p.desc}`),
+        BR(),
+        DIM("  Stack"),
+        TAGS(p.stack),
+        BR(),
+        LNK(`  ↗  https://${p.url}`, `https://${p.url}`),
+        BR(),
+      ];
+    }
+
+    case "contact":
+      return [
+        BR(),
+        DIV("CONTACT"),
+        BR(),
+        OUT(`  Email      ${ME.email}`),
+        OUT(`  Phone      ${ME.phone}`),
+        LNK(`  GitHub     ${ME.github}`, `https://${ME.github}`),
+        LNK(`  LinkedIn   ${ME.linkedin}`, `https://${ME.linkedin}`),
+        LNK(`  Web        ${ME.web}`, `https://${ME.web}`),
+        BR(),
+        DIM("  Run  email  to copy address to clipboard"),
+        BR(),
+      ];
+
+    case "links":
+      return [
+        BR(),
+        LNK(`  GitHub      ↗  https://${ME.github}`, `https://${ME.github}`),
+        LNK(
+          `  LinkedIn    ↗  https://${ME.linkedin}`,
+          `https://${ME.linkedin}`,
+        ),
+        LNK(`  Portfolio   ↗  https://${ME.web}`, `https://${ME.web}`),
+        BR(),
+      ];
+
+    case "email":
+      try {
+        navigator.clipboard.writeText(ME.email);
+        return [BR(), OK(`  ✓  Copied  ${ME.email}`), BR()];
+      } catch {
+        return [BR(), WARN(`  ${ME.email}  (copy manually)`), BR()];
+      }
+
+    case "open": {
+      const u = args[0];
+      if (!u) return [BR(), ERR("  Usage: open <url>"), BR()];
+      const full = u.startsWith("http") ? u : `https://${u}`;
+      try {
+        window.open(full, "_blank");
+      } catch {
+        /* noop */
+      }
+      return [BR(), OK(`  ↗  Opening ${full}`), BR()];
+    }
+
+    case "theme": {
+      const t = args[0]?.toLowerCase();
+      if (!t)
+        return [
+          BR(),
+          OUT(`  Current: ${theme.name}`),
+          DIM(`  Available: ${Object.keys(THEMES).join("  ·  ")}`),
+          BR(),
+        ];
+      if (!THEMES[t])
+        return [
+          BR(),
+          ERR(`  Theme '${t}' not found`),
+          DIM(`  Available: ${Object.keys(THEMES).join("  ·  ")}`),
+          BR(),
+        ];
+      setTheme(THEMES[t]);
+      return [BR(), OK(`  ✓  Switched to ${THEMES[t].name}`), BR()];
+    }
+
+    case "themes": {
+      const rows: Line[] = [BR(), DIV("THEMES"), BR()];
+      Object.entries(THEMES).forEach(([key, th]) => {
+        rows.push(
+          mkLine("", "themerow", null, {
+            key,
+            th,
+            current: th.name === theme.name,
+          } as ThemeRowMeta),
+        );
+      });
+      rows.push(BR(), DIM("  Usage:  theme <n>"), BR());
+      return rows;
+    }
+
+    case "neofetch":
+      return [
+        BR(),
+        DIV("NEOFETCH"),
+        BR(),
+        mkLine("", "neofetch", null, { theme } as NeofetchMeta),
+        BR(),
+      ];
+
+    case "calc": {
+      const expr = args.join(" ");
+      if (!expr)
+        return [
+          BR(),
+          ERR("  Usage: calc <expression>  ·  e.g. calc 128 * 1024"),
+          BR(),
+        ];
+      const result = safeCalc(expr);
+      if (result === null)
+        return [BR(), ERR(`  Could not evaluate: ${expr}`), BR()];
+      return [BR(), CODE(`  ${expr} = ${result}`), BR()];
+    }
+
+    case "ping": {
+      const host = args[0] ?? "nadim.vercel.app";
+      const rows: Line[] = [BR(), OUT(`  PING ${host}`), BR()];
+      [1, 2, 3, 4].forEach((n) =>
+        rows.push(
+          OUT(
+            `  64 bytes from ${host}: icmp_seq=${n} time=${(Math.random() * 20 + 1).toFixed(2)}ms`,
+          ),
+        ),
+      );
+      rows.push(
+        BR(),
+        OK("  4 packets transmitted, 4 received, 0% packet loss"),
+        BR(),
+      );
+      return rows;
+    }
+
+    case "curl": {
+      const url = args[0] ?? ME.web;
+      return [
+        BR(),
+        OUT(`  > GET ${url}`),
+        BR(),
+        CODE("  HTTP/2 200"),
+        CODE("  content-type: application/json"),
+        CODE(`  x-developer: ${ME.name}`),
+        CODE(`  x-location: ${ME.location}`),
+        CODE("  x-status: available-for-work"),
+        BR(),
+        CODE(`  { "name": "${ME.name}", "role": "${ME.role}" }`),
+        BR(),
+      ];
+    }
+
+    case "cat": {
+      const file = args[0];
+      if (!file)
+        return [
+          BR(),
+          ERR("  Usage: cat <file>  ·  README.md | package.json"),
+          BR(),
+        ];
+      if (file === "README.md")
+        return [
+          BR(),
+          DIV("README.md"),
+          BR(),
+          OUT("  # Nadim Chowdhury — Portfolio Terminal"),
+          BR(),
+          OUT("  Built with React.js and a lot of coffee. ☕"),
+          BR(),
+          OUT(`  ${ME.email}`),
+          OUT(`  ${ME.web}`),
+          BR(),
+        ];
+      if (file === "package.json")
+        return [
+          BR(),
+          DIV("package.json"),
+          BR(),
+          CODE("  {"),
+          CODE(`    "name": "nadim-portfolio-terminal",`),
+          CODE(`    "version": "3.0.0",`),
+          CODE(`    "author": "${ME.name}",`),
+          CODE('    "dependencies": {'),
+          CODE('      "react": "^18.0.0",'),
+          CODE('      "next": "^14.0.0"'),
+          CODE("    }"),
+          CODE("  }"),
+          BR(),
+        ];
+      return [
+        BR(),
+        ERR(`  ${file}: No such file or directory`),
+        DIM("  Available: README.md  package.json"),
+        BR(),
+      ];
+    }
+
+    case "date":
+      return [
+        BR(),
+        OUT(
+          `  ${new Date().toLocaleString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" })}`,
+        ),
+        BR(),
+      ];
+    case "ls":
+      return [
+        BR(),
+        mkLine("  about/  experience/  projects/  skills/  contact/", "acc"),
+        OUT("  README.md   package.json   .env.example   .gitignore"),
+        BR(),
+      ];
+    case "pwd":
+      return [BR(), OUT("  /home/nadim/portfolio"), BR()];
+    case "echo":
+      return args.length ? [BR(), OUT("  " + args.join(" ")), BR()] : [BR()];
+
+    case "history": {
+      if (!hist.length) return [BR(), DIM("  No history yet."), BR()];
+      const rows: Line[] = [BR(), DIV("HISTORY"), BR()];
+      hist
+        .slice(-40)
+        .forEach((h, i) =>
+          rows.push(DIM(`  ${String(i + 1).padStart(3)}  ${h}`)),
+        );
+      rows.push(BR());
+      return rows;
+    }
+
+    case "banner":
+      return [
+        BR(),
+        mkLine("", "banner"),
+        BR(),
+        ACC(`  ${ME.name}  ·  ${ME.role}`),
+        DIM(`  ${ME.location}  ·  ${ME.web}`),
+        BR(),
+      ];
+    case "joke":
+      return [
+        BR(),
+        OUT(`  ${JOKES[Math.floor(Math.random() * JOKES.length)]}`),
+        BR(),
+      ];
+    case "quote": {
+      const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+      return [BR(), OUT(`  "${q.q}"`), DIM(`  — ${q.a}`), BR()];
+    }
+
+    case "fortune": {
+      const fortunes = [
+        "🥠 A bug-free code is a myth.",
+        "🥠 Your next deploy will succeed. (Probably.)",
+        "🥠 The cloud is just someone else's computer.",
+        "🥠 It works on my machine. Ship your machine.",
+        "🥠 Dark mode saves lives. And battery.",
+      ];
+      return [
+        BR(),
+        OUT(`  ${fortunes[Math.floor(Math.random() * fortunes.length)]}`),
+        BR(),
+      ];
+    }
+
+    case "cowsay": {
+      const msg = args.join(" ") || "Mooooo! Hire Nadim!";
+      const pad = msg.length + 2;
+      const border = "─".repeat(pad);
+      return [
+        BR(),
+        CODE(`   ┌${border}┐`),
+        CODE(`   │ ${msg} │`),
+        CODE(`   └${border}┘`),
+        CODE("        \\   ^__^"),
+        CODE("         \\  (oo)\\_______"),
+        CODE("            (__)\\       )\\/\\"),
+        CODE("                ||----w |"),
+        CODE("                ||     ||"),
+        BR(),
+      ];
+    }
+
+    case "matrix":
+      return [
+        BR(),
+        ACC("  Wake up, Nadim..."),
+        DIM("  The Matrix has you."),
+        OUT("  Follow the white rabbit. 🐇"),
+        BR(),
+        DIM("  (try: theme ghost for maximum immersion)"),
+        BR(),
+      ];
+
+    case "hack":
+      setTimeout(() => {
+        HACK_SEQUENCE.forEach(({ t, text, type }) => {
+          setTimeout(
+            () =>
+              addLines([type === "br" ? BR() : mkLine(text, type as LineType)]),
+            t,
+          );
+        });
+      }, 0);
+      return [BR(), ACC("  Initiating hacking sequence... 💻"), BR()];
+
+    case "sl":
+      return [
+        BR(),
+        CODE("        ====        ________                ___________"),
+        CODE("    _D _|  |_______/        \\__I_I_____===__|_________|"),
+        CODE("     |(_)---  |   H\\________/ |   |        =|___ ___|  "),
+        CODE("     /     |  |   H  |  |     |   |         ||_| |_||  "),
+        CODE("    | ________|___H__/__|_____/[][]~\\_____________|      "),
+        BR(),
+        WARN("  🚂 You tried typing ls but got a train instead."),
+        DIM("  (Classic Unix easter egg)"),
+        BR(),
+      ];
+
+    case "sudo":
+      return [
+        BR(),
+        WARN("  nadim is not in the sudoers file."),
+        ERR("  This incident will be reported. 📋"),
+        BR(),
+      ];
+    case "vim":
+    case "nano":
+      return [
+        BR(),
+        ACC(`  Opening ${cmd}...`),
+        BR(),
+        OUT("  ┌──────────────────────────────────────────────────────┐"),
+        OUT("  │  You are now inside vim.                            │"),
+        OUT("  │  To exit: press Esc, then type  :q!  then Enter     │"),
+        OUT("  │  Or just close the browser tab. We won't judge.     │"),
+        OUT("  └──────────────────────────────────────────────────────┘"),
+        BR(),
+        DIM("  Tip: :wq saves and quits. You're welcome."),
+        BR(),
+      ];
+
+    case "git": {
+      const sub = args[0];
+      if (sub === "log")
+        return [
+          BR(),
+          OUT("  commit a3f7d2e  (HEAD -> main)"),
+          OUT(`  Author: ${ME.name} <${ME.email}>`),
+          OUT(`  Date:   ${new Date().toDateString()}`),
+          OUT(""),
+          OUT("      feat: add interactive terminal portfolio"),
+          BR(),
+        ];
+      if (sub === "status")
+        return [
+          BR(),
+          OUT("  On branch main"),
+          OK("  nothing to commit, working tree clean"),
+          BR(),
+        ];
+      if (sub === "blame")
+        return [BR(), ERR("  You. It was you. It's always you."), BR()];
+      return [
+        BR(),
+        OUT(`  git: '${sub ?? "?"}' is not a git command.`),
+        DIM("  Available: git log | git status | git blame"),
+        BR(),
+      ];
+    }
+
+    case "npm": {
+      const sub = args[0];
+      if (sub === "install" || sub === "i")
+        return [
+          BR(),
+          OUT("  added 2,847 packages in 47s"),
+          WARN("  3 high severity vulnerabilities"),
+          BR(),
+        ];
+      if (sub === "run" && args[1])
+        return [BR(), OK(`  > ${args[1]}`), OK("  ✓ ready in 843ms"), BR()];
+      return [BR(), DIM("  Usage: npm install | npm run <script>"), BR()];
+    }
+
+    case "node":
+      return [
+        BR(),
+        OUT("  Welcome to Node.js v20.0.0."),
+        OUT("  > 1 + 1"),
+        ACC("  2"),
+        BR(),
+      ];
+    case "python":
+      return [
+        BR(),
+        OUT("  Python 3.12.0"),
+        DIM("  >>> print('Hello from Python!')"),
+        OUT("  Hello from Python!"),
+        BR(),
+      ];
+    case "yes":
+      return [
+        BR(),
+        ...Array.from({ length: 8 }, () =>
+          OUT("  y y y y y y y y y y y y y y y y y y y y"),
+        ),
+        DIM("  (Ctrl+C to stop)"),
+        BR(),
+      ];
+    case "weather":
+      return [
+        BR(),
+        OUT("  ⛅ Dhaka, Bangladesh"),
+        OUT("  28°C · Partly cloudy · Humidity 72%"),
+        DIM("  (Simulated — no API key required)"),
+        BR(),
+      ];
+
+    case "clear":
+    case "cls":
+      return [{ type: "clear", id: ++_id, text: "", url: null, meta: null }];
+    case "exit":
+      return [BR(), DIM("  There is no escape from this portfolio. 😈"), BR()];
+
+    default:
+      return [
+        BR(),
+        ERR(`  ${cmd}: command not found`),
+        DIM("  Type  help  for available commands"),
+        BR(),
+      ];
+  }
+}
+
+interface RenderLineProps {
+  line: Line;
+  T: Theme;
+  isMobile: boolean;
+}
+
+function RenderLine({ line, T, isMobile }: RenderLineProps) {
+  const px = isMobile ? 12 : 24;
+  const fs = isMobile ? 12 : 13;
+
+  const mono: CSSProperties = {
+    fontFamily: "inherit",
+    fontSize: fs,
+    lineHeight: "22px",
+    whiteSpace: "pre-wrap",
+    wordBreak: "break-all",
+  };
+
+  if (line.type === "br") return <div style={{ height: 4 }} />;
+
+  if (line.type === "divider")
+    return (
+      <div
         style={{
-          padding: "120px 48px",
-          background: "#f0ebe0",
-          borderTop: "1px solid #e0d9cf",
-          borderBottom: "1px solid #e0d9cf",
-        }}
-      >
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <Reveal>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                justifyContent: "space-between",
-                marginBottom: 64,
-              }}
-            >
-              <div>
-                <p
-                  style={{
-                    fontSize: 11,
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    color: "#c17f3a",
-                    marginBottom: 12,
-                  }}
-                >
-                  Career Path
-                </p>
-                <h2
-                  style={{
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: "clamp(28px,3.5vw,48px)",
-                    letterSpacing: "-0.02em",
-                  }}
-                >
-                  Experience
-                </h2>
-              </div>
-              <span
-                className="section-number"
-                style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: "clamp(60px,8vw,120px)",
-                  color: "rgba(193,127,58,0.08)",
-                  lineHeight: 1,
-                  letterSpacing: "-0.05em",
-                }}
-              >
-                02
-              </span>
-            </div>
-          </Reveal>
-
-          {/* Desktop/Tablet tab layout */}
-          <div
-            className="exp-tab-layout"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "280px 1fr",
-              gap: 0,
-              background: "#faf6ef",
-              border: "1px solid #e0d9cf",
-            }}
-          >
-            <div style={{ borderRight: "1px solid #e0d9cf" }}>
-              {EXPERIENCE.map((exp, i) => (
-                <button
-                  key={i}
-                  className={`exp-tab ${activeExp === i ? "active-tab" : ""}`}
-                  onClick={() => setActiveExp(i)}
-                >
-                  <p
-                    style={{
-                      fontSize: 13,
-                      color: activeExp === i ? "#1a1410" : "#8a7f72",
-                      marginBottom: 4,
-                      fontWeight: activeExp === i ? 500 : 400,
-                    }}
-                  >
-                    {exp.company}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: 10,
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                      color: activeExp === i ? "#c17f3a" : "#b5a99a",
-                    }}
-                  >
-                    {exp.period}
-                  </p>
-                </button>
-              ))}
-            </div>
-            <div style={{ padding: "40px 48px" }}>
-              <div
-                key={activeExp}
-                style={{ opacity: 0, animation: "fadeIn 0.4s ease forwards" }}
-              >
-                <div
-                  style={{
-                    display: "inline-block",
-                    background: "rgba(193,127,58,0.1)",
-                    color: "#c17f3a",
-                    fontSize: 10,
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    padding: "4px 12px",
-                    marginBottom: 16,
-                  }}
-                >
-                  {EXPERIENCE[activeExp].type}
-                </div>
-                <h3
-                  style={{
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: "clamp(20px,2.5vw,28px)",
-                    letterSpacing: "-0.02em",
-                    marginBottom: 8,
-                    color: "#1a1410",
-                  }}
-                >
-                  {EXPERIENCE[activeExp].role}
-                </h3>
-                <p
-                  style={{
-                    fontSize: 13,
-                    color: "#c17f3a",
-                    letterSpacing: "0.05em",
-                    marginBottom: 24,
-                  }}
-                >
-                  {EXPERIENCE[activeExp].company}
-                </p>
-                <p
-                  style={{
-                    fontSize: 14,
-                    lineHeight: 1.85,
-                    color: "#8a7f72",
-                    fontWeight: 300,
-                  }}
-                >
-                  {EXPERIENCE[activeExp].desc}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile accordion layout */}
-          <div
-            className="exp-accordion-layout"
-            style={{
-              display: "none",
-              background: "#faf6ef",
-              border: "1px solid #e0d9cf",
-            }}
-          >
-            {EXPERIENCE.map((exp, i) => (
-              <div key={i}>
-                <button
-                  className={`exp-accordion-btn ${expAccordionOpen === i ? "open" : ""}`}
-                  onClick={() =>
-                    setExpAccordionOpen(expAccordionOpen === i ? null : i)
-                  }
-                >
-                  <div>
-                    <p
-                      style={{
-                        fontSize: 13,
-                        color: expAccordionOpen === i ? "#1a1410" : "#8a7f72",
-                        marginBottom: 3,
-                        fontWeight: expAccordionOpen === i ? 500 : 400,
-                      }}
-                    >
-                      {exp.company}
-                    </p>
-                    <p
-                      style={{
-                        fontSize: 10,
-                        letterSpacing: "0.1em",
-                        textTransform: "uppercase",
-                        color: expAccordionOpen === i ? "#c17f3a" : "#b5a99a",
-                      }}
-                    >
-                      {exp.period}
-                    </p>
-                  </div>
-                  <span
-                    style={{
-                      color: "#c17f3a",
-                      fontSize: 18,
-                      transition: "transform 0.3s",
-                      transform:
-                        expAccordionOpen === i ? "rotate(45deg)" : "none",
-                      flexShrink: 0,
-                    }}
-                  >
-                    +
-                  </span>
-                </button>
-                {expAccordionOpen === i && (
-                  <div
-                    style={{
-                      padding: "24px 20px",
-                      background: "rgba(193,127,58,0.03)",
-                      borderBottom: "1px solid #e0d9cf",
-                      animation: "accordionOpen 0.3s ease forwards",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "inline-block",
-                        background: "rgba(193,127,58,0.1)",
-                        color: "#c17f3a",
-                        fontSize: 10,
-                        letterSpacing: "0.12em",
-                        textTransform: "uppercase",
-                        padding: "3px 10px",
-                        marginBottom: 12,
-                      }}
-                    >
-                      {exp.type}
-                    </div>
-                    <h3
-                      style={{
-                        fontFamily: "'Playfair Display', serif",
-                        fontSize: 20,
-                        letterSpacing: "-0.02em",
-                        marginBottom: 6,
-                        color: "#1a1410",
-                        lineHeight: 1.3,
-                      }}
-                    >
-                      {exp.role}
-                    </h3>
-                    <p
-                      style={{
-                        fontSize: 12,
-                        color: "#c17f3a",
-                        letterSpacing: "0.05em",
-                        marginBottom: 16,
-                      }}
-                    >
-                      {exp.company}
-                    </p>
-                    <p
-                      style={{
-                        fontSize: 13,
-                        lineHeight: 1.85,
-                        color: "#8a7f72",
-                        fontWeight: 300,
-                      }}
-                    >
-                      {exp.desc}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PROJECTS */}
-      <section
-        id="projects"
-        className="projects-section"
-        style={{ padding: "120px 48px" }}
-      >
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <Reveal>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                justifyContent: "space-between",
-                marginBottom: 64,
-              }}
-            >
-              <div>
-                <p
-                  style={{
-                    fontSize: 11,
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    color: "#c17f3a",
-                    marginBottom: 12,
-                  }}
-                >
-                  Selected Work
-                </p>
-                <h2
-                  style={{
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: "clamp(28px,3.5vw,48px)",
-                    letterSpacing: "-0.02em",
-                  }}
-                >
-                  Projects
-                </h2>
-              </div>
-              <span
-                className="section-number"
-                style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: "clamp(60px,8vw,120px)",
-                  color: "rgba(193,127,58,0.08)",
-                  lineHeight: 1,
-                  letterSpacing: "-0.05em",
-                }}
-              >
-                03
-              </span>
-            </div>
-          </Reveal>
-
-          {/* Table header row */}
-          <div
-            className="proj-header-row"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "64px 1fr 200px 100px 48px",
-              gap: 24,
-              paddingBottom: 12,
-              borderBottom: "1px solid #1a1410",
-              marginBottom: 4,
-            }}
-          >
-            {(["No.", "Project", "Tech Stack", "Year", ""] as string[]).map(
-              (h, i) => (
-                <span
-                  key={i}
-                  style={{
-                    fontSize: 10,
-                    letterSpacing: "0.15em",
-                    textTransform: "uppercase",
-                    color: "#b5a99a",
-                  }}
-                  className={
-                    i === 2 ? "proj-tech-col" : i === 3 ? "proj-year-col" : ""
-                  }
-                >
-                  {h}
-                </span>
-              ),
-            )}
-          </div>
-
-          {PROJECTS.map((proj, i) => (
-            <Reveal key={i} delay={i * 0.07}>
-              <a
-                href={`https://${proj.url}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="proj-row"
-              >
-                <span
-                  style={{
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: 13,
-                    color: "#c17f3a",
-                    fontStyle: "italic",
-                    flexShrink: 0,
-                  }}
-                >
-                  {proj.idx}
-                </span>
-                <div style={{ minWidth: 0 }}>
-                  <p
-                    className="proj-name"
-                    style={{
-                      fontSize: "clamp(15px,2vw,18px)",
-                      fontFamily: "'Playfair Display', serif",
-                      letterSpacing: "-0.01em",
-                      color: "#1a1410",
-                      marginBottom: 4,
-                      transition: "color 0.3s",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {proj.name}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: 12,
-                      color: "#b5a99a",
-                      lineHeight: 1.5,
-                      overflow: "hidden",
-                      display: "-webkit-box",
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: "vertical",
-                    }}
-                  >
-                    {proj.desc}
-                  </p>
-                </div>
-                <span
-                  className="proj-tech-col"
-                  style={{
-                    fontSize: 11,
-                    color: "#8a7f72",
-                    letterSpacing: "0.05em",
-                  }}
-                >
-                  {proj.tech}
-                </span>
-                <span
-                  className="proj-year-col"
-                  style={{
-                    fontSize: 11,
-                    color: "#b5a99a",
-                    letterSpacing: "0.1em",
-                  }}
-                >
-                  {proj.year}
-                </span>
-                <span
-                  className="proj-arrow"
-                  style={{ fontSize: 20, color: "#c17f3a", flexShrink: 0 }}
-                >
-                  ↗
-                </span>
-              </a>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* SKILLS */}
-      <section
-        id="skills"
-        className="skills-section"
-        style={{ padding: "80px 48px", background: "#1a1410" }}
-      >
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <Reveal>
-            <p
-              style={{
-                fontSize: 11,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "#c17f3a",
-                marginBottom: 48,
-                textAlign: "center",
-              }}
-            >
-              Technology Stack
-            </p>
-          </Reveal>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(120px,1fr))",
-              gap: 12,
-            }}
-          >
-            {[...SKILLS_LEFT, ...SKILLS_RIGHT].map((skill, i) => (
-              <Reveal key={i} delay={i * 0.025}>
-                <div
-                  style={{
-                    padding: "20px 16px",
-                    background: "#1e1812",
-                    textAlign: "center",
-                    border: "1px solid #2a2218",
-                    transition: "all 0.2s",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLDivElement).style.background =
-                      "rgba(193,127,58,0.08)";
-                    (e.currentTarget as HTMLDivElement).style.borderColor =
-                      "rgba(193,127,58,0.3)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLDivElement).style.background =
-                      "#1e1812";
-                    (e.currentTarget as HTMLDivElement).style.borderColor =
-                      "#2a2218";
-                  }}
-                >
-                  <p
-                    style={{
-                      fontSize: "clamp(10px,1.2vw,11px)",
-                      letterSpacing: "0.08em",
-                      color: "#8a7060",
-                    }}
-                  >
-                    {skill}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section
-        id="contact"
-        className="contact-section"
-        style={{
-          padding: "120px 48px",
-          background: "#f0ebe0",
-          borderTop: "1px solid #e0d9cf",
-        }}
-      >
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <Reveal>
-            <div style={{ textAlign: "center", marginBottom: 80 }}>
-              <p
-                style={{
-                  fontSize: 11,
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  color: "#c17f3a",
-                  marginBottom: 20,
-                }}
-              >
-                Get In Touch
-              </p>
-              <h2
-                style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: "clamp(36px,6vw,88px)",
-                  letterSpacing: "-0.03em",
-                  lineHeight: 0.95,
-                  color: "#1a1410",
-                }}
-              >
-                Let's build
-                <br />
-                <em>something great.</em>
-              </h2>
-            </div>
-          </Reveal>
-          <div
-            className="contact-grid"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 80,
-            }}
-          >
-            <Reveal delay={0.1}>
-              <div>
-                {(
-                  [
-                    {
-                      label: "Email",
-                      value: "nadim-chowdhury@outlook.com",
-                      href: "mailto:nadim-chowdhury@outlook.com",
-                    },
-                    {
-                      label: "Phone",
-                      value: "+880 1971 258803",
-                      href: "tel:+8801971258803",
-                    },
-                    {
-                      label: "GitHub",
-                      value: "github.com/nadim-chowdhury",
-                      href: "https://github.com/nadim-chowdhury",
-                    },
-                    {
-                      label: "LinkedIn",
-                      value: "linkedin.com/in/nadim-chowdhury",
-                      href: "https://linkedin.com/in/nadim-chowdhury",
-                    },
-                    {
-                      label: "Portfolio",
-                      value: "nadim.vercel.app",
-                      href: "https://nadim.vercel.app",
-                    },
-                  ] as { label: string; value: string; href: string }[]
-                ).map(({ label, value, href }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="contact-link"
-                  >
-                    <div style={{ minWidth: 0, flex: 1, marginRight: 12 }}>
-                      <p
-                        style={{
-                          fontSize: 10,
-                          letterSpacing: "0.15em",
-                          textTransform: "uppercase",
-                          color: "#b5a99a",
-                          marginBottom: 4,
-                        }}
-                      >
-                        {label}
-                      </p>
-                      <p
-                        className="cl-label"
-                        style={{
-                          fontSize: "clamp(12px,1.4vw,14px)",
-                          color: "#1a1410",
-                          transition: "color 0.2s",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {value}
-                      </p>
-                    </div>
-                    <span
-                      style={{ color: "#d4c9b8", fontSize: 18, flexShrink: 0 }}
-                    >
-                      ↗
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </Reveal>
-            <Reveal delay={0.2}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  height: "100%",
-                }}
-              >
-                <div
-                  style={{
-                    background: "#faf6ef",
-                    border: "1px solid #e0d9cf",
-                    padding: "40px",
-                  }}
-                >
-                  <p
-                    style={{
-                      fontFamily: "'Playfair Display', serif",
-                      fontSize: "clamp(16px,2vw,22px)",
-                      lineHeight: 1.5,
-                      color: "#1a1410",
-                      marginBottom: 24,
-                      fontStyle: "italic",
-                    }}
-                  >
-                    "Currently open to full-time roles and interesting freelance
-                    projects."
-                  </p>
-                  <div
-                    style={{ display: "flex", alignItems: "center", gap: 10 }}
-                  >
-                    <div
-                      style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: "50%",
-                        background: "#6cb26c",
-                        animation: "pulse 2s ease infinite",
-                        flexShrink: 0,
-                      }}
-                    />
-                    <span
-                      style={{
-                        fontSize: 11,
-                        letterSpacing: "0.1em",
-                        textTransform: "uppercase",
-                        color: "#8a7f72",
-                      }}
-                    >
-                      Available for work
-                    </span>
-                  </div>
-                </div>
-                <a
-                  href="mailto:nadim-chowdhury@outlook.com"
-                  style={{
-                    display: "block",
-                    background: "#1a1410",
-                    color: "#faf6ef",
-                    textAlign: "center",
-                    padding: "20px",
-                    fontSize: 12,
-                    letterSpacing: "0.15em",
-                    textTransform: "uppercase",
-                    textDecoration: "none",
-                    marginTop: 16,
-                    transition: "background 0.2s",
-                  }}
-                  onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLAnchorElement).style.background =
-                      "#c17f3a")
-                  }
-                  onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLAnchorElement).style.background =
-                      "#1a1410")
-                  }
-                >
-                  Start a Conversation →
-                </a>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-        <style>{`@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }`}</style>
-      </section>
-
-      {/* FOOTER */}
-      <footer
-        style={{
-          background: "#1a1410",
-          padding: "24px 48px",
           display: "flex",
-          justifyContent: "space-between",
           alignItems: "center",
+          gap: 12,
+          padding: `6px ${px}px`,
+        }}
+      >
+        <div style={{ height: 1, width: 16, background: T.border }} />
+        {line.text && (
+          <span
+            style={{
+              ...mono,
+              fontSize: 10,
+              letterSpacing: "0.16em",
+              color: T.muted,
+              userSelect: "none",
+            }}
+          >
+            {line.text}
+          </span>
+        )}
+        <div style={{ flex: 1, height: 1, background: T.border }} />
+      </div>
+    );
+
+  if (line.type === "banner")
+    return (
+      <pre
+        style={{
+          ...mono,
+          fontSize: isMobile ? 6 : 10,
+          lineHeight: isMobile ? "10px" : "14px",
+          color: T.accent,
+          padding: `4px ${px}px`,
+          userSelect: "none",
+          overflowX: "auto",
+        }}
+      >{`
+ ███╗   ██╗ █████╗ ██████╗ ██╗███╗   ███╗
+ ████╗  ██║██╔══██╗██╔══██╗██║████╗ ████║
+ ██╔██╗ ██║███████║██║  ██║██║██╔████╔██║
+ ██║╚██╗██║██╔══██║██║  ██║██║██║╚██╔╝██║
+ ██║ ╚████║██║  ██║██████╔╝██║██║ ╚═╝ ██║
+ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═════╝ ╚═╝╚═╝     ╚═╝`}</pre>
+    );
+
+  if (line.type === "tags") {
+    const meta = line.meta as TagsMeta;
+    return (
+      <div
+        style={{
+          display: "flex",
           flexWrap: "wrap",
-          gap: 16,
+          gap: 5,
+          padding: `4px ${px}px`,
+        }}
+      >
+        {meta.items.map((item, i) => (
+          <span
+            key={i}
+            style={{
+              fontSize: 11,
+              color: T.accent,
+              background: T.accentSoft,
+              border: `1px solid ${T.accent}22`,
+              padding: "2px 8px",
+              borderRadius: 4,
+              letterSpacing: "0.04em",
+            }}
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
+  if (line.type === "expcard") {
+    const e = line.meta as ExpEntry;
+    return (
+      <div
+        style={{
+          margin: `2px ${px}px`,
+          padding: isMobile ? "12px 14px" : "16px 20px",
+          background: T.surface,
+          border: `1px solid ${T.border}`,
+          borderRadius: 8,
+          borderLeft: `2px solid ${T.accent}`,
         }}
       >
         <div
           style={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: 24,
-            color: "#faf6ef",
-            fontStyle: "italic",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            marginBottom: 6,
+            flexWrap: "wrap",
+            gap: 6,
           }}
         >
-          Nadim<span style={{ color: "#c17f3a", fontStyle: "normal" }}>.</span>
-        </div>
-        <p
-          style={{
-            fontSize: 10,
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            color: "#ada194",
-          }}
-        >
-          © 2025 Nadim Chowdhury · Dhaka, BD
-        </p>
-        <div className="footer-links" style={{ display: "flex", gap: 24 }}>
-          {(
-            [
-              ["GH", "https://github.com/nadim-chowdhury"],
-              ["LI", "https://linkedin.com/in/nadim-chowdhury"],
-              ["WWW", "https://nadim.vercel.app"],
-            ] as [string, string][]
-          ).map(([l, u]) => (
-            <a
-              key={l}
-              href={u}
-              target="_blank"
-              rel="noopener noreferrer"
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <span
               style={{
                 fontSize: 10,
-                letterSpacing: "0.15em",
-                color: "#ada194",
-                textDecoration: "none",
-                transition: "color 0.2s",
+                color: T.accent,
+                letterSpacing: "0.12em",
+                marginRight: 8,
               }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLAnchorElement).style.color = "#c17f3a")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLAnchorElement).style.color = "#6b5f52")
-              }
             >
-              {l}
-            </a>
+              {e.n}
+            </span>
+            <span
+              style={{
+                fontSize: isMobile ? 12 : 13,
+                color: T.text,
+                fontWeight: 500,
+                wordBreak: "break-word",
+              }}
+            >
+              {e.role}
+            </span>
+          </div>
+          <span
+            style={{
+              fontSize: 10,
+              color: T.muted,
+              letterSpacing: "0.06em",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
+            }}
+          >
+            {e.period}
+          </span>
+        </div>
+        <div style={{ fontSize: 11, color: T.muted, marginBottom: 8 }}>
+          {e.co} · {e.type}
+        </div>
+        <div
+          style={{
+            fontSize: 12,
+            color: T.muted,
+            lineHeight: 1.65,
+            marginBottom: 8,
+            opacity: 0.75,
+          }}
+        >
+          {e.desc}
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+          {e.stack.map((s, i) => (
+            <span
+              key={i}
+              style={{
+                fontSize: 10,
+                color: T.accent,
+                background: T.accentSoft,
+                padding: "2px 7px",
+                borderRadius: 3,
+              }}
+            >
+              {s}
+            </span>
           ))}
         </div>
-      </footer>
+      </div>
+    );
+  }
+
+  if (line.type === "projrow") {
+    const p = line.meta as ProjectEntry;
+    return (
+      <div
+        style={{
+          margin: `2px ${px}px`,
+          padding: isMobile ? "12px 14px" : "16px 20px",
+          background: T.surface,
+          border: `1px solid ${T.border}`,
+          borderRadius: 8,
+          cursor: "pointer",
+          transition: "border-color 0.2s,background 0.2s",
+        }}
+        onClick={() => window.open(`https://${p.url}`, "_blank")}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLDivElement).style.borderColor = T.accent;
+          (e.currentTarget as HTMLDivElement).style.background = T.surfaceHigh;
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLDivElement).style.borderColor = T.border;
+          (e.currentTarget as HTMLDivElement).style.background = T.surface;
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            marginBottom: 6,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              gap: 8,
+              alignItems: "baseline",
+              flexWrap: "wrap",
+              minWidth: 0,
+              flex: 1,
+              marginRight: 8,
+            }}
+          >
+            <span
+              style={{
+                fontSize: 10,
+                color: T.accent,
+                letterSpacing: "0.08em",
+                flexShrink: 0,
+              }}
+            >
+              {p.year}
+            </span>
+            <span
+              style={{
+                fontSize: isMobile ? 13 : 14,
+                color: T.text,
+                fontWeight: 500,
+              }}
+            >
+              {p.name}
+            </span>
+            <span style={{ fontSize: 11, color: T.muted }}>{p.cat}</span>
+          </div>
+          <span style={{ fontSize: 14, color: T.accent, flexShrink: 0 }}>
+            ↗
+          </span>
+        </div>
+        <div
+          style={{
+            fontSize: 12,
+            color: T.muted,
+            lineHeight: 1.65,
+            marginBottom: 8,
+            opacity: 0.75,
+          }}
+        >
+          {p.desc}
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+          {p.stack.map((s, i) => (
+            <span
+              key={i}
+              style={{
+                fontSize: 10,
+                color: T.accent,
+                background: T.accentSoft,
+                padding: "2px 7px",
+                borderRadius: 3,
+              }}
+            >
+              {s}
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (line.type === "neofetch") {
+    const { theme: th } = line.meta as NeofetchMeta;
+    return (
+      <div
+        style={{
+          margin: `2px ${px}px`,
+          padding: isMobile ? "14px 16px" : "20px 24px",
+          background: T.surface,
+          border: `1px solid ${T.border}`,
+          borderRadius: 8,
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "auto 1fr",
+          gap: isMobile ? "12px 0" : "0 32px",
+        }}
+      >
+        {!isMobile && (
+          <pre
+            style={{
+              fontSize: 9,
+              lineHeight: "12px",
+              color: th.accent,
+              userSelect: "none",
+            }}
+          >{`    .---.
+   /     \\
+  |  N C  |
+   \\     /
+    '---'`}</pre>
+        )}
+        <div style={{ fontSize: 12, lineHeight: "22px" }}>
+          {(
+            [
+              ["User", ME.name],
+              ["Role", ME.role],
+              ["OS", "NADIM-OS 3.0.0"],
+              ["Shell", "nadim-sh 1.0.0"],
+              ["Theme", th.name],
+              ["Uptime", "3 years, 5 months"],
+              ["Location", ME.location],
+            ] as [string, string][]
+          ).map(([k, v]) => (
+            <div
+              key={k}
+              style={{
+                display: "flex",
+                gap: 8,
+                flexWrap: isMobile ? "wrap" : "nowrap",
+              }}
+            >
+              <span
+                style={{
+                  color: th.accent,
+                  width: isMobile ? "auto" : 80,
+                  flexShrink: 0,
+                  minWidth: isMobile ? 60 : undefined,
+                }}
+              >
+                {k}
+              </span>
+              <span style={{ color: T.text }}>{v}</span>
+            </div>
+          ))}
+          <div style={{ display: "flex", gap: 8 }}>
+            <span
+              style={{
+                color: th.accent,
+                width: isMobile ? "auto" : 80,
+                flexShrink: 0,
+                minWidth: isMobile ? 60 : undefined,
+              }}
+            >
+              Status
+            </span>
+            <span style={{ color: T.green }}>● Available for work</span>
+          </div>
+          <div
+            style={{ display: "flex", gap: 4, marginTop: 10, flexWrap: "wrap" }}
+          >
+            {Object.values(THEMES).map((t, i) => (
+              <div
+                key={i}
+                style={{
+                  width: 14,
+                  height: 14,
+                  borderRadius: 3,
+                  background: t.accent,
+                }}
+                title={t.name}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (line.type === "themerow") {
+    const { key, th, current } = line.meta as ThemeRowMeta;
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          padding: `4px ${px}px`,
+        }}
+      >
+        <div
+          style={{
+            width: 12,
+            height: 12,
+            borderRadius: "50%",
+            background: th.accent,
+            border: current ? `2px solid ${T.text}` : "2px solid transparent",
+            flexShrink: 0,
+          }}
+        />
+        <span
+          style={{ ...mono, color: current ? T.text : T.muted, fontSize: 12 }}
+        >
+          {key.padEnd(12)}
+          {th.name}
+        </span>
+        {current && (
+          <span style={{ fontSize: 10, color: T.accent }}>← active</span>
+        )}
+      </div>
+    );
+  }
+
+  const colorMap: Partial<Record<LineType, string>> = {
+    out: T.text,
+    hdr: T.text,
+    dim: T.muted,
+    acc: T.accent,
+    ok: T.green,
+    err: T.red,
+    warn: T.yellow,
+    link: T.accent,
+    cmd: T.dim,
+    code: T.blue || T.accent,
+  };
+  const color = colorMap[line.type] ?? T.text;
+  const isLink = line.type === "link";
+
+  return (
+    <div
+      style={{
+        ...mono,
+        color,
+        textDecoration: isLink ? "underline" : "none",
+        textDecorationColor: `${T.accent}55`,
+        cursor: isLink ? "pointer" : "default",
+        padding: `0 ${px}px`,
+        transition: "opacity 0.15s",
+      }}
+      onClick={
+        isLink && line.url ? () => window.open(line.url!, "_blank") : undefined
+      }
+      onMouseEnter={
+        isLink
+          ? (e) => {
+              (e.currentTarget as HTMLDivElement).style.opacity = "0.7";
+            }
+          : undefined
+      }
+      onMouseLeave={
+        isLink
+          ? (e) => {
+              (e.currentTarget as HTMLDivElement).style.opacity = "1";
+            }
+          : undefined
+      }
+    >
+      {line.text}
+    </div>
+  );
+}
+
+const BOOT: BootEntry[] = [
+  { t: 0, text: "Booting NADIM-OS v3.0.0 ...", type: "dim" },
+  { t: 140, text: "[ ✓ ] Loading kernel modules", type: "dim" },
+  { t: 280, text: "[ ✓ ] Mounting filesystem", type: "dim" },
+  { t: 420, text: "[ ✓ ] Starting network services", type: "dim" },
+  { t: 560, text: "[ ✓ ] Loading developer profile", type: "ok" },
+  { t: 680, text: "[ ✓ ] Starting portfolio daemon", type: "ok" },
+  { t: 780, text: "", type: "br" },
+  { t: 820, text: "_banner", type: "_banner" },
+  { t: 940, text: "", type: "br" },
+  {
+    t: 980,
+    text: `  ${ME.name}  ·  ${ME.role}  ·  ${ME.location}`,
+    type: "acc",
+  },
+  { t: 1040, text: `  ${ME.web}  ·  Available for work`, type: "ok" },
+  { t: 1100, text: "", type: "br" },
+  { t: 1140, text: "  Type  help  to get started.", type: "dim" },
+  { t: 1200, text: "", type: "br" },
+];
+
+export default function Terminal() {
+  const [theme, setTheme] = useState<Theme>(THEMES.ghost);
+  const [lines, setLines] = useState<Line[]>([]);
+  const [input, setInput] = useState("");
+  const [cmdHist, setCmdHist] = useState<string[]>([]);
+  const [histIdx, setHistIdx] = useState(-1);
+  const [ready, setReady] = useState(false);
+  const [suggestion, setSug] = useState("");
+  const [iw, setIw] = useState(0);
+  const [time, setTime] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+  const [showMobileInput, setShowMobileInput] = useState(false);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const measureRef = useRef<HTMLSpanElement | null>(null);
+  const T = theme;
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    const tick = () =>
+      setTime(
+        new Date().toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        }),
+      );
+    tick();
+    const t = setInterval(tick, 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  useEffect(() => {
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    BOOT.forEach((b) => {
+      timers.push(
+        setTimeout(() => {
+          if (b.type === "_banner")
+            setLines((prev) => [...prev, mkLine("", "banner")]);
+          else if (b.type === "br") setLines((prev) => [...prev, BR()]);
+          else
+            setLines((prev) => [...prev, mkLine(b.text, b.type as LineType)]);
+          if (b.t === 1200)
+            setTimeout(() => {
+              setReady(true);
+              inputRef.current?.focus();
+            }, 100);
+        }, b.t),
+      );
+    });
+    return () => timers.forEach(clearTimeout);
+  }, []);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [lines]);
+  useEffect(() => {
+    if (measureRef.current) setIw(measureRef.current.offsetWidth);
+  }, [input]);
+
+  useEffect(() => {
+    if (!input || input.includes(" ")) {
+      setSug("");
+      return;
+    }
+    if (input.toLowerCase() === "rm") {
+      setSug(" -rf ./");
+      return;
+    }
+    const m = CMDS.find(
+      (c) => c.startsWith(input.toLowerCase()) && c !== input.toLowerCase(),
+    );
+    setSug(m ? m.slice(input.length) : "");
+  }, [input]);
+
+  const addLines = useCallback((newLines: Line[]) => {
+    setLines((prev) => [...prev, ...newLines]);
+  }, []);
+
+  const submit = useCallback(() => {
+    const cmd = input.trim();
+    const echo: Line[] = [mkLine(cmd || "", "cmd")];
+    if (cmd) {
+      setCmdHist((prev) => [...prev.filter((x) => x !== cmd), cmd].slice(-100));
+      setHistIdx(-1);
+      const result = run(cmd, theme, setTheme, cmdHist, addLines);
+      if (result[0]?.type === "clear") {
+        setLines([]);
+        setInput("");
+        return;
+      }
+      setLines((prev) => [...prev, ...echo, ...result]);
+    } else {
+      setLines((prev) => [...prev, ...echo, BR()]);
+    }
+    setInput("");
+    setSug("");
+    setHistIdx(-1);
+  }, [input, theme, cmdHist, addLines]);
+
+  const handleKey = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submit();
+        return;
+      }
+      if (e.key === "Tab") {
+        e.preventDefault();
+        if (input.trim() === "rm") {
+          setInput("rm -rf ./");
+          setSug("");
+          return;
+        }
+        const parts = input.split(/\s+/);
+        const word = parts[parts.length - 1].toLowerCase();
+        if (parts.length === 1) {
+          const matches = CMDS.filter((c) => c.startsWith(word));
+          if (matches.length === 1) {
+            setInput(matches[0] + " ");
+            setSug("");
+          } else if (matches.length > 1)
+            setLines((prev) => [
+              ...prev,
+              mkLine(input, "cmd"),
+              mkLine("  " + matches.join("   "), "dim"),
+              BR(),
+            ]);
+        } else {
+          const completions: Record<string, string[]> = {
+            theme: Object.keys(THEMES),
+            project: PROJECTS.map((p) => p.id),
+            skills: Object.keys(SKILLS),
+            cat: ["README.md", "package.json"],
+            open: [ME.web, ME.github, ME.linkedin],
+          };
+          const base = parts[0];
+          const list = completions[base];
+          if (list) {
+            const m = list.filter((x) => x.startsWith(word));
+            if (m.length === 1) {
+              setInput(`${base} ${m[0]}`);
+              setSug("");
+            } else if (m.length > 1)
+              setLines((prev) => [
+                ...prev,
+                mkLine(input, "cmd"),
+                mkLine("  " + m.join("   "), "dim"),
+                BR(),
+              ]);
+          }
+        }
+        return;
+      }
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (!cmdHist.length) return;
+        const idx =
+          histIdx === -1 ? cmdHist.length - 1 : Math.max(0, histIdx - 1);
+        setHistIdx(idx);
+        setInput(cmdHist[idx]);
+        return;
+      }
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (histIdx === -1) return;
+        const idx = histIdx + 1;
+        if (idx >= cmdHist.length) {
+          setHistIdx(-1);
+          setInput("");
+        } else {
+          setHistIdx(idx);
+          setInput(cmdHist[idx]);
+        }
+        return;
+      }
+      if (e.ctrlKey) {
+        if (e.key === "l") {
+          e.preventDefault();
+          setLines([]);
+        }
+        if (e.key === "c") {
+          e.preventDefault();
+          setLines((prev) => [...prev, mkLine(`${input}^C`, "dim"), BR()]);
+          setInput("");
+          setHistIdx(-1);
+        }
+        if (e.key === "u") {
+          e.preventDefault();
+          setInput("");
+        }
+      }
+    },
+    [input, cmdHist, histIdx, submit],
+  );
+
+  const px = isMobile ? 12 : 24;
+
+  return (
+    <div
+      style={{
+        background: "transparent",
+        height: "100dvh",
+        display: "flex",
+        flexDirection: "column",
+        fontFamily: "'JetBrains Mono','Fira Code',monospace",
+        overflow: "hidden",
+        position: "relative",
+      }}
+      onClick={() => {
+        inputRef.current?.focus();
+        if (isMobile) setShowMobileInput(true);
+      }}
+    >
+      <TerminalBackground accent={T.accent} bg={T.bg} />
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+        * { box-sizing:border-box; margin:0; padding:0; }
+        html, body { height:100%; overflow:hidden; }
+        ::-webkit-scrollbar { width:3px; }
+        ::-webkit-scrollbar-track { background:transparent; }
+        ::-webkit-scrollbar-thumb { background:${T.border}; border-radius:2px; }
+        @keyframes caretBlink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+        @keyframes lineIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        .tline { animation: lineIn 0.15s ease forwards; }
+        .input-hidden { position:absolute; opacity:0; pointer-events:none; background:transparent; border:none; outline:none; color:transparent; font-family:inherit; font-size:13px; caret-color:transparent; width:1px; height:1px; }
+
+        /* Mobile tap-to-type button */
+        .mobile-type-btn {
+          display: none;
+        }
+        @media (max-width: 639px) {
+          .titlebar-center { display: none !important; }
+          .statusbar-shortcuts { display: none !important; }
+          .mobile-type-btn { display: flex !important; }
+        }
+        @media (max-width: 400px) {
+          .titlebar-themes { display: none !important; }
+        }
+      `}</style>
+
+      {/* TITLEBAR */}
+      <div
+        style={
+          {
+            height: isMobile ? 40 : 44,
+            background: `${T.surface}e8`,
+            backdropFilter: "blur(12px)",
+            borderBottom: `1px solid ${T.border}`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: `0 ${isMobile ? 12 : 16}px`,
+            flexShrink: 0,
+            userSelect: "none",
+            position: "relative",
+            zIndex: 20,
+          } as CSSProperties
+        }
+      >
+        {/* Traffic lights */}
+        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+          {(
+            [
+              ["#FF5F57", "#C0392B"],
+              ["#FEBC2E", "#D4A017"],
+              ["#28C840", "#1E9E30"],
+            ] as [string, string][]
+          ).map(([c], i) => (
+            <div
+              key={i}
+              style={{
+                width: isMobile ? 10 : 12,
+                height: isMobile ? 10 : 12,
+                borderRadius: "50%",
+                background: c,
+                cursor: "pointer",
+                transition: "filter 0.15s",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLDivElement).style.filter =
+                  "brightness(0.85)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLDivElement).style.filter = "none";
+              }}
+              onClick={i === 1 ? () => setLines([]) : undefined}
+            />
+          ))}
+        </div>
+
+        {/* Center title — hidden on mobile */}
+        <div
+          className="titlebar-center"
+          style={{
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+            fontSize: 12,
+            color: T.muted,
+            letterSpacing: "0.06em",
+            display: "flex",
+            gap: 6,
+            alignItems: "center",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <span style={{ color: T.accent }}>nadim</span>
+          <span style={{ color: T.dim }}>@</span>
+          <span style={{ color: T.muted }}>portfolio</span>
+          <span style={{ color: T.dim, margin: "0 4px" }}>—</span>
+          <span style={{ color: T.dim }}>{T.name}</span>
+          <span style={{ color: T.dim, margin: "0 4px" }}>—</span>
+          <span style={{ color: T.dim, fontVariantNumeric: "tabular-nums" }}>
+            {time}
+          </span>
+        </div>
+
+        {/* Mobile: show theme name + time */}
+        {isMobile && (
+          <div
+            style={{
+              fontSize: 11,
+              color: T.muted,
+              display: "flex",
+              gap: 8,
+              alignItems: "center",
+            }}
+          >
+            <span style={{ color: T.accent }}>{T.name}</span>
+            <span style={{ color: T.dim }}>{time}</span>
+          </div>
+        )}
+
+        {/* Theme dots */}
+        <div
+          className="titlebar-themes"
+          style={{
+            display: "flex",
+            gap: isMobile ? 4 : 6,
+            alignItems: "center",
+          }}
+        >
+          {Object.entries(THEMES).map(([key, th]) => (
+            <button
+              key={key}
+              title={`Theme: ${th.name}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setTheme(THEMES[key]);
+              }}
+              style={{
+                width: isMobile ? 8 : 10,
+                height: isMobile ? 8 : 10,
+                borderRadius: "50%",
+                border:
+                  th.name === T.name
+                    ? `1px solid ${T.text}`
+                    : "1px solid transparent",
+                background: th.accent,
+                cursor: "pointer",
+                transition: "all 0.2s",
+                transform: th.name === T.name ? "scale(1.3)" : "scale(1)",
+                outline: "none",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* OUTPUT */}
+      <div
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          padding: "12px 0 0",
+          cursor: "text",
+          minHeight: 0,
+          position: "relative",
+          zIndex: 10,
+          maxWidth: isMobile ? "100%" : 900,
+          width: "100%",
+          alignSelf: "center",
+        }}
+      >
+        {lines.map((line, i) => (
+          <div key={i} className="tline">
+            {line.type === "cmd" ? (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "baseline",
+                  gap: 0,
+                  padding: `2px ${px}px`,
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: isMobile ? 12 : 13,
+                    color: T.accent,
+                    marginRight: 8,
+                    flexShrink: 0,
+                  }}
+                >
+                  ❯
+                </span>
+                <span
+                  style={{
+                    fontSize: isMobile ? 12 : 13,
+                    color: T.dim,
+                    lineHeight: "22px",
+                    fontFamily: "inherit",
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {line.text}
+                </span>
+              </div>
+            ) : (
+              <RenderLine line={line} T={T} isMobile={isMobile} />
+            )}
+          </div>
+        ))}
+
+        {/* Input row */}
+        {ready && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: `4px ${px}px`,
+              gap: 0,
+              marginBottom: 4,
+            }}
+          >
+            <span
+              style={{
+                fontSize: isMobile ? 12 : 13,
+                color: T.accent,
+                marginRight: 8,
+                flexShrink: 0,
+                lineHeight: "22px",
+              }}
+            >
+              ❯
+            </span>
+            <div
+              style={{
+                position: "relative",
+                flex: 1,
+                display: "flex",
+                alignItems: "center",
+                height: 22,
+                cursor: "text",
+              }}
+            >
+              {suggestion && (
+                <span
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
+                    fontSize: isMobile ? 12 : 13,
+                    pointerEvents: "none",
+                    userSelect: "none",
+                    lineHeight: "22px",
+                    fontFamily: "inherit",
+                    whiteSpace: "pre",
+                  }}
+                >
+                  <span style={{ color: "transparent" }}>{input}</span>
+                  <span style={{ color: T.muted, opacity: 0.4 }}>
+                    {suggestion}
+                  </span>
+                </span>
+              )}
+              <span
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  fontSize: isMobile ? 12 : 13,
+                  color: T.text,
+                  lineHeight: "22px",
+                  fontFamily: "inherit",
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-all",
+                  pointerEvents: "none",
+                  userSelect: "none",
+                }}
+              >
+                {input}
+              </span>
+              <span
+                style={{
+                  position: "absolute",
+                  left: iw,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: 2,
+                  height: 15,
+                  background: T.cursor,
+                  borderRadius: 1,
+                  animation: "caretBlink 1s step-end infinite",
+                }}
+              />
+              <input
+                ref={inputRef}
+                className="input-hidden"
+                value={input}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  setHistIdx(-1);
+                }}
+                onKeyDown={handleKey}
+                autoFocus={!isMobile}
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck={false}
+              />
+              <span
+                ref={measureRef}
+                style={{
+                  position: "absolute",
+                  visibility: "hidden",
+                  fontSize: isMobile ? 12 : 13,
+                  whiteSpace: "pre",
+                  fontFamily: "inherit",
+                  pointerEvents: "none",
+                }}
+              >
+                {input}
+              </span>
+            </div>
+          </div>
+        )}
+
+        <div ref={bottomRef} style={{ height: 60 }} />
+      </div>
+
+      {/* STATUS BAR */}
+      <div
+        style={
+          {
+            height: isMobile ? 26 : 28,
+            background: `${T.surface}e8`,
+            backdropFilter: "blur(12px)",
+            borderTop: `1px solid ${T.border}`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: `0 ${isMobile ? 12 : 16}px`,
+            flexShrink: 0,
+            userSelect: "none",
+            gap: 8,
+            position: "relative",
+            zIndex: 20,
+          } as CSSProperties
+        }
+      >
+        {/* Keyboard shortcuts — hidden on mobile */}
+        <div
+          className="statusbar-shortcuts"
+          style={{
+            display: "flex",
+            gap: 14,
+            alignItems: "center",
+            overflow: "hidden",
+          }}
+        >
+          {(
+            [
+              ["help", "?"],
+              ["tab", "complete"],
+              ["↑↓", "history"],
+              ["ctrl+l", "clear"],
+              ["ctrl+c", "cancel"],
+            ] as [string, string][]
+          ).map(([k, v]) => (
+            <span
+              key={k}
+              style={{ fontSize: 10, color: T.dim, whiteSpace: "nowrap" }}
+            >
+              <span style={{ color: T.muted }}>{k}</span>
+              <span style={{ color: T.dim }}> {v}</span>
+            </span>
+          ))}
+        </div>
+
+        {/* Mobile: compact hint */}
+        {isMobile && (
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <span style={{ fontSize: 10, color: T.muted }}>
+              help · tab · ↑↓
+            </span>
+          </div>
+        )}
+
+        {/* Right side stats */}
+        <div
+          style={{
+            display: "flex",
+            gap: isMobile ? 10 : 16,
+            alignItems: "center",
+            flexShrink: 0,
+          }}
+        >
+          <span
+            style={{
+              fontSize: 10,
+              color: T.green,
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
+            <span
+              style={{
+                width: 5,
+                height: 5,
+                borderRadius: "50%",
+                background: T.green,
+                display: "inline-block",
+                animation: "pulse 2s ease infinite",
+              }}
+            />
+            {!isMobile && "available"}
+          </span>
+          {!isMobile && (
+            <span style={{ fontSize: 10, color: T.muted }}>
+              hist:{cmdHist.length}
+            </span>
+          )}
+          <span style={{ fontSize: 10, color: T.accent, fontStyle: "italic" }}>
+            {T.name}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

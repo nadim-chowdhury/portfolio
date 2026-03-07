@@ -2235,6 +2235,9 @@ export default function Terminal() {
           minHeight: 0,
           position: "relative",
           zIndex: 10,
+          maxWidth: 900,
+          width: "100%",
+          alignSelf: "center",
         }}
       >
         {lines.map((line, i) => (

@@ -96,7 +96,6 @@ interface BootEntry {
   text: string;
   type: string;
 }
-
 interface SequenceEntry {
   t: number;
   text: string;
@@ -115,11 +114,8 @@ function TerminalBackground({ accent, bg }: { accent: string; bg: string }) {
     if (!canvas) return;
     const ctx: any = canvas.getContext("2d");
     if (!ctx) return;
-
-    // Capture bg in a local const so it doesn't shadow inside animate()
     const bgHex = bg;
 
-    // Parse hex accent → rgb
     function hexToRgb(hex: string): [number, number, number] {
       const h = hex.replace("#", "");
       const n = parseInt(
@@ -139,14 +135,13 @@ function TerminalBackground({ accent, bg }: { accent: string; bg: string }) {
     const BINARY_CHARS: readonly string[] = ["0", "1"];
 
     type Drop = {
-      x: number; // column index
-      y: number; // current row (float, increments per frame)
+      x: number;
+      y: number;
       speed: number;
       chars: string[];
       opacity: number;
       length: number;
     };
-
     let drops: Drop[] = [];
     let cols = 0;
     let rows = 0;
@@ -157,8 +152,6 @@ function TerminalBackground({ accent, bg }: { accent: string; bg: string }) {
       canvas.height = window.innerHeight;
       cols = Math.ceil(canvas.width / CELL);
       rows = Math.ceil(canvas.height / CELL);
-
-      // Respawn drops to match new cols
       drops = [];
       for (let i = 0; i < cols; i++) {
         if (Math.random() < 0.35) spawnDrop(i, -Math.random() * rows);
@@ -182,7 +175,6 @@ function TerminalBackground({ accent, bg }: { accent: string; bg: string }) {
 
     function drawGrid(accentHex: string) {
       const [r, g, b] = hexToRgb(accentHex);
-      // Minor grid lines
       ctx.strokeStyle = `rgba(${r},${g},${b},0.055)`;
       ctx.lineWidth = 0.5;
       ctx.beginPath();
@@ -195,8 +187,6 @@ function TerminalBackground({ accent, bg }: { accent: string; bg: string }) {
         ctx.lineTo(canvas.width, y);
       }
       ctx.stroke();
-
-      // Major grid lines every 4 cells
       ctx.strokeStyle = `rgba(${r},${g},${b},0.11)`;
       ctx.lineWidth = 0.8;
       ctx.beginPath();
@@ -209,8 +199,6 @@ function TerminalBackground({ accent, bg }: { accent: string; bg: string }) {
         ctx.lineTo(canvas.width, y);
       }
       ctx.stroke();
-
-      // Intersection dots at major crossings
       ctx.fillStyle = `rgba(${r},${g},${b},0.18)`;
       for (let x = 0; x <= canvas.width; x += CELL * 4) {
         for (let y = 0; y <= canvas.height; y += CELL * 4) {
@@ -226,12 +214,10 @@ function TerminalBackground({ accent, bg }: { accent: string; bg: string }) {
       ctx.font = `${FONT_SIZE}px 'JetBrains Mono', monospace`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-
       for (const drop of drops) {
         for (let i = 0; i < drop.chars.length; i++) {
           const row = Math.floor(drop.y) - i;
           if (row < 0 || row > rows) continue;
-          // Head char is brightest
           const headAlpha =
             i === 0 ? drop.opacity : drop.opacity * (1 - i / drop.length);
           if (headAlpha < 0.01) continue;
@@ -249,31 +235,20 @@ function TerminalBackground({ accent, bg }: { accent: string; bg: string }) {
     function animate() {
       animId = requestAnimationFrame(animate);
       frame++;
-
-      // Clear with bg color
       const [br, bg2, bb] = hexToRgb(bgHex);
       ctx.fillStyle = `rgba(${br},${bg2},${bb},1)`;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       drawGrid(accentRef.current);
       drawBinary(accentRef.current);
-
-      // Advance drops
       for (let i = drops.length - 1; i >= 0; i--) {
         drops[i].y += drops[i].speed;
-        // Randomly mutate chars
         if (frame % 8 === 0 && Math.random() < 0.3) {
           const ci = Math.floor(Math.random() * drops[i].chars.length);
           drops[i].chars[ci] =
             BINARY_CHARS[Math.floor(Math.random() * 2)] ?? "0";
         }
-        // Remove when off screen
-        if (drops[i].y - drops[i].length > rows) {
-          drops.splice(i, 1);
-        }
+        if (drops[i].y - drops[i].length > rows) drops.splice(i, 1);
       }
-
-      // Occasionally spawn new drops
       if (frame % 20 === 0) {
         const col = Math.floor(Math.random() * cols);
         const alreadyActive = drops.some(
@@ -286,12 +261,10 @@ function TerminalBackground({ accent, bg }: { accent: string; bg: string }) {
     resize();
     window.addEventListener("resize", resize);
     animate();
-
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", resize);
     };
-    // bg change requires full redraw setup; accent handled via ref
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bg]);
 
@@ -589,11 +562,9 @@ const JOKES = [
   "Why do programmers prefer dark mode? Because light attracts bugs. 🐛",
   "A SQL query walks into a bar, walks up to two tables and asks... 'Can I join you?' 🍺",
   "Why do Java developers wear glasses? Because they can't C#. 👓",
-  "I told my wife she was drawing her eyebrows too high. She looked surprised. (git blame)",
   "There are 10 types of people: those who understand binary, and those who don't. 💻",
   "Why did the developer go broke? Because he used up all his cache. 💸",
   "How many programmers does it take to change a light bulb? None — it's a hardware problem.",
-  "A byte walks into a bar and orders a pint. Bartender asks 'What's wrong?' Byte: 'Bit overflow.'",
   "Programming is 10% writing code and 90% figuring out why it doesn't work. 🤔",
   "The best thing about a Boolean is even if you're wrong, you're only off by a bit.",
 ];
@@ -607,15 +578,6 @@ const QUOTES: { q: string; a: string }[] = [
   {
     q: "Code is like humor. When you have to explain it, it's bad.",
     a: "Cory House",
-  },
-  {
-    q: "The most disastrous thing that you can ever learn is your first programming language.",
-    a: "Alan Kay",
-  },
-  { q: "Simplicity is the soul of efficiency.", a: "Austin Freeman" },
-  {
-    q: "Before software can be reusable it first has to be usable.",
-    a: "Ralph Johnson",
   },
   { q: "Make it work, make it right, make it fast.", a: "Kent Beck" },
   {
@@ -740,7 +702,6 @@ const HACK_SEQUENCE: SequenceEntry[] = [
 ];
 
 let _id = 0;
-
 function mkLine(
   text: string,
   type: LineType = "out",
@@ -749,7 +710,6 @@ function mkLine(
 ): Line {
   return { text, type, url, meta, id: ++_id };
 }
-
 const BR = (): Line => mkLine("", "br");
 const DIM = (t: string): Line => mkLine(t, "dim");
 const ACC = (t: string): Line => mkLine(t, "acc");
@@ -785,7 +745,6 @@ function run(
   const parts = raw.trim().split(/\s+/);
   const cmd = parts[0].toLowerCase();
   const args = parts.slice(1);
-
   if (!cmd) return [];
 
   if (cmd === "rm") {
@@ -814,12 +773,12 @@ function run(
         ACC("  PORTFOLIO"),
         OUT("  about · whoami           Developer profile & bio"),
         OUT(
-          `  skills [category]        Tech stack  ·  category: ${Object.keys(SKILLS).join(" | ")}`,
+          `  skills [category]        Tech stack  ·  ${Object.keys(SKILLS).join(" | ")}`,
         ),
         OUT("  exp · experience         Full work history"),
         OUT("  projects                 All projects overview"),
         OUT(
-          `  project <id>             Project deep-dive  ·  id: ${PROJECTS.map((p) => p.id).join(" | ")}`,
+          `  project <id>             Project deep-dive  ·  ${PROJECTS.map((p) => p.id).join(" | ")}`,
         ),
         OUT("  contact                  Contact information"),
         OUT("  links                    Social & portfolio links"),
@@ -845,21 +804,16 @@ function run(
         OUT("  email                    Copy email to clipboard"),
         BR(),
         ACC("  FUN"),
-        OUT("  joke                     Random dev joke 😄"),
-        OUT("  quote                    Dev wisdom 💡"),
-        OUT("  fortune                  Fortune cookie 🥠"),
-        OUT("  cowsay <text>            ASCII cow says something 🐄"),
+        OUT("  joke · quote · fortune   Random content 😄"),
+        OUT("  cowsay <text>            ASCII cow 🐄"),
         OUT("  banner                   Show ASCII banner"),
         OUT("  matrix                   🐇 Follow the white rabbit"),
         OUT("  hack                     Initiate hacking sequence 💻"),
         OUT("  sl                       🚂 Something special..."),
-        OUT("  sudo <cmd>               Try your luck"),
-        OUT("  vim · nano               Text editor experience"),
-        OUT("  rm -rf ./                ☠️  Don't."),
+        OUT("  sudo · vim · rm -rf ./   Easter eggs"),
         BR(),
-        DIM("  Keyboard shortcuts:"),
         DIM(
-          "  ↑ ↓  history   Tab  autocomplete   Ctrl+L  clear   Ctrl+C  cancel   Ctrl+U  clear line",
+          "  Shortcuts: ↑↓ history · Tab autocomplete · Ctrl+L clear · Ctrl+C cancel",
         ),
         BR(),
       ];
@@ -873,17 +827,12 @@ function run(
         mkLine(`  ${ME.name}`, "hdr"),
         DIM(`  ${ME.role}  ·  ${ME.location}`),
         BR(),
-        OUT("  ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄"),
         OUT("  Experience   3+ years  ·  2022 to present"),
         OUT("  Projects     20+ deployed across web & mobile"),
         OUT("  Focus        SaaS · ERP · Interactive Business Apps"),
-        OUT("  Education    Self-taught  ·  BSc Mathematics (dropout)"),
         OUT("  Stack        React · Next.js · NestJS · Node.js · PostgreSQL"),
-        OUT("  ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄"),
         BR(),
         OUT("  Dropped out of Mathematics to pursue software full-time."),
-        OUT("  Best decision I ever made. I believe great software"),
-        OUT("  comes from deeply understanding the problem first."),
         BR(),
         OK("  ● OPEN TO WORK  ·  Full-time · Freelance · Contract"),
         BR(),
@@ -930,8 +879,8 @@ function run(
         DIM(
           `  Run  project <id>  for details  ·  ${PROJECTS.map((p) => p.id).join(" · ")}`,
         ),
+        BR(),
       );
-      rows.push(BR());
       return rows;
     }
 
@@ -1117,13 +1066,8 @@ function run(
           BR(),
           OUT("  # Nadim Chowdhury — Portfolio Terminal"),
           BR(),
-          OUT("  An interactive terminal-based portfolio."),
           OUT("  Built with React.js and a lot of coffee. ☕"),
           BR(),
-          OUT("  ## Commands"),
-          OUT("  Run `help` to see all available commands."),
-          BR(),
-          OUT("  ## Contact"),
           OUT(`  ${ME.email}`),
           OUT(`  ${ME.web}`),
           BR(),
@@ -1137,11 +1081,9 @@ function run(
           CODE(`    "name": "nadim-portfolio-terminal",`),
           CODE(`    "version": "3.0.0",`),
           CODE(`    "author": "${ME.name}",`),
-          CODE(`    "description": "Interactive terminal portfolio",`),
           CODE('    "dependencies": {'),
           CODE('      "react": "^18.0.0",'),
-          CODE('      "next": "^14.0.0",'),
-          CODE('      "nestjs": "^10.0.0"'),
+          CODE('      "next": "^14.0.0"'),
           CODE("    }"),
           CODE("  }"),
           BR(),
@@ -1162,7 +1104,6 @@ function run(
         ),
         BR(),
       ];
-
     case "ls":
       return [
         BR(),
@@ -1170,10 +1111,8 @@ function run(
         OUT("  README.md   package.json   .env.example   .gitignore"),
         BR(),
       ];
-
     case "pwd":
       return [BR(), OUT("  /home/nadim/portfolio"), BR()];
-
     case "echo":
       return args.length ? [BR(), OUT("  " + args.join(" ")), BR()] : [BR()];
 
@@ -1198,14 +1137,12 @@ function run(
         DIM(`  ${ME.location}  ·  ${ME.web}`),
         BR(),
       ];
-
     case "joke":
       return [
         BR(),
         OUT(`  ${JOKES[Math.floor(Math.random() * JOKES.length)]}`),
         BR(),
       ];
-
     case "quote": {
       const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
       return [BR(), OUT(`  "${q.q}"`), DIM(`  — ${q.a}`), BR()];
@@ -1213,13 +1150,10 @@ function run(
 
     case "fortune": {
       const fortunes = [
-        "🥠 A bug-free code is a myth. Embrace the chaos.",
+        "🥠 A bug-free code is a myth.",
         "🥠 Your next deploy will succeed. (Probably.)",
-        "🥠 The answer is yes. Unless it's a merge conflict.",
-        "🥠 console.log is not a debugger. But we understand.",
         "🥠 The cloud is just someone else's computer.",
         "🥠 It works on my machine. Ship your machine.",
-        "🥠 Refactor later is a lie you tell yourself.",
         "🥠 Dark mode saves lives. And battery.",
       ];
       return [
@@ -1273,19 +1207,14 @@ function run(
     case "sl":
       return [
         BR(),
-        CODE("        ====        ________                ___________ "),
-        CODE("    _D _|  |_______/        \\__I_I_____===__|_________| "),
-        CODE("     |(_)---  |   H\\________/ |   |        =|___ ___|   "),
-        CODE("     /     |  |   H  |  |     |   |         ||_| |_||   "),
-        CODE("    |      |  |   H  |__--------------------| [___] |   "),
-        CODE("    | ________|___H__/__|_____/[][]~\\_______|       |   "),
-        CODE("    |/ |   |-----------I_____I [][] []  D   |=======|__ "),
-        CODE("  __/ =| o |=-~~\\  /~~\\  /~~\\  /~~\\ ____Y___________|__ "),
-        CODE(" |/-=|___|=O=====O=====O=====O|_____/~\\___/          |  "),
-        CODE("  \\_/      \\__/  \\__/  \\__/  \\__/      \\_/           |  "),
+        CODE("        ====        ________                ___________"),
+        CODE("    _D _|  |_______/        \\__I_I_____===__|_________|"),
+        CODE("     |(_)---  |   H\\________/ |   |        =|___ ___|  "),
+        CODE("     /     |  |   H  |  |     |   |         ||_| |_||  "),
+        CODE("    | ________|___H__/__|_____/[][]~\\_____________|      "),
         BR(),
-        WARN("  🚂 You tried typing  ls  but got a train instead."),
-        DIM("  (Classic Unix easter egg — sl stands for Steam Locomotive)"),
+        WARN("  🚂 You tried typing ls but got a train instead."),
+        DIM("  (Classic Unix easter egg)"),
         BR(),
       ];
 
@@ -1294,28 +1223,21 @@ function run(
         BR(),
         WARN("  nadim is not in the sudoers file."),
         ERR("  This incident will be reported. 📋"),
-        DIM("  (Just kidding. But seriously, don't sudo in production.)"),
         BR(),
       ];
-
     case "vim":
     case "nano":
       return [
         BR(),
         ACC(`  Opening ${cmd}...`),
         BR(),
-        OUT("  ┌─────────────────────────────────────────────────────────┐"),
-        OUT("  │                                                         │"),
-        OUT("  │   You are now inside vim.                               │"),
-        OUT("  │                                                         │"),
-        OUT("  │   Generations of developers have been lost here.        │"),
-        OUT("  │                                                         │"),
-        OUT("  │   To exit: press Esc, then type  :q!  then Enter        │"),
-        OUT("  │   Or just close the browser tab. We won't judge.        │"),
-        OUT("  │                                                         │"),
-        OUT("  └─────────────────────────────────────────────────────────┘"),
+        OUT("  ┌──────────────────────────────────────────────────────┐"),
+        OUT("  │  You are now inside vim.                            │"),
+        OUT("  │  To exit: press Esc, then type  :q!  then Enter     │"),
+        OUT("  │  Or just close the browser tab. We won't judge.     │"),
+        OUT("  └──────────────────────────────────────────────────────┘"),
         BR(),
-        DIM("  Tip: In real vim, :wq saves and quits. You're welcome."),
+        DIM("  Tip: :wq saves and quits. You're welcome."),
         BR(),
       ];
 
@@ -1324,23 +1246,11 @@ function run(
       if (sub === "log")
         return [
           BR(),
-          OUT("  commit a3f7d2e  (HEAD -> main, origin/main)"),
-          OUT(`  Author: Nadim Chowdhury <${ME.email}>`),
+          OUT("  commit a3f7d2e  (HEAD -> main)"),
+          OUT(`  Author: ${ME.name} <${ME.email}>`),
           OUT(`  Date:   ${new Date().toDateString()}`),
           OUT(""),
           OUT("      feat: add interactive terminal portfolio"),
-          BR(),
-          OUT("  commit b8c91a5"),
-          OUT(`  Author: Nadim Chowdhury <${ME.email}>`),
-          OUT("  Date:   3 days ago"),
-          OUT(""),
-          OUT("      fix: resolve hydration mismatch in Next.js"),
-          BR(),
-          OUT("  commit d42f8b3"),
-          OUT(`  Author: Nadim Chowdhury <${ME.email}>`),
-          OUT("  Date:   1 week ago"),
-          OUT(""),
-          OUT("      chore: add 847 more TODO comments"),
           BR(),
         ];
       if (sub === "status")
@@ -1349,14 +1259,12 @@ function run(
           OUT("  On branch main"),
           OK("  nothing to commit, working tree clean"),
           BR(),
-          DIM("  (Your portfolio is production-ready. Ship it.)"),
-          BR(),
         ];
       if (sub === "blame")
         return [BR(), ERR("  You. It was you. It's always you."), BR()];
       return [
         BR(),
-        OUT(`  git: '${sub ?? "?"}' is not a git command. See 'git help'.`),
+        OUT(`  git: '${sub ?? "?"}' is not a git command.`),
         DIM("  Available: git log | git status | git blame"),
         BR(),
       ];
@@ -1367,21 +1275,12 @@ function run(
       if (sub === "install" || sub === "i")
         return [
           BR(),
-          OUT("  npm warn deprecated node_modules..."),
           OUT("  added 2,847 packages in 47s"),
-          BR(),
           WARN("  3 high severity vulnerabilities"),
-          DIM("  npm audit fix to do absolutely nothing"),
           BR(),
         ];
       if (sub === "run" && args[1])
-        return [
-          BR(),
-          OK(`  > ${args[1]}`),
-          OUT("  Starting development server..."),
-          OK("  ✓ ready in 843ms"),
-          BR(),
-        ];
+        return [BR(), OK(`  > ${args[1]}`), OK("  ✓ ready in 843ms"), BR()];
       return [BR(), DIM("  Usage: npm install | npm run <script>"), BR()];
     }
 
@@ -1389,48 +1288,27 @@ function run(
       return [
         BR(),
         OUT("  Welcome to Node.js v20.0.0."),
-        DIM("  Type .exit to quit the REPL"),
-        BR(),
         OUT("  > 1 + 1"),
         ACC("  2"),
-        OUT("  > 'Nadim' + ' is awesome'"),
-        ACC("  'Nadim is awesome'"),
         BR(),
       ];
-
     case "python":
       return [
         BR(),
         OUT("  Python 3.12.0"),
         DIM("  >>> print('Hello from Python!')"),
         OUT("  Hello from Python!"),
-        DIM("  >>> import antigravity"),
-        WARN("  🚀 Launching..."),
         BR(),
       ];
-
     case "yes":
       return [
         BR(),
         ...Array.from({ length: 8 }, () =>
           OUT("  y y y y y y y y y y y y y y y y y y y y"),
         ),
-        DIM("  (Ctrl+C to stop — but you already know that)"),
+        DIM("  (Ctrl+C to stop)"),
         BR(),
       ];
-
-    case "clear":
-    case "cls":
-      return [{ type: "clear", id: ++_id, text: "", url: null, meta: null }];
-
-    case "exit":
-      return [
-        BR(),
-        DIM("  There is no escape from this portfolio. 😈"),
-        DIM("  You are here forever."),
-        BR(),
-      ];
-
     case "weather":
       return [
         BR(),
@@ -1439,6 +1317,12 @@ function run(
         DIM("  (Simulated — no API key required)"),
         BR(),
       ];
+
+    case "clear":
+    case "cls":
+      return [{ type: "clear", id: ++_id, text: "", url: null, meta: null }];
+    case "exit":
+      return [BR(), DIM("  There is no escape from this portfolio. 😈"), BR()];
 
     default:
       return [
@@ -1453,18 +1337,22 @@ function run(
 interface RenderLineProps {
   line: Line;
   T: Theme;
+  isMobile: boolean;
 }
 
-function RenderLine({ line, T }: RenderLineProps) {
+function RenderLine({ line, T, isMobile }: RenderLineProps) {
+  const px = isMobile ? 12 : 24;
+  const fs = isMobile ? 12 : 13;
+
   const mono: CSSProperties = {
     fontFamily: "inherit",
-    fontSize: 13,
+    fontSize: fs,
     lineHeight: "22px",
     whiteSpace: "pre-wrap",
     wordBreak: "break-all",
   };
 
-  if (line.type === "br") return <div style={{ height: 6 }} />;
+  if (line.type === "br") return <div style={{ height: 4 }} />;
 
   if (line.type === "divider")
     return (
@@ -1473,10 +1361,10 @@ function RenderLine({ line, T }: RenderLineProps) {
           display: "flex",
           alignItems: "center",
           gap: 12,
-          padding: "6px 24px",
+          padding: `6px ${px}px`,
         }}
       >
-        <div style={{ height: 1, width: 20, background: T.border }} />
+        <div style={{ height: 1, width: 16, background: T.border }} />
         {line.text && (
           <span
             style={{
@@ -1499,11 +1387,12 @@ function RenderLine({ line, T }: RenderLineProps) {
       <pre
         style={{
           ...mono,
-          fontSize: 10,
-          lineHeight: "14px",
+          fontSize: isMobile ? 6 : 10,
+          lineHeight: isMobile ? "10px" : "14px",
           color: T.accent,
-          padding: "4px 24px",
+          padding: `4px ${px}px`,
           userSelect: "none",
+          overflowX: "auto",
         }}
       >{`
  ███╗   ██╗ █████╗ ██████╗ ██╗███╗   ███╗
@@ -1521,8 +1410,8 @@ function RenderLine({ line, T }: RenderLineProps) {
         style={{
           display: "flex",
           flexWrap: "wrap",
-          gap: 6,
-          padding: "4px 24px",
+          gap: 5,
+          padding: `4px ${px}px`,
         }}
       >
         {meta.items.map((item, i) => (
@@ -1533,7 +1422,7 @@ function RenderLine({ line, T }: RenderLineProps) {
               color: T.accent,
               background: T.accentSoft,
               border: `1px solid ${T.accent}22`,
-              padding: "3px 10px",
+              padding: "2px 8px",
               borderRadius: 4,
               letterSpacing: "0.04em",
             }}
@@ -1550,8 +1439,8 @@ function RenderLine({ line, T }: RenderLineProps) {
     return (
       <div
         style={{
-          margin: "2px 24px",
-          padding: "16px 20px",
+          margin: `2px ${px}px`,
+          padding: isMobile ? "12px 14px" : "16px 20px",
           background: T.surface,
           border: `1px solid ${T.border}`,
           borderRadius: 8,
@@ -1565,31 +1454,44 @@ function RenderLine({ line, T }: RenderLineProps) {
             alignItems: "flex-start",
             marginBottom: 6,
             flexWrap: "wrap",
-            gap: 8,
+            gap: 6,
           }}
         >
-          <div>
+          <div style={{ minWidth: 0, flex: 1 }}>
             <span
               style={{
                 fontSize: 10,
                 color: T.accent,
                 letterSpacing: "0.12em",
-                marginRight: 10,
+                marginRight: 8,
               }}
             >
               {e.n}
             </span>
-            <span style={{ fontSize: 13, color: T.text, fontWeight: 500 }}>
+            <span
+              style={{
+                fontSize: isMobile ? 12 : 13,
+                color: T.text,
+                fontWeight: 500,
+                wordBreak: "break-word",
+              }}
+            >
               {e.role}
             </span>
           </div>
           <span
-            style={{ fontSize: 10, color: T.muted, letterSpacing: "0.06em" }}
+            style={{
+              fontSize: 10,
+              color: T.muted,
+              letterSpacing: "0.06em",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
+            }}
           >
             {e.period}
           </span>
         </div>
-        <div style={{ fontSize: 11, color: T.muted, marginBottom: 10 }}>
+        <div style={{ fontSize: 11, color: T.muted, marginBottom: 8 }}>
           {e.co} · {e.type}
         </div>
         <div
@@ -1597,13 +1499,13 @@ function RenderLine({ line, T }: RenderLineProps) {
             fontSize: 12,
             color: T.muted,
             lineHeight: 1.65,
-            marginBottom: 10,
+            marginBottom: 8,
             opacity: 0.75,
           }}
         >
           {e.desc}
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
           {e.stack.map((s, i) => (
             <span
               key={i}
@@ -1611,7 +1513,7 @@ function RenderLine({ line, T }: RenderLineProps) {
                 fontSize: 10,
                 color: T.accent,
                 background: T.accentSoft,
-                padding: "2px 8px",
+                padding: "2px 7px",
                 borderRadius: 3,
               }}
             >
@@ -1628,8 +1530,8 @@ function RenderLine({ line, T }: RenderLineProps) {
     return (
       <div
         style={{
-          margin: "2px 24px",
-          padding: "16px 20px",
+          margin: `2px ${px}px`,
+          padding: isMobile ? "12px 14px" : "16px 20px",
           background: T.surface,
           border: `1px solid ${T.border}`,
           borderRadius: 8,
@@ -1657,35 +1559,51 @@ function RenderLine({ line, T }: RenderLineProps) {
           <div
             style={{
               display: "flex",
-              gap: 12,
+              gap: 8,
               alignItems: "baseline",
               flexWrap: "wrap",
+              minWidth: 0,
+              flex: 1,
+              marginRight: 8,
             }}
           >
             <span
-              style={{ fontSize: 10, color: T.accent, letterSpacing: "0.08em" }}
+              style={{
+                fontSize: 10,
+                color: T.accent,
+                letterSpacing: "0.08em",
+                flexShrink: 0,
+              }}
             >
               {p.year}
             </span>
-            <span style={{ fontSize: 14, color: T.text, fontWeight: 500 }}>
+            <span
+              style={{
+                fontSize: isMobile ? 13 : 14,
+                color: T.text,
+                fontWeight: 500,
+              }}
+            >
               {p.name}
             </span>
             <span style={{ fontSize: 11, color: T.muted }}>{p.cat}</span>
           </div>
-          <span style={{ fontSize: 14, color: T.accent }}>↗</span>
+          <span style={{ fontSize: 14, color: T.accent, flexShrink: 0 }}>
+            ↗
+          </span>
         </div>
         <div
           style={{
             fontSize: 12,
             color: T.muted,
             lineHeight: 1.65,
-            marginBottom: 10,
+            marginBottom: 8,
             opacity: 0.75,
           }}
         >
           {p.desc}
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
           {p.stack.map((s, i) => (
             <span
               key={i}
@@ -1693,7 +1611,7 @@ function RenderLine({ line, T }: RenderLineProps) {
                 fontSize: 10,
                 color: T.accent,
                 background: T.accentSoft,
-                padding: "2px 8px",
+                padding: "2px 7px",
                 borderRadius: 3,
               }}
             >
@@ -1710,28 +1628,30 @@ function RenderLine({ line, T }: RenderLineProps) {
     return (
       <div
         style={{
-          margin: "2px 24px",
-          padding: "20px 24px",
+          margin: `2px ${px}px`,
+          padding: isMobile ? "14px 16px" : "20px 24px",
           background: T.surface,
           border: `1px solid ${T.border}`,
           borderRadius: 8,
           display: "grid",
-          gridTemplateColumns: "auto 1fr",
-          gap: "0 32px",
+          gridTemplateColumns: isMobile ? "1fr" : "auto 1fr",
+          gap: isMobile ? "12px 0" : "0 32px",
         }}
       >
-        <pre
-          style={{
-            fontSize: 9,
-            lineHeight: "12px",
-            color: th.accent,
-            userSelect: "none",
-          }}
-        >{`    .---.
+        {!isMobile && (
+          <pre
+            style={{
+              fontSize: 9,
+              lineHeight: "12px",
+              color: th.accent,
+              userSelect: "none",
+            }}
+          >{`    .---.
    /     \\
   |  N C  |
    \\     /
     '---'`}</pre>
+        )}
         <div style={{ fontSize: 12, lineHeight: "22px" }}>
           {(
             [
@@ -1741,28 +1661,52 @@ function RenderLine({ line, T }: RenderLineProps) {
               ["Shell", "nadim-sh 1.0.0"],
               ["Theme", th.name],
               ["Uptime", "3 years, 5 months"],
-              ["Projects", `${PROJECTS.length} featured  ·  20+ total`],
               ["Location", ME.location],
             ] as [string, string][]
           ).map(([k, v]) => (
-            <div key={k} style={{ display: "flex", gap: 12 }}>
-              <span style={{ color: th.accent, width: 80, flexShrink: 0 }}>
+            <div
+              key={k}
+              style={{
+                display: "flex",
+                gap: 8,
+                flexWrap: isMobile ? "wrap" : "nowrap",
+              }}
+            >
+              <span
+                style={{
+                  color: th.accent,
+                  width: isMobile ? "auto" : 80,
+                  flexShrink: 0,
+                  minWidth: isMobile ? 60 : undefined,
+                }}
+              >
                 {k}
               </span>
               <span style={{ color: T.text }}>{v}</span>
             </div>
           ))}
-          <div style={{ display: "flex", gap: 12 }}>
-            <span style={{ color: th.accent, width: 80 }}>Status</span>
+          <div style={{ display: "flex", gap: 8 }}>
+            <span
+              style={{
+                color: th.accent,
+                width: isMobile ? "auto" : 80,
+                flexShrink: 0,
+                minWidth: isMobile ? 60 : undefined,
+              }}
+            >
+              Status
+            </span>
             <span style={{ color: T.green }}>● Available for work</span>
           </div>
-          <div style={{ display: "flex", gap: 4, marginTop: 10 }}>
+          <div
+            style={{ display: "flex", gap: 4, marginTop: 10, flexWrap: "wrap" }}
+          >
             {Object.values(THEMES).map((t, i) => (
               <div
                 key={i}
                 style={{
-                  width: 16,
-                  height: 16,
+                  width: 14,
+                  height: 14,
                   borderRadius: 3,
                   background: t.accent,
                 }}
@@ -1777,20 +1721,13 @@ function RenderLine({ line, T }: RenderLineProps) {
 
   if (line.type === "themerow") {
     const { key, th, current } = line.meta as ThemeRowMeta;
-    const monoStyle: CSSProperties = {
-      fontFamily: "inherit",
-      fontSize: 13,
-      lineHeight: "22px",
-      whiteSpace: "pre-wrap",
-      wordBreak: "break-all",
-    };
     return (
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          gap: 12,
-          padding: "4px 24px",
+          gap: 10,
+          padding: `4px ${px}px`,
         }}
       >
         <div
@@ -1800,14 +1737,11 @@ function RenderLine({ line, T }: RenderLineProps) {
             borderRadius: "50%",
             background: th.accent,
             border: current ? `2px solid ${T.text}` : "2px solid transparent",
+            flexShrink: 0,
           }}
         />
         <span
-          style={{
-            ...monoStyle,
-            color: current ? T.text : T.muted,
-            fontSize: 12,
-          }}
+          style={{ ...mono, color: current ? T.text : T.muted, fontSize: 12 }}
         >
           {key.padEnd(12)}
           {th.name}
@@ -1842,7 +1776,7 @@ function RenderLine({ line, T }: RenderLineProps) {
         textDecoration: isLink ? "underline" : "none",
         textDecorationColor: `${T.accent}55`,
         cursor: isLink ? "pointer" : "default",
-        padding: "0 24px",
+        padding: `0 ${px}px`,
         transition: "opacity 0.15s",
       }}
       onClick={
@@ -1883,13 +1817,9 @@ const BOOT: BootEntry[] = [
     text: `  ${ME.name}  ·  ${ME.role}  ·  ${ME.location}`,
     type: "acc",
   },
-  { t: 1040, text: `  ${ME.web}  ·  Available for work  `, type: "ok" },
+  { t: 1040, text: `  ${ME.web}  ·  Available for work`, type: "ok" },
   { t: 1100, text: "", type: "br" },
-  {
-    t: 1140,
-    text: "  Type  help  for all commands.  Tab autocompletes.  ↑↓ for history.",
-    type: "dim",
-  },
+  { t: 1140, text: "  Type  help  to get started.", type: "dim" },
   { t: 1200, text: "", type: "br" },
 ];
 
@@ -1903,10 +1833,19 @@ export default function Terminal() {
   const [suggestion, setSug] = useState("");
   const [iw, setIw] = useState(0);
   const [time, setTime] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+  const [showMobileInput, setShowMobileInput] = useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const measureRef = useRef<HTMLSpanElement | null>(null);
   const T = theme;
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     const tick = () =>
@@ -1999,7 +1938,6 @@ export default function Terminal() {
       }
       if (e.key === "Tab") {
         e.preventDefault();
-        // Special case: rm tab-completes to the full easter egg command
         if (input.trim() === "rm") {
           setInput("rm -rf ./");
           setSug("");
@@ -2082,62 +2020,69 @@ export default function Terminal() {
           e.preventDefault();
           setInput("");
         }
-        if (e.key === "a") {
-          e.preventDefault();
-          inputRef.current?.setSelectionRange(0, 0);
-        }
-        if (e.key === "e") {
-          e.preventDefault();
-          inputRef.current?.setSelectionRange(input.length, input.length);
-        }
       }
     },
     [input, cmdHist, histIdx, submit],
   );
 
+  const px = isMobile ? 12 : 24;
+
   return (
     <div
       style={{
         background: "transparent",
-        height: "100vh",
+        height: "100dvh",
         display: "flex",
         flexDirection: "column",
-
         fontFamily: "'JetBrains Mono','Fira Code',monospace",
         overflow: "hidden",
         position: "relative",
       }}
-      onClick={() => inputRef.current?.focus()}
+      onClick={() => {
+        inputRef.current?.focus();
+        if (isMobile) setShowMobileInput(true);
+      }}
     >
       <TerminalBackground accent={T.accent} bg={T.bg} />
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
         * { box-sizing:border-box; margin:0; padding:0; }
         html, body { height:100%; overflow:hidden; }
-        ::-webkit-scrollbar { width:4px; }
+        ::-webkit-scrollbar { width:3px; }
         ::-webkit-scrollbar-track { background:transparent; }
         ::-webkit-scrollbar-thumb { background:${T.border}; border-radius:2px; }
-        ::-webkit-scrollbar-thumb:hover { background:${T.muted}; }
         @keyframes caretBlink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
         @keyframes lineIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
         .tline { animation: lineIn 0.15s ease forwards; }
         .input-hidden { position:absolute; opacity:0; pointer-events:none; background:transparent; border:none; outline:none; color:transparent; font-family:inherit; font-size:13px; caret-color:transparent; width:1px; height:1px; }
+
+        /* Mobile tap-to-type button */
+        .mobile-type-btn {
+          display: none;
+        }
+        @media (max-width: 639px) {
+          .titlebar-center { display: none !important; }
+          .statusbar-shortcuts { display: none !important; }
+          .mobile-type-btn { display: flex !important; }
+        }
+        @media (max-width: 400px) {
+          .titlebar-themes { display: none !important; }
+        }
       `}</style>
 
       {/* TITLEBAR */}
       <div
         style={
           {
-            height: 44,
+            height: isMobile ? 40 : 44,
             background: `${T.surface}e8`,
             backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
             borderBottom: `1px solid ${T.border}`,
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "0 16px",
+            padding: `0 ${isMobile ? 12 : 16}px`,
             flexShrink: 0,
             userSelect: "none",
             position: "relative",
@@ -2145,7 +2090,8 @@ export default function Terminal() {
           } as CSSProperties
         }
       >
-        <div style={{ display: "flex", gap: 7, alignItems: "center" }}>
+        {/* Traffic lights */}
+        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
           {(
             [
               ["#FF5F57", "#C0392B"],
@@ -2156,8 +2102,8 @@ export default function Terminal() {
             <div
               key={i}
               style={{
-                width: 12,
-                height: 12,
+                width: isMobile ? 10 : 12,
+                height: isMobile ? 10 : 12,
                 borderRadius: "50%",
                 background: c,
                 cursor: "pointer",
@@ -2174,7 +2120,10 @@ export default function Terminal() {
             />
           ))}
         </div>
+
+        {/* Center title — hidden on mobile */}
         <div
+          className="titlebar-center"
           style={{
             position: "absolute",
             left: "50%",
@@ -2185,6 +2134,7 @@ export default function Terminal() {
             display: "flex",
             gap: 6,
             alignItems: "center",
+            whiteSpace: "nowrap",
           }}
         >
           <span style={{ color: T.accent }}>nadim</span>
@@ -2197,7 +2147,32 @@ export default function Terminal() {
             {time}
           </span>
         </div>
-        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+
+        {/* Mobile: show theme name + time */}
+        {isMobile && (
+          <div
+            style={{
+              fontSize: 11,
+              color: T.muted,
+              display: "flex",
+              gap: 8,
+              alignItems: "center",
+            }}
+          >
+            <span style={{ color: T.accent }}>{T.name}</span>
+            <span style={{ color: T.dim }}>{time}</span>
+          </div>
+        )}
+
+        {/* Theme dots */}
+        <div
+          className="titlebar-themes"
+          style={{
+            display: "flex",
+            gap: isMobile ? 4 : 6,
+            alignItems: "center",
+          }}
+        >
           {Object.entries(THEMES).map(([key, th]) => (
             <button
               key={key}
@@ -2207,8 +2182,8 @@ export default function Terminal() {
                 setTheme(THEMES[key]);
               }}
               style={{
-                width: 10,
-                height: 10,
+                width: isMobile ? 8 : 10,
+                height: isMobile ? 8 : 10,
                 borderRadius: "50%",
                 border:
                   th.name === T.name
@@ -2230,12 +2205,12 @@ export default function Terminal() {
         style={{
           flex: 1,
           overflowY: "auto",
-          padding: "16px 0 0",
+          padding: "12px 0 0",
           cursor: "text",
           minHeight: 0,
           position: "relative",
           zIndex: 10,
-          maxWidth: 900,
+          maxWidth: isMobile ? "100%" : 900,
           width: "100%",
           alignSelf: "center",
         }}
@@ -2248,14 +2223,14 @@ export default function Terminal() {
                   display: "flex",
                   alignItems: "baseline",
                   gap: 0,
-                  padding: "2px 24px",
+                  padding: `2px ${px}px`,
                 }}
               >
                 <span
                   style={{
-                    fontSize: 13,
+                    fontSize: isMobile ? 12 : 13,
                     color: T.accent,
-                    marginRight: 10,
+                    marginRight: 8,
                     flexShrink: 0,
                   }}
                 >
@@ -2263,36 +2238,38 @@ export default function Terminal() {
                 </span>
                 <span
                   style={{
-                    fontSize: 13,
+                    fontSize: isMobile ? 12 : 13,
                     color: T.dim,
                     lineHeight: "22px",
                     fontFamily: "inherit",
+                    wordBreak: "break-all",
                   }}
                 >
                   {line.text}
                 </span>
               </div>
             ) : (
-              <RenderLine line={line} T={T} />
+              <RenderLine line={line} T={T} isMobile={isMobile} />
             )}
           </div>
         ))}
 
+        {/* Input row */}
         {ready && (
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              padding: "4px 24px",
+              padding: `4px ${px}px`,
               gap: 0,
               marginBottom: 4,
             }}
           >
             <span
               style={{
-                fontSize: 13,
+                fontSize: isMobile ? 12 : 13,
                 color: T.accent,
-                marginRight: 10,
+                marginRight: 8,
                 flexShrink: 0,
                 lineHeight: "22px",
               }}
@@ -2315,7 +2292,7 @@ export default function Terminal() {
                     position: "absolute",
                     left: 0,
                     top: 0,
-                    fontSize: 13,
+                    fontSize: isMobile ? 12 : 13,
                     pointerEvents: "none",
                     userSelect: "none",
                     lineHeight: "22px",
@@ -2334,11 +2311,12 @@ export default function Terminal() {
                   position: "absolute",
                   left: 0,
                   top: 0,
-                  fontSize: 13,
+                  fontSize: isMobile ? 12 : 13,
                   color: T.text,
                   lineHeight: "22px",
                   fontFamily: "inherit",
-                  whiteSpace: "pre",
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-all",
                   pointerEvents: "none",
                   userSelect: "none",
                 }}
@@ -2367,7 +2345,7 @@ export default function Terminal() {
                   setHistIdx(-1);
                 }}
                 onKeyDown={handleKey}
-                autoFocus
+                autoFocus={!isMobile}
                 autoComplete="off"
                 autoCorrect="off"
                 autoCapitalize="off"
@@ -2378,7 +2356,7 @@ export default function Terminal() {
                 style={{
                   position: "absolute",
                   visibility: "hidden",
-                  fontSize: 13,
+                  fontSize: isMobile ? 12 : 13,
                   whiteSpace: "pre",
                   fontFamily: "inherit",
                   pointerEvents: "none",
@@ -2389,6 +2367,36 @@ export default function Terminal() {
             </div>
           </div>
         )}
+
+        {/* Mobile: tap-to-type prompt */}
+        {ready && isMobile && (
+          <div
+            className="mobile-type-btn"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "8px 12px",
+              padding: "10px",
+              background: T.accentSoft,
+              border: `1px solid ${T.accent}33`,
+              borderRadius: 6,
+              cursor: "pointer",
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              inputRef.current?.focus();
+              setShowMobileInput(true);
+            }}
+          >
+            <span
+              style={{ fontSize: 11, color: T.accent, letterSpacing: "0.1em" }}
+            >
+              TAP TO TYPE COMMAND
+            </span>
+          </div>
+        )}
+
         <div ref={bottomRef} style={{ height: 60 }} />
       </div>
 
@@ -2396,15 +2404,14 @@ export default function Terminal() {
       <div
         style={
           {
-            height: 28,
+            height: isMobile ? 26 : 28,
             background: `${T.surface}e8`,
             backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
             borderTop: `1px solid ${T.border}`,
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "0 16px",
+            padding: `0 ${isMobile ? 12 : 16}px`,
             flexShrink: 0,
             userSelect: "none",
             gap: 8,
@@ -2413,10 +2420,12 @@ export default function Terminal() {
           } as CSSProperties
         }
       >
+        {/* Keyboard shortcuts — hidden on mobile */}
         <div
+          className="statusbar-shortcuts"
           style={{
             display: "flex",
-            gap: 16,
+            gap: 14,
             alignItems: "center",
             overflow: "hidden",
           }}
@@ -2428,7 +2437,6 @@ export default function Terminal() {
               ["↑↓", "history"],
               ["ctrl+l", "clear"],
               ["ctrl+c", "cancel"],
-              ["ctrl+u", "clear line"],
             ] as [string, string][]
           ).map(([k, v]) => (
             <span
@@ -2440,10 +2448,21 @@ export default function Terminal() {
             </span>
           ))}
         </div>
+
+        {/* Mobile: compact hint */}
+        {isMobile && (
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <span style={{ fontSize: 10, color: T.muted }}>
+              help · tab · ↑↓
+            </span>
+          </div>
+        )}
+
+        {/* Right side stats */}
         <div
           style={{
             display: "flex",
-            gap: 16,
+            gap: isMobile ? 10 : 16,
             alignItems: "center",
             flexShrink: 0,
           }}
@@ -2454,24 +2473,26 @@ export default function Terminal() {
               color: T.green,
               display: "flex",
               alignItems: "center",
-              gap: 5,
+              gap: 4,
             }}
           >
             <span
               style={{
-                width: 6,
-                height: 6,
+                width: 5,
+                height: 5,
                 borderRadius: "50%",
                 background: T.green,
                 display: "inline-block",
                 animation: "pulse 2s ease infinite",
               }}
             />
-            available
+            {!isMobile && "available"}
           </span>
-          <span style={{ fontSize: 10, color: T.muted }}>
-            hist:{cmdHist.length}
-          </span>
+          {!isMobile && (
+            <span style={{ fontSize: 10, color: T.muted }}>
+              hist:{cmdHist.length}
+            </span>
+          )}
           <span style={{ fontSize: 10, color: T.accent, fontStyle: "italic" }}>
             {T.name}
           </span>

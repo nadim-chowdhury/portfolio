@@ -28,7 +28,7 @@ function ProjectCard({
         </div>
 
         {/* Visual Block — gradient placeholder styled by project */}
-        <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-6 border border-border-subtle bg-surface-secondary">
+        {/* <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-6 border border-border-subtle bg-surface-secondary">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-full h-full bg-linear-to-br from-accent/8 via-surface-secondary to-accent/4 flex items-center justify-center">
               <span className="font-heading text-3xl md:text-4xl font-bold text-accent/15 select-none">
@@ -36,7 +36,7 @@ function ProjectCard({
               </span>
             </div>
           </div>
-          {/* Overlay on hover */}
+
           <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/5 transition-colors duration-500 flex items-center justify-center">
             <motion.div
               initial={false}
@@ -47,7 +47,7 @@ function ProjectCard({
               </span>
             </motion.div>
           </div>
-        </div>
+        </div> */}
 
         {/* Project Info */}
         <div className="flex flex-col flex-1">
@@ -72,7 +72,9 @@ function ProjectCard({
 
           {/* Footer */}
           <div className="flex items-center justify-between pt-4 border-t border-border-subtle">
-            <span className="text-xs font-mono text-text-tertiary">{project.year}</span>
+            <span className="text-xs font-mono text-text-tertiary">
+              {project.year}
+            </span>
             <a
               href={project.url}
               target="_blank"

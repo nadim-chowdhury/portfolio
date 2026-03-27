@@ -156,9 +156,34 @@ export interface Project {
   stack: string[];
   description: string;
   color: string;
+  image: string;
 }
 
 export const projects: Project[] = [
+  {
+    id: "purepath-booking",
+    name: "PurePath Booking",
+    category: "Booking System",
+    url: "https://purepath-booking.vercel.app",
+    year: "2026",
+    stack: ["Next.js", "React", "Redux Toolkit", "Shadcn UI", "Tailwind CSS"],
+    description:
+      "A modern, high-performance booking system built with the robust React ecosystem to streamline reservations, appointments, and user management.",
+    color: "var(--accent)",
+    image: "/images/projects/purepath-booking.webp",
+  },
+  {
+    id: "3d-ecommerce",
+    name: "3D E-Commerce Platform",
+    category: "E-Commerce",
+    url: "https://3d-ecommerce-pink.vercel.app",
+    year: "2026",
+    stack: ["Next.js", "React Three Fiber", "Tailwind CSS", "Redux Toolkit"],
+    description:
+      "A modern, immersive e-commerce experience leveraging interactive 3D product visualizations with smooth Framer Motion animations to enhance the user shopping journey.",
+    color: "var(--accent)",
+    image: "/images/projects/3d-ecommerce.webp",
+  },
   {
     id: "collabier",
     name: "Collabier SaaS",
@@ -169,6 +194,7 @@ export const projects: Project[] = [
     description:
       "Visual editor platform with real-time style editing, reusable components, project dashboard, and integrated billing system.",
     color: "var(--accent)",
+    image: "/images/projects/collabier.webp",
   },
   {
     id: "flightbook",
@@ -180,6 +206,25 @@ export const projects: Project[] = [
     description:
       "Secure airline booking system with role-based access, CRUD operations for airlines, airports, planes, and routes.",
     color: "var(--accent)",
+    image: "/images/projects/flightbook.webp",
+  },
+  {
+    id: "super-hrms",
+    name: "Super HRMS",
+    category: "HR Management",
+    url: "https://super-hrms.vercel.app",
+    year: "2026",
+    stack: [
+      "Next.js",
+      "Tailwind CSS",
+      "Shadcn UI",
+      "Redux Toolkit",
+      "Recharts",
+    ],
+    description:
+      "A comprehensive Human Resource Management System built for modern workforce operations, featuring employee tracking, real-time analytics dashboards, and interactive UI components.",
+    color: "var(--accent)",
+    image: "/images/projects/super-hrms.webp",
   },
   {
     id: "schoolsys",
@@ -191,6 +236,25 @@ export const projects: Project[] = [
     description:
       "Comprehensive school ERP with student records, scheduling, teacher dashboards, and grade management.",
     color: "var(--accent)",
+    image: "/images/projects/schoolsys.webp",
+  },
+  {
+    id: "super-erp",
+    name: "Super ERP",
+    category: "Enterprise Resource Planning",
+    url: "https://super-erp-xi.vercel.app",
+    year: "2026",
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Shadcn UI",
+      "Redux Toolkit",
+    ],
+    description:
+      "A modern, production-ready ERP system with real-time analytics, inventory management, sales tracking, and comprehensive business reporting.",
+    color: "var(--accent)",
+    image: "/images/projects/super-erp.webp",
   },
   {
     id: "dashboard",
@@ -202,6 +266,43 @@ export const projects: Project[] = [
     description:
       "Modern analytics dashboard with interactive charts, dark mode toggle, and fully responsive layout.",
     color: "var(--accent)",
+    image: "/images/projects/dashboard.webp",
+  },
+  {
+    id: "nexboard",
+    name: "NexBoard Admin Dashboard",
+    category: "Admin Dashboard",
+    url: "https://nexboard-react-admin-dashboard.vercel.app",
+    year: "2026",
+    stack: ["Next.js", "React", "Redux Toolkit", "Shadcn UI", "Tailwind CSS"],
+    description:
+      "A modern, high-performance, and scalable admin dashboard built with the latest React ecosystem, providing a robust foundation for building data-rich web applications.",
+    color: "var(--accent)",
+    image: "/images/projects/nexboard.webp",
+  },
+  {
+    id: "fieldvault",
+    name: "FieldVault",
+    category: "B2B SaaS Platform",
+    url: "https://fieldvault-project-web.vercel.app",
+    year: "2026",
+    stack: ["Next.js", "NestJS", "React Native", "PostgreSQL", "Expo"],
+    description:
+      "A production-ready Multi-Tenant B2B SaaS platform for construction firms to track equipment via QR codes, manage maintenance schedules, and generate audit compliance reports.",
+    color: "var(--accent)",
+    image: "/images/projects/fieldvault.webp",
+  },
+  {
+    id: "ai-dashboard-template",
+    name: "AI Dashboard Template",
+    category: "AI Dashboard",
+    url: "https://ai-dashboard-template-seven.vercel.app",
+    year: "2026",
+    stack: ["Next.js", "React", "Tailwind CSS", "Shadcn UI", "AI SDK"],
+    description:
+      "A modern, high-performance AI dashboard template built with the robust React ecosystem to streamline AI-powered applications and user management.",
+    color: "var(--accent)",
+    image: "/images/projects/ai-dashboard-template.webp",
   },
 ];
 

@@ -1,49 +1,62 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import StoreProvider from "@/components/providers/store-provider";
-// import { Home } from "lucide-react";
-// import NavMenu from "@/components/common/nav-menu";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Nadim Chowdhury | Software Developer",
-  description: "Portfolio of Nadim Chowdhury - Full Stack Developer",
+  title: "Nadim Chowdhury — Full Stack Developer",
+  description:
+    "Portfolio of Nadim Chowdhury — Full Stack Developer specializing in React, Next.js, NestJS, and PostgreSQL. 3+ years building SaaS platforms, ERP systems, and interactive web applications.",
+  keywords: [
+    "Nadim Chowdhury",
+    "Full Stack Developer",
+    "React Developer",
+    "Next.js Developer",
+    "NestJS Developer",
+    "Software Engineer",
+    "Web Developer",
+    "Bangladesh",
+    "Portfolio",
+  ],
+  authors: [{ name: "Nadim Chowdhury" }],
+  creator: "Nadim Chowdhury",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    title: "Nadim Chowdhury — Full Stack Developer",
+    description:
+      "3+ years building production-grade SaaS platforms, ERP systems, and interactive web applications.",
+    siteName: "Nadim Chowdhury Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nadim Chowdhury — Full Stack Developer",
+    description:
+      "3+ years building production-grade SaaS platforms, ERP systems, and interactive web applications.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
-
-// const navMenu = [
-//   {
-//     id: 1,
-//     label: "Home",
-//     icon: <Home />,
-//     route: "/",
-//   },
-//   {
-//     id: 2,
-//     label: "V2",
-//     icon: <Home />,
-//     route: "/v2",
-//   },
-//   {
-//     id: 3,
-//     label: "V3",
-//     icon: <Home />,
-//     route: "/v3",
-//   },
-//   {
-//     id: 4,
-//     label: "Danger",
-//     icon: <Home />,
-//     route: "/x",
-//   },
-// ];
 
 export default function RootLayout({
   children,
@@ -53,27 +66,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("font-sans", inter.variable)}
+      className={`${inter.variable} ${spaceGrotesk.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="antialiased">
+      <body className="noise-overlay">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          <StoreProvider>
-            <TooltipProvider>{children}</TooltipProvider>
-          </StoreProvider>
+          {children}
         </ThemeProvider>
       </body>
-
-      {/* <nav className="absolute left-4 top-1/2 z-50">
-        {navMenu.map((item, i) => (
-          <NavMenu key={i} data={item} />
-        ))}
-      </nav> */}
     </html>
   );
 }

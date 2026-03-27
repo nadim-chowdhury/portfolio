@@ -28,16 +28,23 @@ function ProjectCard({
         </div>
 
         {/* Visual Block — gradient placeholder styled by project */}
-        {/* <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-6 border border-border-subtle bg-surface-secondary">
-          <div className="absolute inset-0 flex items-center justify-center">
+        <div
+          className="relative w-full aspect-video rounded-xl overflow-hidden mb-6 border border-border-subtle"
+          style={{
+            backgroundImage: `url(${project.image})`,
+            backgroundSize: "cover",
+            backgroundPosition: "top",
+          }}
+        >
+          {/* <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-full h-full bg-linear-to-br from-accent/8 via-surface-secondary to-accent/4 flex items-center justify-center">
               <span className="font-heading text-3xl md:text-4xl font-bold text-accent/15 select-none">
                 {project.name.charAt(0)}
               </span>
             </div>
-          </div>
+          </div> */}
 
-          <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/5 transition-colors duration-500 flex items-center justify-center">
+          {/* <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/5 transition-colors duration-500 flex items-center justify-center">
             <motion.div
               initial={false}
               className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -46,8 +53,8 @@ function ProjectCard({
                 View Project <ArrowRight className="w-3 h-3" />
               </span>
             </motion.div>
-          </div>
-        </div> */}
+          </div> */}
+        </div>
 
         {/* Project Info */}
         <div className="flex flex-col flex-1">

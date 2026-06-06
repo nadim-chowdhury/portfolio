@@ -438,7 +438,7 @@ const EXP: ExpEntry[] = [
     n: "02",
     role: "Full Stack Web Developer",
     co: "Freelance",
-    period: "Aug 2024 – Jun 2025",
+    period: "Feb 2025 – Jun 2025",
     type: "Contract",
     stack: ["Next.js", "NestJS", "PostgreSQL", "Stripe"],
     desc: "Airline booking platform + visual editor with real-time editing, RBAC, billing & subscription.",
@@ -447,7 +447,7 @@ const EXP: ExpEntry[] = [
     n: "03",
     role: "Junior Frontend Developer",
     co: "Mediusware Ltd",
-    period: "Mar 2024 – Jul 2024",
+    period: "Mar 2024 – Jan 2025",
     type: "Full-time",
     stack: ["React", "GraphQL", "TypeScript", "Tailwind"],
     desc: "Drag-and-drop website builder with multi-tenancy, subdomain publishing, GraphQL APIs.",
@@ -1885,6 +1885,7 @@ export default function Terminal() {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [lines]);
+
   useEffect(() => {
     if (measureRef.current) setIw(measureRef.current.offsetWidth);
   }, [input]);

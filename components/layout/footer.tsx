@@ -18,7 +18,7 @@ export function Footer() {
                 height={48}
                 className="w-8 h-8 rounded-full bg-accent"
               />
-              <span className="font-heading font-semibold text-lg text-text-primary">
+              <span className="font-heading font-semibold text-xl text-text-primary">
                 Nad!m
               </span>
             </div>

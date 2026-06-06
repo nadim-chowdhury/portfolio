@@ -109,7 +109,7 @@ export const experiences: Experience[] = [
     id: "02",
     role: "Full Stack Web Developer",
     company: "Freelance",
-    period: "Aug 2024 – Jun 2025",
+    period: "Feb 2025 – Jun 2025",
     type: "Contract",
     stack: ["Next.js", "NestJS", "PostgreSQL", "Stripe"],
     description:
@@ -119,7 +119,7 @@ export const experiences: Experience[] = [
     id: "03",
     role: "Junior Frontend Developer",
     company: "Mediusware Ltd",
-    period: "Mar 2024 – Jul 2024",
+    period: "Mar 2024 – Jan 2025",
     type: "Full-time",
     stack: ["React", "GraphQL", "TypeScript", "Tailwind"],
     description:

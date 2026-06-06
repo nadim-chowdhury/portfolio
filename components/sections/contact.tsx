@@ -133,7 +133,7 @@ export function Contact() {
           </ScrollReveal> */}
 
           {/* Contact Info (2 cols) */}
-          <ScrollReveal className="lg:col-span-5" direction="right" delay={0.1}>
+          <ScrollReveal className="lg:col-span-5" direction="up" delay={0.2}>
             <div className="flex flex-col gap-5 h-full justify-center">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Phone */}

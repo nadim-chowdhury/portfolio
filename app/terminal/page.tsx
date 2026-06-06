@@ -759,7 +759,7 @@ function run(
     }, 0);
     return [
       BR(),
-      WARN("⚠️  Dangerous command detected. Engaging safety protocol..."),
+      WARN("⚠️ Dangerous command detected. Engaging safety protocol..."),
       BR(),
     ];
   }

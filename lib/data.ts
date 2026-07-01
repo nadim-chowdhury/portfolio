@@ -25,7 +25,7 @@ export const aboutText = {
 export const stats = [
   { value: "3+", label: "Years Experience" },
   { value: "20+", label: "Projects Shipped" },
-  { value: "5", label: "Companies Worked" },
+  { value: "5+", label: "Companies Worked" },
   { value: "10+", label: "Technologies" },
 ] as const;
 
@@ -101,29 +101,29 @@ export const experiences: Experience[] = [
     company: "Easy Fashion Ltd",
     period: "Jul 2025 – Nov 2025",
     type: "Full-time",
-    stack: ["React", "NestJS", "PostgreSQL", "Docker"],
+    stack: ["Next.js", "NestJS", "PostgreSQL", "Docker"],
     description:
-      "End-to-end feature development across the product stack. Built modular, scalable codebases and collaborated with cross-functional teams in agile sprints.",
+      "Contributed to the development of a large-scale ERP platform integrating business-critical modules (POS, Inventory, Procurement, Production, Finance, and HRM). Designed and implemented end-to-end features using Next.js and NestJS, built and maintained secure REST APIs, optimized application performance via database queries, code splitting, and caching strategies, and maintained modular, well-tested codebases.",
   },
   {
     id: "02",
     role: "Full Stack Web Developer",
     company: "Freelance",
     period: "Feb 2025 – Jun 2025",
-    type: "Contract",
-    stack: ["Next.js", "NestJS", "PostgreSQL", "Stripe"],
+    type: "Freelance",
+    stack: ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "Stripe"],
     description:
-      "Built an airline booking platform and a visual editor SaaS with real-time editing, role-based access control, billing, and subscription management.",
+      "Worked with clients to design and develop modern full-stack web applications. Built a complete Flight Booking System using Next.js and NestJS featuring role-based authorization, aircraft/airport/route management, and booking workflows. Developed a drag-and-drop Website Builder SaaS with reusable components, template management, and subscription-based billing.",
   },
   {
     id: "03",
-    role: "Junior Frontend Developer",
+    role: "Jr. Frontend Developer",
     company: "Mediusware Ltd",
     period: "Mar 2024 – Jan 2025",
     type: "Full-time",
-    stack: ["React", "GraphQL", "TypeScript", "Tailwind"],
+    stack: ["React.js", "TypeScript", "GraphQL", "Ant Design", "Bootstrap"],
     description:
-      "Developed a drag-and-drop website builder with multi-tenancy, subdomain publishing, and GraphQL-powered APIs.",
+      "Contributed to enterprise web applications by building scalable frontend solutions and integrating backend services. Developed a multi-tenant drag-and-drop website builder with dynamic component rendering and subdomain publishing, built features for an event management platform, and designed responsive interfaces consuming GraphQL APIs.",
   },
   {
     id: "04",
@@ -131,19 +131,29 @@ export const experiences: Experience[] = [
     company: "Mediusware Ltd",
     period: "Dec 2023 – Feb 2024",
     type: "Internship",
-    stack: ["React", "REST API", "Ant Design"],
+    stack: ["React.js", "JavaScript", "Ant Design", "REST API"],
     description:
-      "Built profile CRUD with role-based access, task management modules, and customer order tracking systems.",
+      "Completed a frontend development internship by contributing to a large-scale e-commerce platform. Developed Profile Management CRUD with role-based access control, built Back Office and Task Management modules for administrators/employees, and independently built an e-commerce application from scratch.",
   },
   {
     id: "05",
     role: "Frontend Developer",
     company: "Freelance",
-    period: "Sep 2022 – Nov 2023",
+    period: "Jul 2023 – Nov 2023",
     type: "Freelance",
-    stack: ["React", "Node.js", "MongoDB", "Express"],
+    stack: ["Angular", "React.js", "JavaScript", "REST API"],
     description:
-      "Delivered full-stack applications including REST API design, database modeling, deployment pipelines, and version control workflows.",
+      "Delivered frontend solutions for client projects. Built a School Management System using Angular with student, teacher, and administrative modules, developed a responsive Flight Ticket Booking application with complete booking workflows, and designed reusable UI components and responsive layouts.",
+  },
+  {
+    id: "06",
+    role: "Web Developer",
+    company: "Self-employed",
+    period: "Sep 2022 – Jun 2023",
+    type: "Self-employed",
+    stack: ["HTML", "CSS", "JavaScript", "React.js", "MongoDB", "Express.js", "Node.js"],
+    description:
+      "Focused on mastering full-stack web development through hands-on projects. Learned and applied the MERN stack by building full-stack applications from concept to deployment, practicing REST API development, database design, state management, and responsive UI development.",
   },
 ];
 

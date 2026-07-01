@@ -22,9 +22,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nadim Chowdhury — Full Stack Developer",
+  title: "Nadim Chowdhury - Full Stack Developer",
   description:
-    "Portfolio of Nadim Chowdhury — Full Stack Developer specializing in React, Next.js, NestJS, and PostgreSQL. 3+ years building SaaS platforms, ERP systems, and interactive web applications.",
+    "Portfolio of Nadim Chowdhury - Full Stack Developer specializing in React, Next.js, NestJS, and PostgreSQL. 3+ years building SaaS platforms, ERP systems, and interactive web applications.",
   keywords: [
     "Nadim Chowdhury",
     "Full Stack Developer",

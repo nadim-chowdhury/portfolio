@@ -83,7 +83,7 @@ export function Navbar() {
               width={48}
               height={48}
               priority
-              className="w-7 h-7 md:w-9 md:h-9 transition-transform group-hover:scale-110 rounded-full bg-accent"
+              className="w-8 h-8 md:w-9 md:h-9 transition-transform group-hover:scale-110 rounded-full bg-accent"
             />
             <span className="hidden sm:inline font-heading font-semibold text-2xl text-text-primary tracking-tight">
               Nad!m

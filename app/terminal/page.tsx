@@ -439,7 +439,7 @@ const EXP: ExpEntry[] = [
     role: "Professional Development",
     co: "Career Break",
     period: "Dec 2025 – Apr 2026",
-    type: "Career break",
+    type: "Full-time",
     stack: ["React.js", "Next.js", "NestJS", "TypeScript", "React Native"],
     desc: "Focused on professional development and strengthening full-stack skills in React, Next.js, NestJS, TypeScript, and React Native during a planned transition.",
   },

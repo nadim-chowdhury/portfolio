@@ -129,7 +129,7 @@ export const experiences: Experience[] = [
     role: "Professional Development",
     company: "Career Break",
     period: "Dec 2025 – Apr 2026",
-    type: "Career break",
+    type: "Full-time",
     stack: ["React.js", "Next.js", "NestJS", "TypeScript", "React Native"],
     description:
       "Focused on professional development and strengthening my full-stack software engineering skills during a planned career transition.",

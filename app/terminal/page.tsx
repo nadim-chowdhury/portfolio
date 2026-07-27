@@ -427,6 +427,24 @@ const SKILLS: Record<string, string[]> = {
 const EXP: ExpEntry[] = [
   {
     n: "01",
+    role: "Software Engineer",
+    co: "AKIJ iBOS",
+    period: "May 2026 – Present",
+    type: "Full-time",
+    stack: ["React.js", "Redux Toolkit", "Vite", "Material UI", "Formik", "Yup", "REST API"],
+    desc: "Contributed to enterprise ERP & HRMS/Payroll platforms using React.js, Redux Toolkit, and Vite. Designed end-to-end modules, dynamic reporting, and multi-step workflows with Formik/Yup while optimizing REST API integration.",
+  },
+  {
+    n: "02",
+    role: "Professional Development",
+    co: "Career Break",
+    period: "Dec 2025 – Apr 2026",
+    type: "Career break",
+    stack: ["React.js", "Next.js", "NestJS", "TypeScript", "React Native"],
+    desc: "Focused on professional development and strengthening full-stack skills in React, Next.js, NestJS, TypeScript, and React Native during a planned transition.",
+  },
+  {
+    n: "03",
     role: "Full Stack Software Developer",
     co: "Easy Fashion Ltd",
     period: "Jul 2025 – Nov 2025",
@@ -435,7 +453,7 @@ const EXP: ExpEntry[] = [
     desc: "Contributed to a large-scale ERP (POS, Inventory, HRMS). Developed end-to-end features using Next.js/NestJS, built secure REST APIs, and optimized query performance.",
   },
   {
-    n: "02",
+    n: "04",
     role: "Full Stack Web Developer",
     co: "Freelance",
     period: "Feb 2025 – Jun 2025",
@@ -444,16 +462,16 @@ const EXP: ExpEntry[] = [
     desc: "Built a Next.js/NestJS Flight Booking System and a drag-and-drop Website Builder SaaS with subscription-based billing and reusable component rendering.",
   },
   {
-    n: "03",
+    n: "05",
     role: "Jr. Frontend Developer",
     co: "Mediusware Ltd",
     period: "Mar 2024 – Jan 2025",
     type: "Full-time",
-    stack: ["React.js", "TypeScript", "GraphQL", "Ant Design", "Bootstrap"],
+    stack: ["React.js", "TypeScript", "GraphQL", "Ant Design", "Bootstrap", "React Router DOM"],
     desc: "Developed a multi-tenant drag-and-drop website builder with subdomain publishing, built features for an event platform, and integrated GraphQL APIs.",
   },
   {
-    n: "04",
+    n: "06",
     role: "Frontend Trainee",
     co: "Mediusware Ltd",
     period: "Dec 2023 – Feb 2024",
@@ -462,7 +480,7 @@ const EXP: ExpEntry[] = [
     desc: "Developed profile CRUD with RBAC, back office & task management modules, and independently built an e-commerce application from scratch.",
   },
   {
-    n: "05",
+    n: "07",
     role: "Frontend Developer",
     co: "Freelance",
     period: "Jul 2023 – Nov 2023",
@@ -471,7 +489,7 @@ const EXP: ExpEntry[] = [
     desc: "Built a School Management System using Angular (student/teacher/admin modules) and a responsive Flight Ticket Booking application with API integration.",
   },
   {
-    n: "06",
+    n: "08",
     role: "Web Developer",
     co: "Self-employed",
     period: "Sep 2022 – Jun 2023",

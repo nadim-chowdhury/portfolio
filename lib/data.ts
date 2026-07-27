@@ -17,7 +17,7 @@ export const siteConfig = {
 export const aboutText = {
   headline: "Building digital products that matter",
   paragraph:
-    "I'm a full stack developer based in Dhaka with 3+ years of experience shipping production-grade web applications. I dropped out of a Mathematics program to pursue software engineering full-time — a decision that led me through five professional roles, from internships at established firms to leading freelance projects end-to-end.",
+    "I'm a full stack developer based in Dhaka with 3+ years of experience shipping production-grade web applications. I dropped out of a Mathematics program to pursue software engineering full-time — a decision that led me through six professional roles, from internships at established firms to leading freelance projects end-to-end.",
   paragraphTwo:
     "My work spans SaaS platforms, ERP systems, booking engines, and visual editors. I care deeply about clean architecture, intuitive user experiences, and writing code that other developers actually enjoy reading.",
 };
@@ -92,68 +92,152 @@ export interface Experience {
   type: string;
   stack: string[];
   description: string;
+  bullets?: string[];
 }
 
 export const experiences: Experience[] = [
   {
     id: "01",
+    role: "Software Engineer",
+    company: "AKIJ iBOS",
+    period: "May 2026 – Present",
+    type: "Full-time",
+    stack: [
+      "React.js",
+      "JavaScript",
+      "Redux Toolkit",
+      "Vite",
+      "Material UI",
+      "Bootstrap",
+      "Formik",
+      "Yup",
+      "REST API",
+    ],
+    description:
+      "Contributed to the development and maintenance of large-scale enterprise ERP and HRMS/Payroll platforms, building business-critical modules and workflows using React.js, JavaScript, Redux Toolkit, Vite, and modern UI technologies. My responsibilities focused on developing scalable frontend solutions, integrating REST APIs, optimizing application performance, and maintaining clean and maintainable enterprise codebases.",
+    bullets: [
+      "Designed and implemented complex, end-to-end features across ERP and HRMS modules, including employee management, profit center allocation, service requests, recruitment workflows, and dynamic reporting.",
+      "Built responsive and user-friendly interfaces using React.js, Redux Toolkit, Vite, Material UI, and Bootstrap.",
+      "Developed complex forms and multi-step workflows with robust client-side validation using Formik and Yup.",
+      "Integrated and consumed REST APIs while optimizing state management, data flow, and application performance.",
+      "Collaborated with cross-functional teams to translate business requirements into scalable and maintainable technical solutions.",
+      "Maintained clean, modular, and reusable code following modern frontend architecture, coding standards, and enterprise development best practices.",
+    ],
+  },
+  {
+    id: "02",
+    role: "Professional Development",
+    company: "Career Break",
+    period: "Dec 2025 – Apr 2026",
+    type: "Career break",
+    stack: ["React.js", "Next.js", "NestJS", "TypeScript", "React Native"],
+    description:
+      "Focused on professional development and strengthening my full-stack software engineering skills during a planned career transition.",
+    bullets: [
+      "Deepened expertise in React.js, Next.js, NestJS, TypeScript, React Native and modern frontend and backend architecture.",
+      "Worked on personal projects to improve experience with scalable application design, REST APIs, authentication, and database integration.",
+      "Strengthened understanding of clean code, system design, performance optimization, and maintainable software architecture.",
+      "Continued learning and building practical projects to prepare for my next professional opportunity.",
+    ],
+  },
+  {
+    id: "03",
     role: "Full Stack Software Developer",
     company: "Easy Fashion Ltd",
     period: "Jul 2025 – Nov 2025",
     type: "Full-time",
     stack: ["Next.js", "NestJS", "PostgreSQL", "Docker"],
     description:
-      "Contributed to the development of a large-scale ERP platform integrating business-critical modules (POS, Inventory, Procurement, Production, Finance, and HRM). Designed and implemented end-to-end features using Next.js and NestJS, built and maintained secure REST APIs, optimized application performance via database queries, code splitting, and caching strategies, and maintained modular, well-tested codebases.",
+      "Contributed to the development of a large-scale ERP platform that integrates business-critical modules including POS, Inventory, Procurement, Production, Finance, and HRM. My responsibilities covered both frontend and backend development, focusing on scalable architecture, performance, and maintainability.",
+    bullets: [
+      "Designed and implemented end-to-end features using Next.js and NestJS, delivering seamless user experiences across multiple ERP modules.",
+      "Developed and maintained secure REST APIs, ensuring reliable communication between frontend applications and backend services.",
+      "Optimized application performance through efficient database queries, code splitting, caching strategies, and reusable architecture.",
+      "Collaborated closely with cross-functional teams to translate business requirements into scalable technical solutions.",
+      "Maintained clean, modular, and well-tested codebases following enterprise development standards and best practices.",
+    ],
   },
   {
-    id: "02",
+    id: "04",
     role: "Full Stack Web Developer",
     company: "Freelance",
     period: "Feb 2025 – Jun 2025",
     type: "Freelance",
     stack: ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "Stripe"],
     description:
-      "Worked with clients to design and develop modern full-stack web applications. Built a complete Flight Booking System using Next.js and NestJS featuring role-based authorization, aircraft/airport/route management, and booking workflows. Developed a drag-and-drop Website Builder SaaS with reusable components, template management, and subscription-based billing.",
+      "Worked with clients to design and develop modern full-stack web applications, focusing on scalable architecture, intuitive user experiences, and maintainable codebases.",
+    bullets: [
+      "Built a complete Flight Booking System using Next.js and NestJS, including authentication, role-based authorization, airline management, airport management, aircraft management, route management, and booking workflows.",
+      "Developed a drag-and-drop Website Builder SaaS, featuring reusable components, template management, responsive editing, project dashboards, and subscription-based billing.",
+      "Designed scalable frontend and backend architectures with reusable modules, component registries, and optimized rendering pipelines.",
+    ],
   },
   {
-    id: "03",
+    id: "05",
     role: "Jr. Frontend Developer",
     company: "Mediusware Ltd",
     period: "Mar 2024 – Jan 2025",
     type: "Full-time",
-    stack: ["React.js", "TypeScript", "GraphQL", "Ant Design", "Bootstrap"],
+    stack: ["React.js", "TypeScript", "GraphQL", "Ant Design", "Bootstrap", "React Router DOM"],
     description:
-      "Contributed to enterprise web applications by building scalable frontend solutions and integrating backend services. Developed a multi-tenant drag-and-drop website builder with dynamic component rendering and subdomain publishing, built features for an event management platform, and designed responsive interfaces consuming GraphQL APIs.",
+      "Contributed to the development of enterprise web applications by building scalable frontend solutions, integrating backend services, and improving overall application usability and performance.",
+    bullets: [
+      "Developed a multi-tenant drag-and-drop website builder with dynamic component rendering and subdomain publishing functionality.",
+      "Built features for an event management platform, integrating frontend components with backend APIs.",
+      "Implemented multiple modules for internal products, transforming UI designs into responsive, production-ready interfaces.",
+      "Designed responsive and user-friendly interfaces with React.js, Ant Design, and Bootstrap, while managing state and routing using React Router DOM.",
+      "Consumed GraphQL APIs and optimized client-side data fetching for improved application performance.",
+    ],
   },
   {
-    id: "04",
+    id: "06",
     role: "Frontend Trainee",
     company: "Mediusware Ltd",
     period: "Dec 2023 – Feb 2024",
     type: "Internship",
     stack: ["React.js", "JavaScript", "Ant Design", "REST API"],
     description:
-      "Completed a frontend development internship by contributing to a large-scale e-commerce platform. Developed Profile Management CRUD with role-based access control, built Back Office and Task Management modules for administrators/employees, and independently built an e-commerce application from scratch.",
+      "Completed a frontend development internship by contributing to a large-scale e-commerce platform while strengthening practical experience in modern React development.",
+    bullets: [
+      "Developed Profile Management CRUD functionality with role-based access control.",
+      "Implemented Back Office and Task Management modules for administrators, employees, and delivery personnel.",
+      "Built Customer Order Management features with dynamic workflows based on delivery and pickup options.",
+      "Developed interactive UI logic for the Preferences module without backend dependency.",
+      "Independently built an e-commerce application from scratch, including responsive layouts, reusable components, and optimized project architecture.",
+    ],
   },
   {
-    id: "05",
+    id: "07",
     role: "Frontend Developer",
     company: "Freelance",
     period: "Jul 2023 – Nov 2023",
     type: "Freelance",
     stack: ["Angular", "React.js", "JavaScript", "REST API"],
     description:
-      "Delivered frontend solutions for client projects. Built a School Management System using Angular with student, teacher, and administrative modules, developed a responsive Flight Ticket Booking application with complete booking workflows, and designed reusable UI components and responsive layouts.",
+      "Delivered frontend solutions for client projects by developing responsive interfaces, integrating APIs, and translating business requirements into user-friendly applications.",
+    bullets: [
+      "Built a School Management System using Angular with modules for students, teachers, and administrative users.",
+      "Developed a responsive Flight Ticket Booking application with complete booking workflows and API integration.",
+      "Designed reusable UI components and responsive layouts to improve maintainability and consistency.",
+      "Worked directly with clients to gather requirements, provide technical solutions, and deliver projects on schedule.",
+    ],
   },
   {
-    id: "06",
+    id: "08",
     role: "Web Developer",
     company: "Self-employed",
     period: "Sep 2022 – Jun 2023",
     type: "Self-employed",
     stack: ["HTML", "CSS", "JavaScript", "React.js", "MongoDB", "Express.js", "Node.js"],
     description:
-      "Focused on mastering full-stack web development through hands-on projects. Learned and applied the MERN stack by building full-stack applications from concept to deployment, practicing REST API development, database design, state management, and responsive UI development.",
+      "Focused on mastering full-stack web development through hands-on projects while building a strong foundation in modern JavaScript technologies and software engineering practices.",
+    bullets: [
+      "Learned and applied the MERN stack by building full-stack applications from concept to deployment.",
+      "Created practice projects such as task management apps, authentication systems, and CRUD-based solutions.",
+      "Developed authentication systems, task management applications, dashboards, and CRUD-based projects.",
+      "Practiced REST API development, database design, state management, and responsive UI development.",
+      "Strengthened debugging, problem-solving, version control, and deployment skills through continuous project-based learning.",
+    ],
   },
 ];
 

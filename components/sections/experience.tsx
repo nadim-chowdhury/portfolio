@@ -77,6 +77,18 @@ function TimelineCard({
             {exp.description}
           </p>
 
+          {/* Key accomplishments / bullets */}
+          {exp.bullets && exp.bullets.length > 0 && (
+            <ul className="mb-4 space-y-2 text-xs md:text-sm text-text-secondary">
+              {exp.bullets.map((bullet, i) => (
+                <li key={i} className="flex items-start gap-2.5">
+                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
+                  <span className="leading-relaxed">{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
           {/* Stack tags */}
           <div className="flex flex-wrap gap-1.5">
             {exp.stack.map((tech) => (

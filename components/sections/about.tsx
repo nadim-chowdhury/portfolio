@@ -18,7 +18,7 @@ export function About() {
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-start">
           {/* Left: Image (2 cols) */}
-          <ScrollReveal className="lg:col-span-2" direction="left">
+          <ScrollReveal className="lg:col-span-2" direction="right">
             <div className="relative group">
               <div className="relative aspect-4/5 rounded-2xl overflow-hidden border border-border">
                 <Image

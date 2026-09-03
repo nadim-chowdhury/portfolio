@@ -6,6 +6,7 @@ import { Menu, X, Download } from "lucide-react";
 import Image from "next/image";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { navLinks, siteConfig } from "@/lib/data";
+import Link from "next/link";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -82,9 +83,9 @@ export function Navbar() {
               width={48}
               height={48}
               priority
-              className="w-7 h-7 md:w-9 md:h-9 transition-transform group-hover:scale-110 rounded-full bg-accent"
+              className="w-8 h-8 md:w-9 md:h-9 transition-transform group-hover:scale-110 rounded-full bg-accent"
             />
-            <span className="hidden sm:inline font-heading font-semibold text-xl text-text-primary tracking-tight">
+            <span className="hidden sm:inline font-heading font-semibold text-2xl text-text-primary tracking-tight">
               Nad!m
             </span>
           </a>
@@ -116,7 +117,7 @@ export function Navbar() {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
             <ThemeToggle />
-            <a
+            {/* <a
               href={siteConfig.resumePdf}
               target="_blank"
               rel="noopener noreferrer"
@@ -124,7 +125,13 @@ export function Navbar() {
             >
               <Download className="w-3.5 h-3.5" />
               Resume
-            </a>
+            </a> */}
+            <Link
+              href="/terminal"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-fg hover:bg-accent-hover transition-colors"
+            >
+              Don&apos;t Click
+            </Link>
           </div>
 
           {/* Mobile Controls */}

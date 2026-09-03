@@ -4,7 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Briefcase } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { ScrollReveal } from "@/components/ui/scroll-reveal";
+// import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { experiences } from "@/lib/data";
 
 function TimelineCard({

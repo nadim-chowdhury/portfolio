@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Nadim Chowdhury",
-  role: "Full Stack Developer",
+  role: "Software Developer",
   location: "Dhaka, Bangladesh",
   email: "nadim-chowdhury@outlook.com",
   phone: "+880 1971 258803",
@@ -8,6 +8,7 @@ export const siteConfig = {
   linkedin: "https://www.linkedin.com/in/nadim-chowdhury",
   website: "https://nadim.vercel.app",
   resumePdf: "/nadim-chowdhury-resume.pdf",
+  coverLetterPdf: "/nadim-chowdhury-cover-letter.pdf",
   avatar: "/nadim_profile.jpg",
   workingPhoto: "/nadim_chowdhury.jpg",
   logo: "/programming_logo_profile.png",
@@ -17,17 +18,36 @@ export const siteConfig = {
 export const aboutText = {
   headline: "Building digital products that matter",
   paragraph:
-    "I'm a full stack developer based in Dhaka with 3+ years of experience shipping production-grade web applications. I dropped out of a Mathematics program to pursue software engineering full-time — a decision that led me through five professional roles, from internships at established firms to leading freelance projects end-to-end.",
+    "I'm a software developer based in Dhaka with 3+ years of experience building web applications using React, Next.js, Node.js, and NestJS. I dropped out of a Mathematics program to pursue software engineering full-time — a decision that led me through five professional roles, from enterprise ERP and POS platforms to SaaS and booking systems.",
   paragraphTwo:
-    "My work spans SaaS platforms, ERP systems, booking engines, and visual editors. I care deeply about clean architecture, intuitive user experiences, and writing code that other developers actually enjoy reading.",
+    "Currently working as a Software Developer at Akij iBos, building enterprise ERP modules across Procurement, Accounts, financial operations, and multi-level approval workflows. I'm mainly focused on frontend development while actively working with backend APIs, databases, authentication, and business logic.",
 };
 
 export const stats = [
   { value: "3+", label: "Years Experience" },
   { value: "20+", label: "Projects Shipped" },
-  { value: "5", label: "Companies Worked" },
-  { value: "10+", label: "Technologies" },
+  { value: "5", label: "Professional Roles" },
+  { value: "15+", label: "Technologies" },
 ] as const;
+
+export interface Education {
+  degree: string;
+  period: string;
+  institution: string;
+}
+
+export const education: Education[] = [
+  {
+    degree: "BSc in Mathematics (Dropout)",
+    period: "2019",
+    institution: "Habibullah Bahar University College (National University)",
+  },
+  {
+    degree: "HSC in Science",
+    period: "2017 – 2019",
+    institution: "Kabi Nazrul Govt. College (Science Stream)",
+  },
+];
 
 export interface SkillCategory {
   name: string;
@@ -75,7 +95,7 @@ export const skillCategories: SkillCategory[] = [
   {
     name: "DevOps",
     icon: "cloud",
-    skills: ["Docker", "Git", "Vercel", "Netlify", "CI/CD", "Linux"],
+    skills: ["Docker", "Git", "GitHub", "Vercel", "Netlify", "CI/CD", "Linux"],
   },
   {
     name: "Tools",
@@ -92,58 +112,84 @@ export interface Experience {
   type: string;
   stack: string[];
   description: string;
+  bullets?: string[];
 }
 
 export const experiences: Experience[] = [
   {
     id: "01",
+    role: "Software Developer",
+    company: "Akij iBos",
+    period: "May 2026 – Present",
+    type: "Full-time",
+    stack: ["React.js", "C#", "MSSQL", "REST API", "Ant Design"],
+    description:
+      "Contributed to enterprise ERP modules including Procurement, Accounts, and financial operations, developing business-critical features and multi-level approval workflows.",
+    bullets: [
+      "Worked on ERP modules including Procurement, Purchase Request, and Purchase Order, building and improving features used in day-to-day business operations.",
+      "Developed features for Accounts and financial operations, including Account Journal, Bank Journal, Bank Payment, and Adjustment Journal.",
+      "Implemented authorization and multi-level approval workflows, supporting different roles and approval stages across ERP modules.",
+    ],
+  },
+  {
+    id: "02",
     role: "Full Stack Software Developer",
     company: "Easy Fashion Ltd",
     period: "Jul 2025 – Nov 2025",
     type: "Full-time",
-    stack: ["React", "NestJS", "PostgreSQL", "Docker"],
+    stack: ["React.js", "NestJS", "PostgreSQL", "Docker", "PWA"],
     description:
-      "End-to-end feature development across the product stack. Built modular, scalable codebases and collaborated with cross-functional teams in agile sprints.",
-  },
-  {
-    id: "02",
-    role: "Full Stack Web Developer",
-    company: "Freelance",
-    period: "Aug 2024 – Jun 2025",
-    type: "Contract",
-    stack: ["Next.js", "NestJS", "PostgreSQL", "Stripe"],
-    description:
-      "Built an airline booking platform and a visual editor SaaS with real-time editing, role-based access control, billing, and subscription management.",
+      "Developed POS and warehouse management systems with sales, inventory tracking, keyboard-friendly interactions, and PWA cross-module functionality.",
+    bullets: [
+      "Worked on POS and warehouse management systems, developing sales and sales return pages, inventory and stock management features, and integrating frontend and backend APIs. Added keyboard shortcuts and keyboard-friendly interactions to make the POS workflow faster and easier to use.",
+      "Worked on PWA features and cross-module functionality, handling API integration, business logic, bug fixes, and improvements while collaborating with developers, testers, and project managers.",
+    ],
   },
   {
     id: "03",
-    role: "Junior Frontend Developer",
-    company: "Mediusware Ltd",
-    period: "Mar 2024 – Jul 2024",
-    type: "Full-time",
-    stack: ["React", "GraphQL", "TypeScript", "Tailwind"],
+    role: "Full Stack Web Developer",
+    company: "Freelance",
+    period: "Apr 2025 – Jun 2025",
+    type: "Contract",
+    stack: ["Next.js", "NestJS", "PostgreSQL", "Amadeus API", "REST API"],
     description:
-      "Developed a drag-and-drop website builder with multi-tenancy, subdomain publishing, and GraphQL-powered APIs.",
+      "Built a full-stack flight booking system with user authentication, role-based access, and Amadeus API flight search integration.",
+    bullets: [
+      "Built a flight booking system using Next.js and NestJS, with user authentication, role-based access, and CRUD features for airlines, airports, aircraft, and routes.",
+      "Integrated the Amadeus API for flight search and booking-related data, and developed the frontend booking flow with responsive UI and API integration.",
+    ],
   },
   {
     id: "04",
-    role: "Frontend Trainee",
-    company: "Mediusware Ltd",
-    period: "Dec 2023 – Feb 2024",
-    type: "Internship",
-    stack: ["React", "REST API", "Ant Design"],
+    role: "Junior Frontend Developer",
+    company: "Mediusware Ltd.",
+    period: "Dec 2023 – Mar 2025",
+    type: "Full-time",
+    stack: ["React.js", "GraphQL", "TypeScript", "Tailwind CSS", "Ant Design"],
     description:
-      "Built profile CRUD with role-based access, task management modules, and customer order tracking systems.",
+      "Developed dynamic web applications including a drag-and-drop website builder with multi-tenancy, GraphQL APIs, and role-based eCommerce features.",
+    bullets: [
+      "Worked on a drag-and-drop website builder with multi-tenancy, reusable components, and subdomain-based website publishing.",
+      "Integrated GraphQL APIs and handled dynamic data rendering across different pages and modules.",
+      "Built frontend features including profile management, task management, customer orders, and user preferences, with role-based access control on eCommerce projects.",
+      "Worked on an event management application, developing new features and connecting frontend components with backend services.",
+      "Fixed bugs, optimized performance, improved existing features, and worked closely with developers and testers to keep the applications stable and easy to use.",
+    ],
   },
   {
     id: "05",
     role: "Frontend Developer",
-    company: "Freelance",
+    company: "Freelance & Personal Projects",
     period: "Sep 2022 – Nov 2023",
     type: "Freelance",
-    stack: ["React", "Node.js", "MongoDB", "Express"],
+    stack: ["React.js", "Node.js", "Express.js", "MongoDB", "REST API"],
     description:
-      "Delivered full-stack applications including REST API design, database modeling, deployment pipelines, and version control workflows.",
+      "Built responsive web applications and strengthened full-stack development foundations with React.js, REST APIs, authentication, and CRUD operations.",
+    bullets: [
+      "Built web applications with React.js while strengthening my frontend development skills, including reusable components, responsive layouts, and user interactions.",
+      "Worked on the frontend of a School Management System and Flight Booking App building pages and features and integrating them with backend APIs.",
+      "Built several practice projects to strengthen my skills in JavaScript, REST APIs, authentication, CRUD operations, Git, and frontend debugging.",
+    ],
   },
 ];
 
@@ -202,9 +248,9 @@ export const projects: Project[] = [
     category: "Booking System",
     url: "https://flight-booking-x.vercel.app",
     year: "2024",
-    stack: ["Next.js", "NestJS", "JWT", "REST API"],
+    stack: ["Next.js", "NestJS", "Amadeus API", "PostgreSQL", "REST API"],
     description:
-      "Secure airline booking system with role-based access, CRUD operations for airlines, airports, planes, and routes.",
+      "Full-stack airline booking platform integrated with Amadeus API for flight search, featuring role-based access, routes, planes, and booking management.",
     color: "var(--accent)",
     image: "/flightbook.png",
   },

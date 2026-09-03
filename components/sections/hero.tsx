@@ -59,7 +59,7 @@ export function Hero() {
             >
               <span className="font-mono text-sm md:text-base text-accent tracking-wide">
                 <TextScramble
-                  text="Full Stack Developer"
+                  text={siteConfig.role}
                   delay={800}
                   speed={40}
                 />

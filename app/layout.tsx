@@ -22,17 +22,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nadim Chowdhury — Full Stack Developer",
+  title: "Nadim Chowdhury — Software Developer",
   description:
-    "Portfolio of Nadim Chowdhury — Full Stack Developer specializing in React, Next.js, NestJS, and PostgreSQL. 3+ years building SaaS platforms, ERP systems, and interactive web applications.",
+    "Portfolio of Nadim Chowdhury — Software Developer specializing in React, Next.js, Node.js, and NestJS. 3+ years building SaaS platforms, ERP systems, and interactive web applications.",
   keywords: [
     "Nadim Chowdhury",
+    "Software Developer",
     "Full Stack Developer",
     "React Developer",
     "Next.js Developer",
     "NestJS Developer",
     "Software Engineer",
     "Web Developer",
+    "Dhaka",
     "Bangladesh",
     "Portfolio",
   ],
@@ -41,14 +43,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Nadim Chowdhury — Full Stack Developer",
+    title: "Nadim Chowdhury — Software Developer",
     description:
       "3+ years building production-grade SaaS platforms, ERP systems, and interactive web applications.",
     siteName: "Nadim Chowdhury Portfolio",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nadim Chowdhury — Full Stack Developer",
+    title: "Nadim Chowdhury — Software Developer",
     description:
       "3+ years building production-grade SaaS platforms, ERP systems, and interactive web applications.",
   },

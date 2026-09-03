@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Download } from "lucide-react";
+import { Download, FileText } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ScrollReveal, CountUp } from "@/components/ui/scroll-reveal";
 import { siteConfig, aboutText, stats } from "@/lib/data";
@@ -80,17 +80,28 @@ export function About() {
               </div>
             </ScrollReveal>
 
-            {/* Resume CTA */}
+            {/* Resume & Cover Letter CTA */}
             <ScrollReveal delay={0.25}>
-              <a
-                href={siteConfig.resumePdf}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-accent-fg text-sm font-medium hover:bg-accent-hover transition-colors w-fit mt-2"
-              >
-                <Download className="w-4 h-4" />
-                Download Full Resume
-              </a>
+              <div className="flex flex-wrap items-center gap-3 mt-2">
+                <a
+                  href={siteConfig.resumePdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-accent-fg text-sm font-medium hover:bg-accent-hover transition-colors"
+                >
+                  <Download className="w-4 h-4" />
+                  Download Full Resume
+                </a>
+                <a
+                  href={siteConfig.coverLetterPdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-border bg-surface-elevated text-text-primary text-sm font-medium hover:border-accent hover:text-accent transition-colors"
+                >
+                  <FileText className="w-4 h-4" />
+                  View Cover Letter
+                </a>
+              </div>
             </ScrollReveal>
           </div>
         </div>

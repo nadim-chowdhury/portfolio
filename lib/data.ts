@@ -18,7 +18,7 @@ export const siteConfig = {
 export const aboutText = {
   headline: "Building digital products that matter",
   paragraph:
-    "I'm a software developer based in Dhaka with 3+ years of experience building web applications using React, Next.js, Node.js, and NestJS. I dropped out of a Mathematics program to pursue software engineering full-time — a decision that led me through five professional roles, from enterprise ERP and POS platforms to SaaS and booking systems.",
+    "I'm a software developer based in Dhaka with 3+ years of experience building web applications using React, Next.js, Node.js, and NestJS. I dropped out of a Mathematics program to pursue software engineering full-time - a decision that led me through five professional roles, from enterprise ERP and POS platforms to SaaS and booking systems.",
   paragraphTwo:
     "Currently working as a Software Developer at Akij iBos, building enterprise ERP modules across Procurement, Accounts, financial operations, and multi-level approval workflows. I'm mainly focused on frontend development while actively working with backend APIs, databases, authentication, and business logic.",
 };

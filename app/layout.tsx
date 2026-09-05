@@ -71,7 +71,7 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="noise-overlay">
+      <body className="noise-overlay" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

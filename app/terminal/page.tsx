@@ -4,6 +4,8 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { CSSProperties } from "react";
+import { useRouter } from "next/navigation";
+import { triggerRouteSplash } from "@/components/ui/route-splash-screen";
 
 interface Theme {
   name: string;
@@ -637,6 +639,10 @@ const CMDS = [
   "themes",
   "clear",
   "cls",
+  "exit",
+  "quit",
+  "home",
+  "gui",
   "date",
   "ls",
   "pwd",
@@ -850,6 +856,7 @@ function run(
   setTheme: (t: Theme) => void,
   hist: string[],
   addLines: (lines: Line[]) => void,
+  onNavigate?: (path: string) => void,
 ): Line[] {
   const parts = raw.trim().split(/\s+/);
   const cmd = parts[0].toLowerCase();
@@ -902,6 +909,7 @@ function run(
         ),
         OUT("  themes                   List all themes with preview"),
         OUT("  clear · cls              Clear terminal"),
+        OUT("  exit · home · gui        Return to graphical portfolio"),
         OUT("  history                  Command history"),
         OUT("  date                     Current datetime"),
         OUT("  echo <text>              Print text"),
@@ -1491,7 +1499,19 @@ function run(
     case "cls":
       return [{ type: "clear", id: ++_id, text: "", url: null, meta: null }];
     case "exit":
-      return [BR(), DIM("  There is no escape from this portfolio. 😈"), BR()];
+    case "quit":
+    case "home":
+    case "gui":
+      setTimeout(() => {
+        triggerRouteSplash("/");
+        onNavigate?.("/");
+      }, 350);
+      return [
+        BR(),
+        OK("  [ ✓ ] Exiting terminal session... Returning to portfolio."),
+        DIM("  Navigating to / ..."),
+        BR(),
+      ];
 
     default:
       return [
@@ -1993,6 +2013,7 @@ const BOOT: BootEntry[] = [
 ];
 
 export default function Terminal() {
+  const router = useRouter();
   const [theme, setTheme] = useState<Theme>(THEMES.ghost);
   const [lines, setLines] = useState<Line[]>([]);
   const [input, setInput] = useState("");
@@ -2100,7 +2121,9 @@ export default function Terminal() {
     if (cmd) {
       setCmdHist((prev) => [...prev.filter((x) => x !== cmd), cmd].slice(-100));
       setHistIdx(-1);
-      const result = run(cmd, theme, setTheme, cmdHist, addLines);
+      const result = run(cmd, theme, setTheme, cmdHist, addLines, (p) =>
+        router.push(p),
+      );
       if (result[0]?.type === "clear") {
         setLines([]);
         setInput("");
@@ -2334,6 +2357,13 @@ export default function Terminal() {
           ).map(([c], i) => (
             <div
               key={i}
+              title={
+                i === 0
+                  ? "Return to Portfolio"
+                  : i === 1
+                  ? "Clear Terminal"
+                  : undefined
+              }
               style={{
                 width: isMobile ? 10 : 12,
                 height: isMobile ? 10 : 12,
@@ -2349,7 +2379,16 @@ export default function Terminal() {
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLDivElement).style.filter = "none";
               }}
-              onClick={i === 1 ? () => setLines([]) : undefined}
+              onClick={
+                i === 0
+                  ? () => {
+                      triggerRouteSplash("/");
+                      router.push("/");
+                    }
+                  : i === 1
+                  ? () => setLines([])
+                  : undefined
+              }
             />
           ))}
         </div>

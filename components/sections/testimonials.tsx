@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote, ExternalLink } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { testimonials } from "@/lib/data";
@@ -10,6 +10,7 @@ import { testimonials } from "@/lib/data";
 export function Testimonials() {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const next = useCallback(() => {
     setDirection(1);
@@ -24,9 +25,10 @@ export function Testimonials() {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(next, 6000);
+    if (isPaused) return;
+    const interval = setInterval(next, 8000);
     return () => clearInterval(interval);
-  }, [next]);
+  }, [next, isPaused]);
 
   const variants = {
     enter: (dir: number) => ({
@@ -51,14 +53,18 @@ export function Testimonials() {
         <SectionHeading
           label="Testimonials"
           title="What people say"
-          description="Feedback from colleagues and clients I've had the pleasure of working with."
+          description="Feedback from colleagues and managers I've had the pleasure of working with."
           align="center"
         />
 
         <ScrollReveal>
           <div className="max-w-2xl mx-auto">
             {/* Card */}
-            <div className="relative p-8 md:p-10 rounded-2xl border border-border bg-surface-elevated overflow-hidden min-h-[260px] flex flex-col items-center justify-center">
+            <div
+              className="relative p-8 md:p-10 rounded-2xl border border-border bg-surface-elevated overflow-hidden min-h-[300px] flex flex-col items-center justify-center"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+            >
               {/* Quote icon */}
               <Quote className="w-8 h-8 text-accent/20 mb-4" />
 
@@ -74,22 +80,40 @@ export function Testimonials() {
                     duration: 0.4,
                     ease: [0.23, 1, 0.32, 1],
                   }}
-                  className="flex flex-col items-center text-center"
+                  className="flex flex-col items-center text-center w-full"
                 >
-                  <p className="text-base md:text-lg text-text-secondary leading-relaxed mb-6 italic">
+                  <p className="text-sm sm:text-base text-text-secondary leading-relaxed mb-6 italic max-w-xl">
                     &ldquo;{t.text}&rdquo;
                   </p>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-accent-soft border border-accent/20 flex items-center justify-center font-heading font-bold text-sm text-accent">
+                    <div className="w-10 h-10 rounded-full bg-accent-soft border border-accent/20 flex items-center justify-center font-heading font-bold text-sm text-accent shrink-0">
                       {t.avatar}
                     </div>
                     <div className="text-left">
-                      <p className="text-sm font-medium text-text-primary">
-                        {t.name}
-                      </p>
+                      <div className="flex items-center gap-1.5">
+                        <p className="text-sm font-medium text-text-primary">
+                          {t.name}
+                        </p>
+                        {t.linkedin && (
+                          <a
+                            href={t.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-text-tertiary hover:text-accent transition-colors"
+                            aria-label={`${t.name}'s LinkedIn profile`}
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                          </a>
+                        )}
+                      </div>
                       <p className="text-xs text-text-tertiary">
                         {t.role} at {t.company}
                       </p>
+                      {t.relationship && (
+                        <p className="text-[11px] text-text-tertiary/70 mt-0.5">
+                          {t.relationship}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </motion.div>

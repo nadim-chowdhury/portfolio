@@ -379,127 +379,103 @@ const THEMES: Record<string, Theme> = {
 
 const ME = {
   name: "Nadim Chowdhury",
-  role: "Full Stack Developer",
+  role: "Software Developer",
   location: "Dhaka, Bangladesh",
   email: "nadim-chowdhury@outlook.com",
   phone: "+880 1971 258803",
   github: "github.com/nadim-chowdhury",
   linkedin: "linkedin.com/in/nadim-chowdhury",
   web: "nadim.vercel.app",
+  resumePdf: "/nadim-chowdhury-resume.pdf",
+  coverLetterPdf: "/nadim-chowdhury-cover-letter.pdf",
 } as const;
 
 const SKILLS: Record<string, string[]> = {
   frontend: [
+    "JavaScript",
+    "TypeScript",
     "React.js",
     "Next.js",
-    "Angular",
-    "TypeScript",
-    "JavaScript",
     "Tailwind CSS",
     "Bootstrap",
-    "Sass",
     "Ant Design",
     "Framer Motion",
   ],
   backend: [
     "Node.js",
-    "NestJS",
     "Express.js",
+    "NestJS",
     "GraphQL",
     "REST API",
-    "WebSockets",
-    "tRPC",
   ],
-  database: ["PostgreSQL", "MongoDB", "Prisma", "TypeORM", "Redis", "Supabase"],
-  mobile: ["React Native", "Flutter", "Expo"],
+  database: ["PostgreSQL", "MongoDB"],
+  mobile: ["React Native"],
   devops: [
     "Docker",
     "Git",
-    "GitHub Actions",
-    "Vercel",
-    "Netlify",
-    "CI/CD",
-    "Linux",
+    "GitHub",
   ],
-  tools: ["Postman", "Swagger", "Figma", "VS Code", "Jira", "Notion"],
+  tools: ["Postman", "Swagger"],
 };
 
 const EXP: ExpEntry[] = [
   {
     n: "01",
-    role: "Software Engineer",
-    co: "AKIJ iBOS",
+    role: "Software Developer",
+    co: "Akij iBos",
     period: "May 2026 – Present",
     type: "Full-time",
-    stack: ["React.js", "Redux Toolkit", "Vite", "Material UI", "Formik", "Yup", "REST API"],
-    desc: "Contributed to enterprise ERP & HRMS/Payroll platforms using React.js, Redux Toolkit, and Vite. Designed end-to-end modules, dynamic reporting, and multi-step workflows with Formik/Yup while optimizing REST API integration.",
+    stack: ["React.js", "Ant Design", "REST API", "MSSQL"],
+    desc: "Worked on ERP modules including Procurement, Purchase Request, and Purchase Order, building and improving features used in day-to-day business operations. Developed Accounts and financial operations (Account Journal, Bank Journal, Bank Payment, Adjustment Journal), and implemented authorization and multi-level approval workflows.",
   },
   {
     n: "02",
-    role: "Professional Development",
-    co: "Career Break",
-    period: "Dec 2025 – Apr 2026",
-    type: "Full-time",
-    stack: ["React.js", "Next.js", "NestJS", "TypeScript", "React Native"],
-    desc: "Focused on professional development and strengthening full-stack skills in React, Next.js, NestJS, TypeScript, and React Native during a planned transition.",
-  },
-  {
-    n: "03",
     role: "Full Stack Software Developer",
     co: "Easy Fashion Ltd",
     period: "Jul 2025 – Nov 2025",
     type: "Full-time",
-    stack: ["Next.js", "NestJS", "PostgreSQL", "Docker"],
-    desc: "Contributed to a large-scale ERP (POS, Inventory, HRMS). Developed end-to-end features using Next.js/NestJS, built secure REST APIs, and optimized query performance.",
+    stack: ["React.js", "NestJS", "PostgreSQL", "Docker", "PWA"],
+    desc: "Worked on POS and warehouse management systems, developing sales and sales return pages, inventory and stock management features, and integrating frontend and backend APIs. Added keyboard shortcuts and keyboard-friendly interactions to streamline the POS workflow, and worked on PWA features.",
+  },
+  {
+    n: "03",
+    role: "Full Stack Web Developer",
+    co: "Freelance",
+    period: "Apr 2025 – Jun 2025",
+    type: "Freelance",
+    stack: ["Next.js", "NestJS", "PostgreSQL", "Amadeus API", "REST API"],
+    desc: "Built a flight booking system using Next.js and NestJS, with user authentication, role-based access control, and CRUD features for airlines, airports, aircraft, and routes. Integrated the Amadeus API for flight search and booking flow with responsive UI.",
   },
   {
     n: "04",
-    role: "Full Stack Web Developer",
-    co: "Freelance",
-    period: "Feb 2025 – Jun 2025",
-    type: "Freelance",
-    stack: ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "Stripe"],
-    desc: "Built a Next.js/NestJS Flight Booking System and a drag-and-drop Website Builder SaaS with subscription-based billing and reusable component rendering.",
+    role: "Junior Frontend Developer",
+    co: "Mediusware Ltd.",
+    period: "Dec 2023 – Mar 2025",
+    type: "Full-time",
+    stack: ["React.js", "GraphQL", "TypeScript", "Tailwind CSS", "Ant Design"],
+    desc: "Worked on a drag-and-drop website builder with multi-tenancy, reusable components, and subdomain-based website publishing. Integrated GraphQL APIs, built frontend features with role-based access control on eCommerce projects, and developed features for an event management application.",
   },
   {
     n: "05",
-    role: "Jr. Frontend Developer",
-    co: "Mediusware Ltd",
-    period: "Mar 2024 – Jan 2025",
-    type: "Full-time",
-    stack: ["React.js", "TypeScript", "GraphQL", "Ant Design", "Bootstrap", "React Router DOM"],
-    desc: "Developed a multi-tenant drag-and-drop website builder with subdomain publishing, built features for an event platform, and integrated GraphQL APIs.",
-  },
-  {
-    n: "06",
-    role: "Frontend Trainee",
-    co: "Mediusware Ltd",
-    period: "Dec 2023 – Feb 2024",
-    type: "Internship",
-    stack: ["React.js", "JavaScript", "Ant Design", "REST API"],
-    desc: "Developed profile CRUD with RBAC, back office & task management modules, and independently built an e-commerce application from scratch.",
-  },
-  {
-    n: "07",
     role: "Frontend Developer",
-    co: "Freelance",
-    period: "Jul 2023 – Nov 2023",
+    co: "Freelance & Personal Projects",
+    period: "Sep 2022 – Nov 2023",
     type: "Freelance",
-    stack: ["Angular", "React.js", "JavaScript", "REST API"],
-    desc: "Built a School Management System using Angular (student/teacher/admin modules) and a responsive Flight Ticket Booking application with API integration.",
-  },
-  {
-    n: "08",
-    role: "Web Developer",
-    co: "Self-employed",
-    period: "Sep 2022 – Jun 2023",
-    type: "Self-employed",
-    stack: ["HTML", "CSS", "JavaScript", "React.js", "MongoDB", "Express.js", "Node.js"],
-    desc: "Learned and applied the MERN stack. Developed practice projects (task management, auth systems, dashboards, CRUD solutions) from concept to deployment.",
+    stack: ["React.js", "Node.js", "Express.js", "MongoDB", "REST API"],
+    desc: "Built web applications with React.js while strengthening frontend skills including reusable components and responsive layouts. Worked on the frontend of a School Management System and Flight Booking App with backend APIs, and developed several practice projects.",
   },
 ];
 
 const PROJECTS: ProjectEntry[] = [
+  {
+    id: "purepath-booking",
+    name: "PurePath Booking",
+    cat: "Booking System",
+    url: "purepath-booking.vercel.app",
+    year: "2026",
+    stack: ["Next.js", "React", "Redux Toolkit", "Shadcn UI", "Tailwind CSS"],
+    desc: "Modern, high-performance booking platform built with the React ecosystem to streamline reservations, appointments, and user management.",
+  },
   {
     id: "collabier",
     name: "Collabier SaaS",
@@ -507,16 +483,16 @@ const PROJECTS: ProjectEntry[] = [
     url: "collabier-sass-x.vercel.app",
     year: "2025",
     stack: ["Next.js", "NestJS", "PostgreSQL", "Stripe"],
-    desc: "Visual editor platform with real-time style editing, reusable components, project dashboard, and integrated billing.",
+    desc: "Visual editor platform with real-time style editing, reusable components, project dashboard, and integrated billing system.",
   },
   {
     id: "flightbook",
     name: "Flight Booking",
     cat: "Booking System",
     url: "flight-booking-x.vercel.app",
-    year: "2024",
-    stack: ["Next.js", "NestJS", "JWT", "REST API"],
-    desc: "Secure airline booking with RBAC, CRUD for airlines/airports/planes/routes, smooth auth.",
+    year: "2025",
+    stack: ["Next.js", "NestJS", "Amadeus API", "PostgreSQL", "REST API"],
+    desc: "Full-stack airline booking platform integrated with Amadeus API for flight search, featuring role-based access, routes, planes, and booking management.",
   },
   {
     id: "schoolsys",
@@ -525,16 +501,7 @@ const PROJECTS: ProjectEntry[] = [
     url: "scl-mgt-sys-client.vercel.app",
     year: "2024",
     stack: ["React.js", "Node.js", "MongoDB"],
-    desc: "School ERP with student records, scheduling, teacher dashboards, grade management.",
-  },
-  {
-    id: "dashboard",
-    name: "Dashboard UI",
-    cat: "Analytics",
-    url: "dash-b0ard.netlify.app",
-    year: "2023",
-    stack: ["React.js", "Tailwind CSS", "Recharts"],
-    desc: "Modern analytics dashboard with charts, dark mode, responsive layout.",
+    desc: "Comprehensive school ERP with student records, scheduling, teacher dashboards, and grade management.",
   },
 ];
 
@@ -547,6 +514,11 @@ const CMDS = [
   "experience",
   "projects",
   "project",
+  "resume",
+  "cv",
+  "coverletter",
+  "education",
+  "edu",
   "contact",
   "links",
   "open",
@@ -802,11 +774,14 @@ function run(
         OUT(
           `  skills [category]        Tech stack  ·  ${Object.keys(SKILLS).join(" | ")}`,
         ),
-        OUT("  exp · experience         Full work history"),
+        OUT("  exp · experience         Full work history (5 roles)"),
         OUT("  projects                 All projects overview"),
         OUT(
           `  project <id>             Project deep-dive  ·  ${PROJECTS.map((p) => p.id).join(" | ")}`,
         ),
+        OUT("  resume · cv              View/download Resume PDF"),
+        OUT("  coverletter              View Cover Letter PDF"),
+        OUT("  education · edu          Academic background"),
         OUT("  contact                  Contact information"),
         OUT("  links                    Social & portfolio links"),
         OUT("  neofetch                 System info card"),
@@ -855,13 +830,17 @@ function run(
         DIM(`  ${ME.role}  ·  ${ME.location}`),
         BR(),
         OUT("  Experience   3+ years  ·  2022 to present"),
-        OUT("  Projects     20+ deployed across web & mobile"),
-        OUT("  Focus        SaaS · ERP · Interactive Business Apps"),
-        OUT("  Stack        React · Next.js · NestJS · Node.js · PostgreSQL"),
+        OUT("  Roles        5 professional positions"),
+        OUT("  Focus        ERP · POS · SaaS & Booking Platforms"),
+        OUT("  Stack        React.js · Next.js · Node.js · NestJS · TypeScript"),
         BR(),
-        OUT("  Dropped out of Mathematics to pursue software full-time."),
+        OUT("  Self-taught Software Developer with 3+ years of experience building"),
+        OUT("  web applications using React, Next.js, Node.js, and NestJS."),
+        OUT("  Dropped out of Mathematics program to pursue software full-time."),
         BR(),
         OK("  ● OPEN TO WORK  ·  Full-time · Freelance · Contract"),
+        BR(),
+        DIM("  Run  resume  or  coverletter  to view documents"),
         BR(),
       ];
 
@@ -938,6 +917,57 @@ function run(
       ];
     }
 
+    case "resume":
+    case "cv": {
+      try {
+        window.open(ME.resumePdf, "_blank");
+      } catch {
+        /* noop */
+      }
+      return [
+        BR(),
+        DIV("RESUME"),
+        BR(),
+        OK("  ✓ Opening Resume PDF in new tab..."),
+        LNK(`  ↗  ${ME.resumePdf}`, ME.resumePdf),
+        BR(),
+        DIM("  File: nadim-chowdhury-resume.pdf"),
+        BR(),
+      ];
+    }
+
+    case "coverletter": {
+      try {
+        window.open(ME.coverLetterPdf, "_blank");
+      } catch {
+        /* noop */
+      }
+      return [
+        BR(),
+        DIV("COVER LETTER"),
+        BR(),
+        OK("  ✓ Opening Cover Letter PDF in new tab..."),
+        LNK(`  ↗  ${ME.coverLetterPdf}`, ME.coverLetterPdf),
+        BR(),
+        DIM("  File: nadim-chowdhury-cover-letter.pdf"),
+        BR(),
+      ];
+    }
+
+    case "education":
+    case "edu":
+      return [
+        BR(),
+        DIV("EDUCATION"),
+        BR(),
+        mkLine("  BSc in Mathematics (Dropout)", "hdr"),
+        DIM("  Habibullah Bahar University College (National University)  ·  2019"),
+        BR(),
+        mkLine("  HSC in Science", "hdr"),
+        DIM("  Kabi Nazrul Govt. College (Science Stream)  ·  2017 – 2019"),
+        BR(),
+      ];
+
     case "contact":
       return [
         BR(),
@@ -956,12 +986,14 @@ function run(
     case "links":
       return [
         BR(),
-        LNK(`  GitHub      ↗  https://${ME.github}`, `https://${ME.github}`),
+        LNK(`  GitHub        ↗  https://${ME.github}`, `https://${ME.github}`),
         LNK(
-          `  LinkedIn    ↗  https://${ME.linkedin}`,
+          `  LinkedIn      ↗  https://${ME.linkedin}`,
           `https://${ME.linkedin}`,
         ),
-        LNK(`  Portfolio   ↗  https://${ME.web}`, `https://${ME.web}`),
+        LNK(`  Portfolio     ↗  https://${ME.web}`, `https://${ME.web}`),
+        LNK(`  Resume PDF    ↗  ${ME.resumePdf}`, ME.resumePdf),
+        LNK(`  Cover Letter  ↗  ${ME.coverLetterPdf}`, ME.coverLetterPdf),
         BR(),
       ];
 
@@ -1995,7 +2027,13 @@ export default function Terminal() {
             project: PROJECTS.map((p) => p.id),
             skills: Object.keys(SKILLS),
             cat: ["README.md", "package.json"],
-            open: [ME.web, ME.github, ME.linkedin],
+            open: [
+              ME.web,
+              ME.github,
+              ME.linkedin,
+              ME.resumePdf,
+              ME.coverLetterPdf,
+            ],
           };
           const base = parts[0];
           const list = completions[base];

@@ -284,6 +284,116 @@ function TerminalBackground({ accent, bg }: { accent: string; bg: string }) {
   );
 }
 
+function TerminalSkeleton({ T, isMobile }: { T: Theme; isMobile: boolean }) {
+  const px = isMobile ? 12 : 24;
+
+  return (
+    <div
+      style={{
+        padding: `4px ${px}px 24px`,
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+        width: "100%",
+        boxSizing: "border-box",
+      }}
+    >
+      {/* Prompt skeleton */}
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <span style={{ color: T.accent, fontSize: isMobile ? 12 : 13 }}>❯</span>
+        <div
+          className="skeleton-pulse"
+          style={{ width: 110, height: 12, borderRadius: 4 }}
+        />
+      </div>
+
+      {/* Boot lines skeleton */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div
+          className="skeleton-pulse"
+          style={{ width: "38%", height: 10, borderRadius: 3, opacity: 0.6 }}
+        />
+        <div
+          className="skeleton-pulse"
+          style={{ width: "55%", height: 10, borderRadius: 3, opacity: 0.6 }}
+        />
+        <div
+          className="skeleton-pulse"
+          style={{ width: "42%", height: 10, borderRadius: 3, opacity: 0.6 }}
+        />
+        <div
+          className="skeleton-pulse"
+          style={{ width: "62%", height: 10, borderRadius: 3, opacity: 0.6 }}
+        />
+      </div>
+
+      {/* Card skeleton */}
+      <div
+        style={{
+          marginTop: 6,
+          padding: isMobile ? "12px 14px" : "16px 20px",
+          background: T.surface,
+          border: `1px solid ${T.border}`,
+          borderRadius: 8,
+          borderLeft: `2px solid ${T.accent}`,
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div
+            className="skeleton-pulse"
+            style={{ width: "35%", height: 12, borderRadius: 4 }}
+          />
+          <div
+            className="skeleton-pulse"
+            style={{ width: "18%", height: 9, borderRadius: 3, opacity: 0.5 }}
+          />
+        </div>
+        <div
+          className="skeleton-pulse"
+          style={{ width: "80%", height: 9, borderRadius: 3, opacity: 0.5 }}
+        />
+        <div
+          className="skeleton-pulse"
+          style={{ width: "60%", height: 9, borderRadius: 3, opacity: 0.5 }}
+        />
+        <div style={{ display: "flex", gap: 6, marginTop: 4 }}>
+          <div className="skeleton-pulse" style={{ width: 56, height: 16, borderRadius: 4 }} />
+          <div className="skeleton-pulse" style={{ width: 68, height: 16, borderRadius: 4 }} />
+          <div className="skeleton-pulse" style={{ width: 48, height: 16, borderRadius: 4 }} />
+        </div>
+      </div>
+
+      {/* Minimal status indicator */}
+      <div
+        style={{
+          marginTop: 4,
+          fontSize: 11,
+          color: T.muted,
+          opacity: 0.45,
+          letterSpacing: "0.08em",
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
+        <div
+          style={{
+            width: 6,
+            height: 6,
+            borderRadius: "50%",
+            background: T.accent,
+            animation: "skeletonPulseDot 1.4s ease-in-out infinite",
+          }}
+        />
+        <span>CONNECTING TO SESSION···</span>
+      </div>
+    </div>
+  );
+}
+
 const THEMES: Record<string, Theme> = {
   ghost: {
     name: "Ghost",
@@ -1862,24 +1972,24 @@ function RenderLine({ line, T, isMobile }: RenderLineProps) {
 }
 
 const BOOT: BootEntry[] = [
-  { t: 0, text: "Booting NADIM-OS v3.0.0 ...", type: "dim" },
-  { t: 140, text: "[ ✓ ] Loading kernel modules", type: "dim" },
-  { t: 280, text: "[ ✓ ] Mounting filesystem", type: "dim" },
-  { t: 420, text: "[ ✓ ] Starting network services", type: "dim" },
-  { t: 560, text: "[ ✓ ] Loading developer profile", type: "ok" },
-  { t: 680, text: "[ ✓ ] Starting portfolio daemon", type: "ok" },
-  { t: 780, text: "", type: "br" },
-  { t: 820, text: "_banner", type: "_banner" },
-  { t: 940, text: "", type: "br" },
+  { t: 450, text: "Booting NADIM-OS v3.0.0 ...", type: "dim" },
+  { t: 580, text: "[ ✓ ] Loading kernel modules", type: "dim" },
+  { t: 700, text: "[ ✓ ] Mounting filesystem", type: "dim" },
+  { t: 820, text: "[ ✓ ] Starting network services", type: "dim" },
+  { t: 940, text: "[ ✓ ] Loading developer profile", type: "ok" },
+  { t: 1040, text: "[ ✓ ] Starting portfolio daemon", type: "ok" },
+  { t: 1120, text: "", type: "br" },
+  { t: 1160, text: "_banner", type: "_banner" },
+  { t: 1260, text: "", type: "br" },
   {
-    t: 980,
+    t: 1300,
     text: `  ${ME.name}  ·  ${ME.role}  ·  ${ME.location}`,
     type: "acc",
   },
-  { t: 1040, text: `  ${ME.web}  ·  Available for work`, type: "ok" },
-  { t: 1100, text: "", type: "br" },
-  { t: 1140, text: "  Type  help  to get started.", type: "dim" },
-  { t: 1200, text: "", type: "br" },
+  { t: 1360, text: `  ${ME.web}  ·  Available for work`, type: "ok" },
+  { t: 1420, text: "", type: "br" },
+  { t: 1460, text: "  Type  help  to get started.", type: "dim" },
+  { t: 1520, text: "", type: "br" },
 ];
 
 export default function Terminal() {
@@ -1894,6 +2004,18 @@ export default function Terminal() {
   const [time, setTime] = useState("");
   const [isMobile, setIsMobile] = useState(false);
   const [showMobileInput, setShowMobileInput] = useState(false);
+  const [skeletonLoading, setSkeletonLoading] = useState(true);
+  const [skeletonDissolving, setSkeletonDissolving] = useState(false);
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setSkeletonDissolving(true), 400);
+    const t2 = setTimeout(() => setSkeletonLoading(false), 650);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, []);
+
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const measureRef = useRef<HTMLSpanElement | null>(null);
@@ -1930,7 +2052,7 @@ export default function Terminal() {
           else if (b.type === "br") setLines((prev) => [...prev, BR()]);
           else
             setLines((prev) => [...prev, mkLine(b.text, b.type as LineType)]);
-          if (b.t === 1200)
+          if (b.t === 1520)
             setTimeout(() => {
               setReady(true);
               inputRef.current?.focus();
@@ -2127,6 +2249,47 @@ export default function Terminal() {
         .tline { animation: lineIn 0.15s ease forwards; }
         .input-hidden { position:absolute; opacity:0; pointer-events:none; background:transparent; border:none; outline:none; color:transparent; font-family:inherit; font-size:13px; caret-color:transparent; width:1px; height:1px; }
 
+        /* Minimalist Modern Terminal Skeleton */
+        .skeleton-pulse {
+          background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.035) 0%,
+            rgba(255, 255, 255, 0.08) 50%,
+            rgba(255, 255, 255, 0.035) 100%
+          );
+          background-size: 200% 100%;
+          animation: skeletonWave 1.6s ease-in-out infinite;
+        }
+
+        @keyframes skeletonWave {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+
+        @keyframes skeletonPulseDot {
+          0%, 100% { opacity: 0.35; transform: scale(0.9); }
+          50% { opacity: 1; transform: scale(1.15); }
+        }
+
+        .terminal-skeleton-fade {
+          transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .terminal-skeleton-fade.dissolving {
+          opacity: 0;
+          transform: translateY(-4px);
+          pointer-events: none;
+        }
+
+        .terminal-enter-smooth {
+          animation: terminalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes terminalFadeIn {
+          from { opacity: 0; transform: translateY(3px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Mobile tap-to-type button */
         .mobile-type-btn {
           display: none;
@@ -2285,56 +2448,64 @@ export default function Terminal() {
           alignSelf: "center",
         }}
       >
-        {lines.map((line, i) => (
-          <div key={i} className="tline">
-            {line.type === "cmd" ? (
+        {skeletonLoading ? (
+          <div
+            className={`terminal-skeleton-fade ${skeletonDissolving ? "dissolving" : ""}`}
+          >
+            <TerminalSkeleton T={T} isMobile={isMobile} />
+          </div>
+        ) : (
+          <div className="terminal-enter-smooth">
+            {lines.map((line, i) => (
+              <div key={i} className="tline">
+                {line.type === "cmd" ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      gap: 0,
+                      padding: `2px ${px}px`,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: isMobile ? 12 : 13,
+                        color: T.accent,
+                        marginRight: 8,
+                        flexShrink: 0,
+                      }}
+                    >
+                      ❯
+                    </span>
+                    <span
+                      style={{
+                        fontSize: isMobile ? 12 : 13,
+                        color: T.dim,
+                        lineHeight: "22px",
+                        fontFamily: "inherit",
+                        wordBreak: "break-all",
+                      }}
+                    >
+                      {line.text}
+                    </span>
+                  </div>
+                ) : (
+                  <RenderLine line={line} T={T} isMobile={isMobile} />
+                )}
+              </div>
+            ))}
+
+            {/* Input row */}
+            {ready && (
               <div
                 style={{
                   display: "flex",
-                  alignItems: "baseline",
+                  alignItems: "center",
+                  padding: `4px ${px}px`,
                   gap: 0,
-                  padding: `2px ${px}px`,
+                  marginBottom: 4,
                 }}
               >
-                <span
-                  style={{
-                    fontSize: isMobile ? 12 : 13,
-                    color: T.accent,
-                    marginRight: 8,
-                    flexShrink: 0,
-                  }}
-                >
-                  ❯
-                </span>
-                <span
-                  style={{
-                    fontSize: isMobile ? 12 : 13,
-                    color: T.dim,
-                    lineHeight: "22px",
-                    fontFamily: "inherit",
-                    wordBreak: "break-all",
-                  }}
-                >
-                  {line.text}
-                </span>
-              </div>
-            ) : (
-              <RenderLine line={line} T={T} isMobile={isMobile} />
-            )}
-          </div>
-        ))}
-
-        {/* Input row */}
-        {ready && (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              padding: `4px ${px}px`,
-              gap: 0,
-              marginBottom: 4,
-            }}
-          >
             <span
               style={{
                 fontSize: isMobile ? 12 : 13,
@@ -2437,9 +2608,11 @@ export default function Terminal() {
             </div>
           </div>
         )}
-
-        <div ref={bottomRef} style={{ height: 60 }} />
       </div>
+    )}
+
+    <div ref={bottomRef} style={{ height: 60 }} />
+  </div>
 
       {/* STATUS BAR */}
       <div

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Download, FileText } from "lucide-react";
+import { Mail } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ScrollReveal, CountUp } from "@/components/ui/scroll-reveal";
 import { siteConfig, aboutText, stats } from "@/lib/data";
@@ -61,15 +61,26 @@ export function About() {
             <ScrollReveal delay={0.2}>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
                 {stats.map((stat) => {
-                  const numericPart = parseInt(stat.value.replace(/\D/g, ""));
-                  const suffix = stat.value.replace(/\d/g, "");
+                  const match = stat.value.match(/^([^\d]*)([\d,]+)(.*)$/);
+                  const prefix = match ? match[1] : "";
+                  const numericPart = match
+                    ? parseInt(match[2].replace(/,/g, ""), 10)
+                    : 0;
+                  const suffix = match ? match[3] : "";
+                  const formatNumber = match ? match[2].includes(",") : false;
+
                   return (
                     <div
                       key={stat.label}
                       className="flex flex-col gap-1 p-4 rounded-xl border border-border bg-surface-elevated"
                     >
                       <span className="font-heading text-2xl md:text-3xl font-bold text-accent">
-                        <CountUp target={numericPart} suffix={suffix} />
+                        <CountUp
+                          target={numericPart}
+                          prefix={prefix}
+                          suffix={suffix}
+                          formatNumber={formatNumber}
+                        />
                       </span>
                       <span className="text-xs text-text-tertiary font-medium">
                         {stat.label}
@@ -80,26 +91,15 @@ export function About() {
               </div>
             </ScrollReveal>
 
-            {/* Resume & Cover Letter CTA */}
+            {/* CTAs */}
             <ScrollReveal delay={0.25}>
               <div className="flex flex-wrap items-center gap-3 mt-2">
                 <a
-                  href={siteConfig.resumePdf}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#contact"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-accent-fg text-sm font-medium hover:bg-accent-hover transition-colors"
                 >
-                  <Download className="w-4 h-4" />
-                  Download Full Resume
-                </a>
-                <a
-                  href={siteConfig.coverLetterPdf}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-border bg-surface-elevated text-text-primary text-sm font-medium hover:border-accent hover:text-accent transition-colors"
-                >
-                  <FileText className="w-4 h-4" />
-                  View Cover Letter
+                  <Mail className="w-4 h-4" />
+                  Get in Touch
                 </a>
               </div>
             </ScrollReveal>

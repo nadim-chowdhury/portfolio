@@ -103,11 +103,15 @@ export function StaggerItem({
 
 export function CountUp({
   target,
+  prefix = "",
   suffix = "",
+  formatNumber = false,
   duration = 2,
 }: {
   target: number;
+  prefix?: string;
   suffix?: string;
+  formatNumber?: boolean;
   duration?: number;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -117,6 +121,14 @@ export function CountUp({
   useEffect(() => {
     if (!isInView) return;
 
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      setCount(target);
+      return;
+    }
+
     let startTime: number;
     let animFrameId: number;
 
@@ -124,8 +136,10 @@ export function CountUp({
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(eased * target));
-      if (progress < 1) {
+      if (progress >= 1) {
+        setCount(target);
+      } else {
+        setCount(Math.floor(eased * target));
         animFrameId = requestAnimationFrame(step);
       }
     }
@@ -134,9 +148,12 @@ export function CountUp({
     return () => cancelAnimationFrame(animFrameId);
   }, [isInView, target, duration]);
 
+  const formatted = formatNumber ? count.toLocaleString() : count.toString();
+
   return (
     <span ref={ref}>
-      {count}
+      {prefix}
+      {formatted}
       {suffix}
     </span>
   );

@@ -18,15 +18,15 @@ export const siteConfig = {
 export const aboutText = {
   headline: "Building digital products that matter",
   paragraph:
-    "I'm a software developer based in Dhaka with 3+ years of experience building web applications using React, Next.js, Node.js, and NestJS. I dropped out of a Mathematics program to pursue software engineering full-time - a decision that led me through five professional roles, from enterprise ERP and POS platforms to SaaS and booking systems.",
+    "I'm a self-taught Software Developer with 4 years of experience building applications using React, Node.js, and React Native. Experienced in developing ERP, POS, and business applications, along with SaaS and booking platforms. Mainly focused on frontend development while also working with backend APIs, databases, authentication, business logic, and mobile applications.",
   paragraphTwo:
-    "Currently working as a Software Developer at Akij iBos, building enterprise ERP modules across Procurement, Accounts, financial operations, and multi-level approval workflows. I'm mainly focused on frontend development while actively working with backend APIs, databases, authentication, and business logic.",
+    "Comfortable working with existing codebases, learning new technologies, and collaborating with cross-functional teams to build and improve real-world applications. Experienced across enterprise ERP modules (Procurement, Accounts, financial workflows, multi-level approvals), POS and warehouse systems, IoT integrations, and full-stack SaaS architectures.",
 };
 
 export const stats = [
-  { value: "3+", label: "Years Experience" },
+  { value: "4+", label: "Years Experience" },
   { value: "20+", label: "Projects Shipped" },
-  { value: "5", label: "Professional Roles" },
+  { value: "3", label: "Professional Roles" },
   { value: "15+", label: "Technologies" },
 ] as const;
 
@@ -67,7 +67,6 @@ export const skillCategories: SkillCategory[] = [
       "Tailwind CSS",
       "Bootstrap",
       "Ant Design",
-      "Framer Motion",
     ],
   },
   {
@@ -75,32 +74,31 @@ export const skillCategories: SkillCategory[] = [
     icon: "server",
     skills: [
       "Node.js",
-      "NestJS",
       "Express.js",
+      "NestJS",
       "GraphQL",
       "REST API",
-      "WebSockets",
     ],
   },
   {
     name: "Mobile",
     icon: "smartphone",
-    skills: ["React Native", "Flutter", "Expo"],
+    skills: ["React Native"],
   },
   {
     name: "Database",
     icon: "database",
-    skills: ["PostgreSQL", "MongoDB", "Prisma", "TypeORM", "Redis", "Supabase"],
+    skills: ["PostgreSQL", "MongoDB"],
   },
   {
     name: "DevOps",
     icon: "cloud",
-    skills: ["Docker", "Git", "GitHub", "Vercel", "Netlify", "CI/CD", "Linux"],
+    skills: ["Docker", "Git", "GitHub"],
   },
   {
     name: "Tools",
     icon: "wrench",
-    skills: ["Postman", "Swagger", "Figma", "Jira", "Notion", "Trello"],
+    skills: ["Postman", "Swagger"],
   },
 ];
 
@@ -120,71 +118,62 @@ export const experiences: Experience[] = [
     id: "01",
     role: "Software Developer",
     company: "Akij iBos",
-    period: "May 2026 – Present",
+    period: "Apr 2026 – Nov 2026",
     type: "Full-time",
-    stack: ["React.js", "C#", "MSSQL", "REST API", "Ant Design"],
+    stack: [
+      "React.js",
+      "Node.js",
+      "PostgreSQL",
+      "REST API",
+      "Ant Design",
+      "Quartz",
+      "ZKTeco",
+    ],
     description:
-      "Contributed to enterprise ERP modules including Procurement, Accounts, and financial operations, developing business-critical features and multi-level approval workflows.",
+      "Engineered enterprise ERP modules (Procurement, Accounts, financial operations, multi-level approvals), ZKTeco turnstile-integrated Visitor Management System, and automated Standard Chartered Bank statement collection pipelines.",
     bullets: [
       "Worked on ERP modules including Procurement, Purchase Request, and Purchase Order, building and improving features used in day-to-day business operations.",
-      "Developed features for Accounts and financial operations, including Account Journal, Bank Journal, Bank Payment, and Adjustment Journal.",
-      "Implemented authorization and multi-level approval workflows, supporting different roles and approval stages across ERP modules.",
+      "Developed features for Accounts and financial operations, authorization, and multi-level approval workflows across ERP modules.",
+      "Developed a Visitor Management System integrated with ZKTeco turnstile gates, implementing visitor registration, host approval, QR-based access, automated device synchronization, and time-based access expiration.",
+      "Refactored Standard Chartered Bank's Statement Collection system, automating CAMT XML processing, database mapping, duplicate handling, batch processing, and scheduled SFTP retrieval using Quartz, successfully processing 7,051 transactions in testing.",
     ],
   },
   {
     id: "02",
-    role: "Full Stack Software Developer",
-    company: "Easy Fashion Ltd",
-    period: "Jul 2025 – Nov 2025",
+    role: "Frontend Developer",
+    company: "Mediusware Ltd.",
+    period: "Dec 2023 – Jan 2026",
     type: "Full-time",
-    stack: ["React.js", "NestJS", "PostgreSQL", "Docker", "PWA"],
+    stack: [
+      "React.js",
+      "Next.js",
+      "NestJS",
+      "TypeScript",
+      "GraphQL",
+      "Tailwind CSS",
+      "Amadeus API",
+    ],
     description:
-      "Developed POS and warehouse management systems with sales, inventory tracking, keyboard-friendly interactions, and PWA cross-module functionality.",
+      "Engineered POS and warehouse management systems, multi-tenant website builders, eCommerce modules, event management apps, and flight booking systems.",
     bullets: [
       "Worked on POS and warehouse management systems, developing sales and sales return pages, inventory and stock management features, and integrating frontend and backend APIs. Added keyboard shortcuts and keyboard-friendly interactions to make the POS workflow faster and easier to use.",
-      "Worked on PWA features and cross-module functionality, handling API integration, business logic, bug fixes, and improvements while collaborating with developers, testers, and project managers.",
-    ],
-  },
-  {
-    id: "03",
-    role: "Full Stack Web Developer",
-    company: "Freelance",
-    period: "Apr 2025 – Jun 2025",
-    type: "Contract",
-    stack: ["Next.js", "NestJS", "PostgreSQL", "Amadeus API", "REST API"],
-    description:
-      "Built a full-stack flight booking system with user authentication, role-based access, and Amadeus API flight search integration.",
-    bullets: [
+      "Worked on a drag-and-drop website builder with multi-tenancy, reusable components, and subdomain-based website publishing.",
+      "Integrated GraphQL APIs and handled dynamic data rendering across different pages and modules.",
+      "Built frontend features including profile management, task management, customer orders, and user preferences, with role-based access control on eCommerce projects.",
+      "Worked on an event management application, developing new features and connecting frontend components with backend services.",
       "Built a flight booking system using Next.js and NestJS, with user authentication, role-based access, and CRUD features for airlines, airports, aircraft, and routes.",
       "Integrated the Amadeus API for flight search and booking-related data, and developed the frontend booking flow with responsive UI and API integration.",
     ],
   },
   {
-    id: "04",
-    role: "Junior Frontend Developer",
-    company: "Mediusware Ltd.",
-    period: "Dec 2023 – Mar 2025",
-    type: "Full-time",
-    stack: ["React.js", "GraphQL", "TypeScript", "Tailwind CSS", "Ant Design"],
-    description:
-      "Developed dynamic web applications including a drag-and-drop website builder with multi-tenancy, GraphQL APIs, and role-based eCommerce features.",
-    bullets: [
-      "Worked on a drag-and-drop website builder with multi-tenancy, reusable components, and subdomain-based website publishing.",
-      "Integrated GraphQL APIs and handled dynamic data rendering across different pages and modules.",
-      "Built frontend features including profile management, task management, customer orders, and user preferences, with role-based access control on eCommerce projects.",
-      "Worked on an event management application, developing new features and connecting frontend components with backend services.",
-      "Fixed bugs, optimized performance, improved existing features, and worked closely with developers and testers to keep the applications stable and easy to use.",
-    ],
-  },
-  {
-    id: "05",
-    role: "Frontend Developer",
+    id: "03",
+    role: "Web Developer",
     company: "Freelance & Personal Projects",
     period: "Sep 2022 – Nov 2023",
     type: "Freelance",
-    stack: ["React.js", "Node.js", "Express.js", "MongoDB", "REST API"],
+    stack: ["React.js", "JavaScript", "Node.js", "Express.js", "MongoDB", "REST API", "Git"],
     description:
-      "Built responsive web applications and strengthened full-stack development foundations with React.js, REST APIs, authentication, and CRUD operations.",
+      "Built web applications with React.js focusing on reusable components, responsive layouts, and full-stack fundamentals.",
     bullets: [
       "Built web applications with React.js while strengthening my frontend development skills, including reusable components, responsive layouts, and user interactions.",
       "Worked on the frontend of a School Management System and Flight Booking App building pages and features and integrating them with backend APIs.",
@@ -231,18 +220,6 @@ export const projects: Project[] = [
     image: "/collabier.png",
   },
   {
-    id: "3d-ecommerce",
-    name: "3D E-Commerce Platform",
-    category: "E-Commerce",
-    url: "https://3d-ecommerce-pink.vercel.app",
-    year: "2026",
-    stack: ["Next.js", "React Three Fiber", "Tailwind CSS", "Redux Toolkit"],
-    description:
-      "A modern, immersive e-commerce experience leveraging interactive 3D product visualizations with smooth Framer Motion animations to enhance the user shopping journey.",
-    color: "var(--accent)",
-    image: "/3d-ecom.png",
-  },
-  {
     id: "flightbook",
     name: "Flight Booking",
     category: "Booking System",
@@ -254,6 +231,48 @@ export const projects: Project[] = [
     color: "var(--accent)",
     image: "/flightbook.png",
   },
+  // {
+  //   id: "schoolsys",
+  //   name: "School Management",
+  //   category: "ERP Platform",
+  //   url: "https://scl-mgt-sys-client.vercel.app",
+  //   year: "2024",
+  //   stack: ["React.js", "Node.js", "MongoDB", "Express.js"],
+  //   description:
+  //     "Comprehensive school ERP with student records, scheduling, teacher dashboards, and grade management.",
+  //   color: "var(--accent)",
+  //   image: "/super-erp.png",
+  // },
+  {
+    id: "fieldvault",
+    name: "FieldVault",
+    category: "B2B SaaS Platform",
+    url: "https://fieldvault-project-web.vercel.app",
+    year: "2026",
+    stack: ["Next.js", "NestJS", "React Native", "PostgreSQL", "Expo"],
+    description:
+      "A production-ready Multi-Tenant B2B SaaS platform for construction firms to track equipment via QR codes, manage maintenance schedules, and generate audit compliance reports.",
+    color: "var(--accent)",
+    image: "/fieldvault.png",
+  },
+  // {
+  //   id: "super-erp",
+  //   name: "Super ERP",
+  //   category: "Enterprise Resource Planning",
+  //   url: "https://super-erp-xi.vercel.app",
+  //   year: "2026",
+  //   stack: [
+  //     "Next.js",
+  //     "TypeScript",
+  //     "Tailwind CSS",
+  //     "Shadcn UI",
+  //     "Redux Toolkit",
+  //   ],
+  //   description:
+  //     "A modern, production-ready ERP system with real-time analytics, inventory management, sales tracking, and comprehensive business reporting.",
+  //   color: "var(--accent)",
+  //   image: "/super-erp.png",
+  // },
   {
     id: "super-hrms",
     name: "Super HRMS",
@@ -272,30 +291,6 @@ export const projects: Project[] = [
     color: "var(--accent)",
     image: "/super-hrms.png",
   },
-  // {
-  //   id: "schoolsys",
-  //   name: "School Management",
-  //   category: "ERP Platform",
-  //   url: "https://scl-mgt-sys-client.vercel.app",
-  //   year: "2024",
-  //   stack: ["React.js", "Node.js", "MongoDB"],
-  //   description:
-  //     "Comprehensive school ERP with student records, scheduling, teacher dashboards, and grade management.",
-  //   color: "var(--accent)",
-  //   image: "/schoolsys.webp",
-  // },
-  // {
-  //   id: "dashboard",
-  //   name: "Analytics Dashboard",
-  //   category: "Analytics",
-  //   url: "https://dash-b0ard.netlify.app",
-  //   year: "2023",
-  //   stack: ["React.js", "Tailwind CSS", "Recharts"],
-  //   description:
-  //     "Modern analytics dashboard with interactive charts, dark mode toggle, and fully responsive layout.",
-  //   color: "var(--accent)",
-  //   image: "/dashboard.webp",
-  // },
   {
     id: "nexboard",
     name: "NexBoard Admin Dashboard",
@@ -309,34 +304,16 @@ export const projects: Project[] = [
     image: "/nexboard.png",
   },
   {
-    id: "fieldvault",
-    name: "FieldVault",
-    category: "B2B SaaS Platform",
-    url: "https://fieldvault-project-web.vercel.app",
+    id: "3d-ecommerce",
+    name: "3D E-Commerce Platform",
+    category: "E-Commerce",
+    url: "https://3d-ecommerce-pink.vercel.app",
     year: "2026",
-    stack: ["Next.js", "NestJS", "React Native", "PostgreSQL", "Expo"],
+    stack: ["Next.js", "React Three Fiber", "Tailwind CSS", "Redux Toolkit"],
     description:
-      "A production-ready Multi-Tenant B2B SaaS platform for construction firms to track equipment via QR codes, manage maintenance schedules, and generate audit compliance reports.",
+      "A modern, immersive e-commerce experience leveraging interactive 3D product visualizations with smooth Framer Motion animations to enhance the user shopping journey.",
     color: "var(--accent)",
-    image: "/fieldvault.png",
-  },
-  {
-    id: "super-erp",
-    name: "Super ERP",
-    category: "Enterprise Resource Planning",
-    url: "https://super-erp-xi.vercel.app",
-    year: "2026",
-    stack: [
-      "Next.js",
-      "TypeScript",
-      "Tailwind CSS",
-      "Shadcn UI",
-      "Redux Toolkit",
-    ],
-    description:
-      "A modern, production-ready ERP system with real-time analytics, inventory management, sales tracking, and comprehensive business reporting.",
-    color: "var(--accent)",
-    image: "/super-erp.png",
+    image: "/3d-ecom.png",
   },
   // {
   //   id: "ai-dashboard-template",
@@ -356,7 +333,8 @@ export interface Testimonial {
   id: number;
   name: string;
   role: string;
-  company: string;
+  company?: string;
+  project?: string;
   text: string;
   avatar: string;
   linkedin?: string;
@@ -367,17 +345,6 @@ export interface Testimonial {
 export const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: "Meherab Hossain",
-    role: "Software Engineer",
-    company: "Easy Fashion Ltd.",
-    text: "I’ve had the pleasure of working closely with Nadim Chowdhury at Easy Fashion Ltd., where we are designing and developing a large-scale ERP system for the company. As a Front-End Developer, Nadim has consistently impressed me with his ability to transform complex requirements into clean, intuitive, and high-performing user interfaces. His strong command over modern front-end technologies, attention to detail, and problem-solving mindset make him a valuable asset to any project. What truly sets Nadim apart is his collaborative spirit. He actively communicates with designers, backend developers, and stakeholders to ensure seamless integration and a smooth user experience. His dedication to delivering quality work on time, along with his eagerness to learn and adapt, make him not just a great teammate but also a dependable professional. I highly recommend Nadim to any team or organization looking for a talented and reliable front-end developer who can contribute to building impactful digital solutions.",
-    avatar: "MH",
-    linkedin: "https://www.linkedin.com/in/meherabh/",
-    date: "September 2025",
-    relationship: "Worked together at Easy Fashion Ltd.",
-  },
-  {
-    id: 2,
     name: "Shafayet Hossain",
     role: "Frontend Web Developer",
     company: "MediusWare",
@@ -388,7 +355,7 @@ export const testimonials: Testimonial[] = [
     relationship: "Senior colleague at MediusWare",
   },
   {
-    id: 3,
+    id: 2,
     name: "Sabbir Hosen",
     role: "Software Engineer",
     company: "MediusWare",
@@ -399,18 +366,18 @@ export const testimonials: Testimonial[] = [
     relationship: "Managed Nadim directly at MediusWare",
   },
   {
-    id: 4,
+    id: 3,
     name: "Md Fozle Rabbi",
     role: "Full Stack Developer",
-    company: "ganaGroup",
-    text: "I had the pleasure of working closely with Nadim on a collaborative project at ganaGroup, where we were tasked with building a drag and drop website builder. Nadim took charge of the frontend development while I handled the backend aspects. Nadim's expertise in frontend technologies, particularly React JS and grapesJS, played a pivotal role in the success of our project. His ability to seamlessly integrate these tools and technologies resulted in a user-friendly and visually appealing interface for our website builder. Beyond his technical skills, Nadim demonstrated a deep understanding of website architecture and APIs, which greatly contributed to the efficiency and effectiveness of our collaboration. He consistently showcased a strong work ethic, attention to detail, and a proactive approach to problem-solving. It was a pleasure working with Nadim, and I have no hesitation in recommending him for any frontend development projects. His dedication, skills, and professionalism make him a valuable asset to any team.",
+    project: "ganaGroup",
+    text: "I had the pleasure of working closely with Nadim on the ganaGroup project, where we were tasked with building a drag and drop website builder. Nadim took charge of the frontend development while I handled the backend aspects. Nadim's expertise in frontend technologies, particularly React JS and grapesJS, played a pivotal role in the success of our project. His ability to seamlessly integrate these tools and technologies resulted in a user-friendly and visually appealing interface for our website builder. Beyond his technical skills, Nadim demonstrated a deep understanding of website architecture and APIs, which greatly contributed to the efficiency and effectiveness of our collaboration. He consistently showcased a strong work ethic, attention to detail, and a proactive approach to problem-solving. It was a pleasure working with Nadim, and I have no hesitation in recommending him for any frontend development projects. His dedication, skills, and professionalism make him a valuable asset to any team.",
     avatar: "FR",
     linkedin: "https://www.linkedin.com/in/fozle-rabbi-python-developer/",
     date: "April 2024",
-    relationship: "Worked together at ganaGroup",
+    relationship: "Collaborated on ganaGroup project",
   },
   {
-    id: 5,
+    id: 4,
     name: "Yeamin Mahmud",
     role: "Engineering Lead",
     company: "MediusWare",
@@ -421,7 +388,7 @@ export const testimonials: Testimonial[] = [
     relationship: "Managed Nadim directly at MediusWare",
   },
   {
-    id: 6,
+    id: 5,
     name: "Md Fatin Ishmam",
     role: "Software Engineer",
     company: "MediusWare",
@@ -432,7 +399,7 @@ export const testimonials: Testimonial[] = [
     relationship: "Managed Nadim directly at MediusWare",
   },
   {
-    id: 7,
+    id: 6,
     name: "Salman Kabir",
     role: "Enterprise Solution Architect",
     company: "MediusWare",

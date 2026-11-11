@@ -18,6 +18,124 @@ export function Hero() {
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-accent/5 blur-[120px]" />
       </div>
 
+      {/* Minimal clean binary & coding ambient background */}
+      <div
+        className="absolute inset-0 pointer-events-none select-none overflow-hidden"
+        aria-hidden="true"
+        style={{
+          maskImage:
+            "radial-gradient(ellipse 80% 70% at 50% 40%, black 15%, transparent 85%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 80% 70% at 50% 40%, black 15%, transparent 85%)",
+        }}
+      >
+        <svg
+          className="w-full h-full text-text-primary"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <pattern
+              id="hero-code-pattern"
+              width="160"
+              height="120"
+              patternUnits="userSpaceOnUse"
+            >
+              {/* Subtle grid intersection dot */}
+              <circle
+                cx="2"
+                cy="2"
+                r="1"
+                fill="currentColor"
+                fillOpacity="0.08"
+              />
+
+              {/* Minimal binary streams (ASCII for Nadim / Code) */}
+              <text
+                x="16"
+                y="26"
+                className="font-mono text-[10px]"
+                fill="currentColor"
+                fillOpacity="0.065"
+                letterSpacing="1.5"
+              >
+                01001110
+              </text>
+              <text
+                x="105"
+                y="26"
+                className="font-mono text-[9px]"
+                fill="var(--accent)"
+                fillOpacity="0.16"
+                fontWeight="600"
+              >
+                &lt;/&gt;
+              </text>
+
+              <text
+                x="16"
+                y="58"
+                className="font-mono text-[9px]"
+                fill="currentColor"
+                fillOpacity="0.05"
+              >
+                // init
+              </text>
+              <text
+                x="88"
+                y="58"
+                className="font-mono text-[10px]"
+                fill="currentColor"
+                fillOpacity="0.065"
+                letterSpacing="1.5"
+              >
+                01100001
+              </text>
+
+              <text
+                x="16"
+                y="90"
+                className="font-mono text-[10px]"
+                fill="currentColor"
+                fillOpacity="0.065"
+                letterSpacing="1.5"
+              >
+                01100100
+              </text>
+              <text
+                x="110"
+                y="90"
+                className="font-mono text-[10px]"
+                fill="var(--accent)"
+                fillOpacity="0.14"
+              >
+                &#123;&nbsp;&#125;
+              </text>
+
+              <text
+                x="16"
+                y="112"
+                className="font-mono text-[8.5px]"
+                fill="currentColor"
+                fillOpacity="0.045"
+                letterSpacing="1"
+              >
+                01101101
+              </text>
+              <text
+                x="118"
+                y="112"
+                className="font-mono text-[9px]"
+                fill="currentColor"
+                fillOpacity="0.06"
+              >
+                =&gt;
+              </text>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#hero-code-pattern)" />
+        </svg>
+      </div>
+
       <div className="section-container relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center py-24 md:py-32">
           {/* Left: Text Content */}
@@ -73,8 +191,9 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-base md:text-lg text-text-secondary leading-relaxed"
             >
-              I build production-grade web applications with a focus on clean
-              architecture, seamless user experiences, and code that ships.
+              Software Developer building production-grade web and mobile applications
+              with React, Next.js, Node.js, and React Native. Focused on clean architecture,
+              seamless user experiences, and code that ships.
             </motion.p>
 
             {/* CTA + Social Links */}
@@ -104,7 +223,7 @@ export function Hero() {
                   className="w-9 h-9 rounded-lg flex items-center justify-center text-text-tertiary hover:text-accent transition-colors"
                   aria-label="GitHub"
                 >
-                  <GithubIcon className="w-6 h-6" />
+                  <GithubIcon className="w-5 h-5" />
                 </a>
                 <a
                   href={siteConfig.linkedin}

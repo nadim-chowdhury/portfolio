@@ -15,7 +15,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Nadim Chowdhury | Software Developer",
-  description: "Portfolio of Nadim Chowdhury - Full Stack Developer",
+  description: "Portfolio of Nadim Chowdhury - Software Developer",
 };
 
 // const navMenu = [

@@ -76,11 +76,22 @@ export function Testimonials() {
                   initial="enter"
                   animate="center"
                   exit="exit"
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.2}
+                  onDragEnd={(_e, { offset, velocity }) => {
+                    const swipe = Math.abs(offset.x) * velocity.x;
+                    if (offset.x < -40 || swipe < -100) {
+                      next();
+                    } else if (offset.x > 40 || swipe > 100) {
+                      prev();
+                    }
+                  }}
                   transition={{
                     duration: 0.4,
                     ease: [0.23, 1, 0.32, 1],
                   }}
-                  className="flex flex-col items-center text-center w-full"
+                  className="flex flex-col items-center text-center w-full cursor-grab active:cursor-grabbing select-none"
                 >
                   <p className="text-sm sm:text-base text-text-secondary leading-relaxed mb-6 italic max-w-xl">
                     &ldquo;{t.text}&rdquo;
@@ -107,7 +118,9 @@ export function Testimonials() {
                         )}
                       </div>
                       <p className="text-xs text-text-tertiary">
-                        {t.role} at {t.company}
+                        {t.role}
+                        {t.company ? ` at ${t.company}` : ""}
+                        {t.project ? ` · ${t.project} Project` : ""}
                       </p>
                       {t.relationship && (
                         <p className="text-[11px] text-text-tertiary/70 mt-0.5">

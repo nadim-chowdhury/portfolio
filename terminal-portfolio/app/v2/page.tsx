@@ -43,70 +43,46 @@ interface Project {
 
 const EXPERIENCE: Experience[] = [
   {
-    role: "Full Stack Software Developer",
-    company: "Easy Fashion Ltd",
-    period: "Jul 2025 ~ Nov 2025",
+    role: "Software Developer",
+    company: "Akij iBos",
+    period: "Apr 2026 ~ Nov 2026",
     points: [
-      "Designed and implemented end-to-end features using Next.js and NestJS for multiple ERP modules",
-      "Developed and maintained secure REST APIs, ensuring reliable client-server communication",
-      "Optimized performance through database query efficiency, code splitting, and caching strategies",
-      "Maintained modular, well-tested codebases following enterprise development standards",
-    ],
-  },
-  {
-    role: "Full Stack Web Developer",
-    company: "Freelance",
-    period: "Feb 2025 ~ Jun 2025",
-    points: [
-      "Built a Next.js/NestJS Flight Booking System (auth, airline/airport/route management, workflows)",
-      "Developed drag-and-drop Website Builder SaaS with reusable components and subscription billing",
-      "Designed scalable architectures with modular component registries and optimized rendering pipelines",
-    ],
-  },
-  {
-    role: "Jr. Frontend Developer",
-    company: "Mediusware Ltd",
-    period: "Mar 2024 ~ Jan 2025",
-    points: [
-      "Developed a multi-tenant drag-and-drop website builder with subdomain publishing functionality",
-      "Built features for event management software and integrated components with backend APIs",
-      "Designed interfaces using React, Ant Design, and Bootstrap, managing state with React Router DOM",
-      "Consumed GraphQL APIs and optimized client-side data fetching for improved performance",
-    ],
-  },
-  {
-    role: "Frontend Trainee",
-    company: "Mediusware Ltd",
-    period: "Dec 2023 ~ Feb 2024",
-    points: [
-      "Developed Profile Management CRUD functionality with role-based access control",
-      "Implemented Administrator Back Office, Employee Task Management, and Customer Order modules",
-      "Built interactive UI logic for Preferences and independently built an e-commerce app from scratch",
+      "Worked on ERP modules including Procurement, Purchase Request, and Purchase Order, building and improving features used in day-to-day business operations",
+      "Developed a Visitor Management System integrated with ZKTeco turnstile gates, implementing visitor registration, host approval, QR-based access, automated device synchronization, and time-based access expiration",
+      "Refactored Standard Chartered Bank's Statement Collection system, automating CAMT XML processing, database mapping, duplicate handling, batch processing, and scheduled SFTP retrieval using Quartz, successfully processing 7,051 transactions in testing",
     ],
   },
   {
     role: "Frontend Developer",
-    company: "Freelance",
-    period: "Jul 2023 ~ Nov 2023",
+    company: "Mediusware Ltd",
+    period: "Dec 2023 ~ Jan 2026",
     points: [
-      "Built a School Management System using Angular with student, teacher, and administrative modules",
-      "Developed a responsive Flight Ticket Booking application with complete booking workflows and API integrations",
-      "Designed reusable UI components and responsive layouts, collaborating directly with clients",
+      "Worked on POS and warehouse management systems, developing sales and sales return pages, inventory and stock management features, and integrating frontend and backend APIs",
+      "Worked on a drag-and-drop website builder with multi-tenancy, reusable components, and subdomain-based website publishing",
+      "Integrated GraphQL APIs and handled dynamic data rendering across different pages and modules",
+      "Built frontend features including profile management, task management, customer orders, and user preferences with role-based access control",
+      "Built a flight booking system using Next.js and NestJS, with user authentication, role-based access, and Amadeus API flight search integration",
     ],
   },
   {
     role: "Web Developer",
-    company: "Self-employed",
-    period: "Sep 2022 ~ Jun 2023",
+    company: "Freelance & Personal Projects",
+    period: "Sep 2022 ~ Nov 2023",
     points: [
-      "Learned and applied the MERN stack by building full-stack applications from concept to deployment",
-      "Created practice projects: task management apps, authentication systems, and CRUD-based solutions",
-      "Practiced REST API development, database design, state management, and debugging/version control",
+      "Built web applications with React.js while strengthening frontend development skills, including reusable components, responsive layouts, and user interactions",
+      "Worked on the frontend of a School Management System and Flight Booking App building pages and features and integrating them with backend APIs",
+      "Built several practice projects to strengthen skills in JavaScript, REST APIs, authentication, CRUD operations, Git, and frontend debugging",
     ],
   },
 ];
 
 const PROJECTS: Project[] = [
+  {
+    name: "PurePath Booking",
+    tech: ["Next.js", "React", "Redux Toolkit"],
+    url: "purepath-booking.vercel.app",
+    desc: "Modern, high-performance booking system built with the robust React ecosystem to streamline reservations, appointments, and user management.",
+  },
   {
     name: "Collabier SaaS",
     tech: ["Next.js", "NestJS", "PostgreSQL"],
@@ -115,7 +91,7 @@ const PROJECTS: Project[] = [
   },
   {
     name: "Flight Booking",
-    tech: ["Next.js", "NestJS", "REST API"],
+    tech: ["Next.js", "NestJS", "Amadeus API"],
     url: "flight-booking-x.vercel.app",
     desc: "Secure role-based booking platform with CRUD for airlines, airports, planes, routes, and user authentication.",
   },
@@ -124,12 +100,6 @@ const PROJECTS: Project[] = [
     tech: ["React.js", "Node.js", "MongoDB"],
     url: "scl-mgt-sys-client.vercel.app",
     desc: "Comprehensive school management with student records, scheduling, and administrative dashboards.",
-  },
-  {
-    name: "Dashboard UI",
-    tech: ["React.js", "Tailwind CSS"],
-    url: "dash-b0ard.netlify.app",
-    desc: "Modern analytics dashboard with charts, data tables, dark mode, and responsive layout.",
   },
 ];
 
@@ -687,7 +657,7 @@ export default function PortfolioV2() {
               <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
                 {(
                   [
-                    { label: "Experience", value: "3+ Years" },
+                    { label: "Experience", value: "4 Years" },
                     { label: "Projects", value: "20+ Built" },
                     { label: "Stack", value: "Full Stack" },
                     { label: "Location", value: "Bangladesh" },
@@ -891,7 +861,7 @@ export default function PortfolioV2() {
                         <span
                           style={{ color: "#333", flexShrink: 0, marginTop: 2 }}
                         >
-                          —
+                          -
                         </span>
                         {p}
                       </li>

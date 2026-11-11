@@ -39,81 +39,60 @@ interface Project {
 
 const EXPERIENCE: Experience[] = [
   {
-    role: "Full Stack Software Developer",
-    company: "Easy Fashion Ltd",
-    period: "Jul ~ Nov 2025",
+    role: "Software Developer",
+    company: "Akij iBos",
+    period: "Apr ~ Nov 2026",
     type: "Full-time",
-    desc: "Contributed to the development of a large-scale ERP platform (POS, Inventory, Finance, HRM). Designed and implemented end-to-end features using Next.js and NestJS, built secure REST APIs, and optimized query and application performance.",
-  },
-  {
-    role: "Full Stack Web Developer",
-    company: "Freelance",
-    period: "Feb ~ Jun 2025",
-    type: "Freelance",
-    desc: "Designed and developed full-stack applications including a NestJS/Next.js Flight Booking System with complete route management, and a drag-and-drop Website Builder SaaS with reusable component rendering and billing.",
-  },
-  {
-    role: "Jr. Frontend Developer",
-    company: "Mediusware Ltd",
-    period: "Mar 2024 ~ Jan 2025",
-    type: "Full-time",
-    desc: "Developed a multi-tenant drag-and-drop website builder with subdomain publishing, built features for an event management platform, and designed responsive React interfaces consuming GraphQL APIs.",
-  },
-  {
-    role: "Frontend Trainee",
-    company: "Mediusware Ltd",
-    period: "Dec 2023 ~ Feb 2024",
-    type: "Internship",
-    desc: "Developed Profile Management CRUD with RBAC, built administrator back-office and task management modules, implemented Customer Order Management workflows, and built an e-commerce app from scratch.",
+    desc: "Worked on ERP modules (Procurement, Purchase Request, Purchase Order). Developed a Visitor Management System integrated with ZKTeco turnstile gates (visitor registration, host approval, QR access, automated device sync). Refactored Standard Chartered Bank's Statement Collection system, automating CAMT XML processing, database mapping, and scheduled SFTP retrieval using Quartz (7,051 transactions in testing).",
   },
   {
     role: "Frontend Developer",
-    company: "Freelance",
-    period: "Jul ~ Nov 2023",
-    type: "Freelance",
-    desc: "Built an Angular-based School Management System and a responsive Flight Ticket Booking application, designed reusable UI components and responsive layouts, and worked directly with clients.",
+    company: "Mediusware Ltd",
+    period: "Dec 2023 ~ Jan 2026",
+    type: "Full-time",
+    desc: "Worked on POS and warehouse management systems with keyboard shortcuts. Developed drag-and-drop website builder with multi-tenancy and subdomain publishing. Integrated GraphQL APIs and dynamic data rendering. Built eCommerce RBAC features and a full-stack flight booking system with Amadeus API.",
   },
   {
     role: "Web Developer",
-    company: "Self-employed",
-    period: "Sep 2022 ~ Jun 2023",
-    type: "Self-employed",
-    desc: "Learned and applied the MERN stack by building full-stack applications (tasks, auth, CRUD dashboards) from concept to deployment. Developed REST APIs, designed databases, and deployed web apps.",
+    company: "Freelance & Personal Projects",
+    period: "Sep 2022 ~ Nov 2023",
+    type: "Freelance",
+    desc: "Built web applications with React.js focusing on reusable components, responsive layouts, and core full-stack foundations. Developed frontend for School Management System and Flight Booking App with backend APIs, authentication, and CRUD operations.",
   },
 ];
 
 const PROJECTS: Project[] = [
   {
     idx: "01",
+    name: "PurePath Booking",
+    url: "purepath-booking.vercel.app",
+    tech: "Next.js · React · Redux Toolkit · Shadcn UI",
+    desc: "Modern, high-performance booking platform built with the React ecosystem to streamline reservations, appointments, and user management.",
+    year: "2026",
+  },
+  {
+    idx: "02",
     name: "Collabier SaaS",
     url: "collabier-sass-x.vercel.app",
-    tech: "Next.js · NestJS · PostgreSQL",
+    tech: "Next.js · NestJS · PostgreSQL · Stripe",
     desc: "Visual editor platform with real-time style editing, reusable components, project dashboard, and integrated billing system.",
     year: "2025",
   },
   {
-    idx: "02",
+    idx: "03",
     name: "Flight Booking",
     url: "flight-booking-x.vercel.app",
-    tech: "Next.js · NestJS · REST API",
-    desc: "Secure airline booking system with role-based access control, CRUD for airlines, airports, planes, and routes.",
-    year: "2024",
-  },
-  {
-    idx: "03",
-    name: "School Management",
-    url: "scl-mgt-sys-client.vercel.app",
-    tech: "React.js · Node.js · MongoDB",
-    desc: "Comprehensive school management: student records, scheduling, teacher dashboards, and grade management.",
+    tech: "Next.js · NestJS · Amadeus API · PostgreSQL",
+    desc: "Full-stack airline booking platform integrated with Amadeus API for flight search, featuring role-based access, routes, planes, and booking management.",
     year: "2024",
   },
   {
     idx: "04",
-    name: "Dashboard UI",
-    url: "dash-b0ard.netlify.app",
-    tech: "React.js · Tailwind CSS",
-    desc: "Modern analytics dashboard with charts, data tables, dark mode support, and fully responsive layout.",
-    year: "2023",
+    name: "School Management",
+    url: "scl-mgt-sys-client.vercel.app",
+    tech: "React.js · Node.js · MongoDB · Express.js",
+    desc: "Comprehensive school management: student records, scheduling, teacher dashboards, and grade management.",
+    year: "2024",
   },
 ];
 
@@ -507,7 +486,7 @@ export default function Home() {
           .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
 
           .exp-section { padding: 64px 20px !important; }
-          /* On mobile, experience uses accordion — hide tab layout */
+          /* On mobile, experience uses accordion - hide tab layout */
           .exp-tab-layout { display: none !important; }
           .exp-accordion-layout { display: block !important; }
 
@@ -894,20 +873,21 @@ export default function Home() {
               >
                 {`const developer = {
   name: "Nadim Chowdhury",
-  role: "Full Stack Developer",
+  role: "Software Developer",
   location: "Dhaka, Bangladesh",
-  experience: "3+ years",
+  experience: "4 years",
   
   stack: {
-    frontend: ["React", "Next.js"],
-    backend: ["NestJS", "Express"],
+    frontend: ["React.js", "Next.js", "Tailwind CSS"],
+    backend: ["NestJS", "Node.js", "Express.js"],
+    mobile: ["React Native"],
     db: ["PostgreSQL", "MongoDB"],
   },
   
   status: `}
                 <span style={{ color: "#c17f3a" }}>"Open to work 🟢"</span>
                 {`,
-  email: "nadim@outlook.com"
+  email: "nadim-chowdhury@outlook.com"
 }`}
               </pre>
             </div>
@@ -985,7 +965,7 @@ export default function Home() {
                 }}
               >
                 I dropped out of my Mathematics degree to pursue software
-                development full-time — a decision I've never regretted. I
+                development full-time - a decision I've never regretted. I
                 thrive in agile environments and love the intersection of
                 elegant UI and robust backend logic.
               </p>

@@ -1,29 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Send, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, Copy, Check } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/icons";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { siteConfig } from "@/lib/data";
 
 export function Contact() {
-  const [formState, setFormState] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [submitted, setSubmitted] = useState(false);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
 
-  function handleSubmit(e: React.FormEvent) {
+  const handleCopy = (text: string, field: string, e: React.MouseEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormState({ name: "", email: "", message: "" });
-    }, 3000);
-  }
+    e.stopPropagation();
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(null), 2000);
+  };
 
   return (
     <section id="contact" className="py-24 md:py-32 bg-surface-secondary">
@@ -31,166 +24,86 @@ export function Contact() {
         <SectionHeading
           label="Contact"
           title="Let's build something together"
-          description="Have a project in mind? I'd love to hear about it. Drop me a message and let's start a conversation."
+          description="Have a project in mind or looking for a talented developer? Drop me a line and let's start a conversation."
           align="center"
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 max-w-4xl mx-auto">
-          {/* Form (3 cols) */}
-          {/* <ScrollReveal className="lg:col-span-3" direction="left">
-            <form
-              onSubmit={handleSubmit}
-              className="p-6 md:p-8 rounded-2xl border border-border bg-surface-elevated"
-            >
-              <div className="flex flex-col gap-5"> */}
-          {/* Name */}
-          {/* <div className="flex flex-col gap-1.5">
-                  <label
-                    htmlFor="contact-name"
-                    className="text-sm font-medium text-text-primary"
-                  >
-                    Name
-                  </label>
-                  <input
-                    id="contact-name"
-                    type="text"
-                    value={formState.name}
-                    onChange={(e) =>
-                      setFormState((p) => ({ ...p, name: e.target.value }))
-                    }
-                    required
-                    placeholder="Your name"
-                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-primary text-text-primary text-sm placeholder:text-text-tertiary focus:border-accent focus:ring-1 focus:ring-accent/30 outline-none transition-colors"
-                  />
-                </div> */}
-
-          {/* Email */}
-          {/* <div className="flex flex-col gap-1.5">
-                  <label
-                    htmlFor="contact-email"
-                    className="text-sm font-medium text-text-primary"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="contact-email"
-                    type="email"
-                    value={formState.email}
-                    onChange={(e) =>
-                      setFormState((p) => ({ ...p, email: e.target.value }))
-                    }
-                    required
-                    placeholder="you@example.com"
-                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-primary text-text-primary text-sm placeholder:text-text-tertiary focus:border-accent focus:ring-1 focus:ring-accent/30 outline-none transition-colors"
-                  />
-                </div> */}
-
-          {/* Message */}
-          {/* <div className="flex flex-col gap-1.5">
-                  <label
-                    htmlFor="contact-message"
-                    className="text-sm font-medium text-text-primary"
-                  >
-                    Message
-                  </label>
-                  <textarea
-                    id="contact-message"
-                    value={formState.message}
-                    onChange={(e) =>
-                      setFormState((p) => ({ ...p, message: e.target.value }))
-                    }
-                    required
-                    rows={5}
-                    placeholder="Tell me about your project..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-primary text-text-primary text-sm placeholder:text-text-tertiary focus:border-accent focus:ring-1 focus:ring-accent/30 outline-none transition-colors resize-none"
-                  />
-                </div> */}
-
-          {/* Submit */}
-          {/* <button
-                  type="submit"
-                  disabled={submitted}
-                  className="inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl bg-accent text-accent-fg font-medium text-sm hover:bg-accent-hover disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
-                >
-                  {submitted ? (
-                    <>
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"
-                      />
-                      Message Sent!
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      Send Message
-                    </>
-                  )}
-                </button> */}
-          {/* </div>
-            </form>
-          </ScrollReveal> */}
-
-          {/* Contact Info (2 cols) */}
-          <ScrollReveal className="lg:col-span-5" direction="up" delay={0.2}>
-            <div className="flex flex-col gap-5 h-full justify-center">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="max-w-2xl mx-auto">
+          <ScrollReveal direction="up" delay={0.1}>
+            <div className="flex flex-col gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Phone */}
                 <a
                   href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-                  className="group flex items-start gap-4 p-4 rounded-xl border border-border bg-surface-elevated hover:border-accent/40 transition-colors"
+                  className="group flex items-center justify-between p-5 rounded-2xl border border-border bg-surface-elevated hover:border-accent/40 transition-colors card-hover"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-accent-soft flex items-center justify-center shrink-0">
-                    <Phone className="w-4 h-4 text-accent" />
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-accent-soft flex items-center justify-center shrink-0">
+                      <Phone className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-text-tertiary mb-0.5 font-medium">Phone</p>
+                      <p className="text-sm font-semibold text-text-primary group-hover:text-accent transition-colors">
+                        {siteConfig.phone}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs text-text-tertiary mb-0.5">Phone</p>
-                    <p className="text-sm font-medium text-text-primary group-hover:text-accent transition-colors">
-                      {siteConfig.phone}
-                    </p>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) =>
+                      handleCopy(siteConfig.phone.replace(/\s/g, ""), "phone", e)
+                    }
+                    className="p-2 rounded-lg border border-border bg-surface-primary text-text-tertiary hover:text-accent hover:border-accent/50 transition-colors shrink-0"
+                    title={copiedField === "phone" ? "Copied!" : "Copy phone number"}
+                    aria-label="Copy phone number"
+                  >
+                    {copiedField === "phone" ? (
+                      <Check className="w-4 h-4 text-accent" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                  </button>
                 </a>
 
                 {/* Email */}
                 <a
                   href={`mailto:${siteConfig.email}`}
-                  className="group flex items-start gap-4 p-4 rounded-xl border border-border bg-surface-elevated hover:border-accent/40 transition-colors"
+                  className="group flex items-center justify-between p-5 rounded-2xl border border-border bg-surface-elevated hover:border-accent/40 transition-colors card-hover"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-accent-soft flex items-center justify-center shrink-0">
-                    <Mail className="w-4 h-4 text-accent" />
+                  <div className="flex items-start gap-4 overflow-hidden">
+                    <div className="w-10 h-10 rounded-xl bg-accent-soft flex items-center justify-center shrink-0">
+                      <Mail className="w-4 h-4 text-accent" />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-xs text-text-tertiary mb-0.5 font-medium">Email</p>
+                      <p className="text-sm font-semibold text-text-primary group-hover:text-accent transition-colors truncate">
+                        {siteConfig.email}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs text-text-tertiary mb-0.5">Email</p>
-                    <p className="text-sm font-medium text-text-primary group-hover:text-accent transition-colors break-all">
-                      {siteConfig.email}
-                    </p>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => handleCopy(siteConfig.email, "email", e)}
+                    className="p-2 rounded-lg border border-border bg-surface-primary text-text-tertiary hover:text-accent hover:border-accent/50 transition-colors shrink-0 ml-2"
+                    title={copiedField === "email" ? "Copied!" : "Copy email address"}
+                    aria-label="Copy email address"
+                  >
+                    {copiedField === "email" ? (
+                      <Check className="w-4 h-4 text-accent" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                  </button>
                 </a>
-
-                {/* Location */}
-                {/* <div className="flex items-start gap-4 p-4 rounded-xl border border-border bg-surface-elevated">
-                  <div className="w-10 h-10 rounded-lg bg-accent-soft flex items-center justify-center shrink-0">
-                    <MapPin className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-text-tertiary mb-0.5">
-                      Location
-                    </p>
-                    <p className="text-sm font-medium text-text-primary">
-                      {siteConfig.location}
-                    </p>
-                  </div>
-                </div> */}
               </div>
 
               {/* Social Links */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <a
                   href={siteConfig.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-border bg-surface-elevated text-text-secondary text-sm hover:text-accent hover:border-accent/40 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-border bg-surface-elevated text-text-secondary text-sm font-medium hover:text-accent hover:border-accent/40 transition-colors card-hover"
                 >
                   <LinkedinIcon className="w-4 h-4" />
                   LinkedIn
@@ -199,9 +112,9 @@ export function Contact() {
                   href={siteConfig.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-border bg-surface-elevated text-text-secondary text-sm hover:text-accent hover:border-accent/40 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-border bg-surface-elevated text-text-secondary text-sm font-medium hover:text-accent hover:border-accent/40 transition-colors card-hover"
                 >
-                  <GithubIcon className="w-5 h-5" />
+                  <GithubIcon className="w-4 h-4" />
                   GitHub
                 </a>
               </div>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Download } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { navLinks, siteConfig } from "@/lib/data";
@@ -60,6 +60,13 @@ export function Navbar() {
 
   return (
     <>
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-accent-fg focus:rounded-lg focus:shadow-lg focus:outline-none text-sm font-medium"
+      >
+        Skip to main content
+      </a>
+
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: hidden ? -100 : 0 }}
@@ -117,20 +124,12 @@ export function Navbar() {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
             <ThemeToggle />
-            {/* <a
-              href={siteConfig.resumePdf}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-fg hover:bg-accent-hover transition-colors"
-            >
-              <Download className="w-3.5 h-3.5" />
-              Resume
-            </a> */}
             <Link
               href="/terminal"
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-fg hover:bg-accent-hover transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs md:text-sm font-medium rounded-lg bg-accent text-accent-fg hover:bg-accent-hover transition-colors font-mono"
             >
-              Don&apos;t Click
+              <span>&gt;_</span>
+              <span>Don&apos;t Click</span>
             </Link>
           </div>
 
@@ -176,18 +175,21 @@ export function Navbar() {
                   {label}
                 </motion.a>
               ))}
-              <motion.a
-                href={siteConfig.resumePdf}
-                target="_blank"
-                rel="noopener noreferrer"
+
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: navLinks.length * 0.06 }}
-                className="mt-4 inline-flex items-center gap-2 px-6 py-3 text-base font-medium rounded-xl bg-accent text-accent-fg hover:bg-accent-hover transition-colors"
+                transition={{ delay: (navLinks.length + 1) * 0.06 }}
+                className="mt-4"
               >
-                <Download className="w-4 h-4" />
-                Download Resume
-              </motion.a>
+                <Link
+                  href="/terminal"
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-xl border border-accent/40 bg-accent-soft text-accent hover:bg-accent hover:text-accent-fg transition-colors"
+                >
+                  Don&apos;t Click (Terminal)
+                </Link>
+              </motion.div>
             </nav>
           </motion.div>
         )}

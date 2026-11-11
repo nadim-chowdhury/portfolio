@@ -1,6 +1,7 @@
 import { Mail, ArrowUp } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/icons";
 import Image from "next/image";
+import Link from "next/link";
 import { siteConfig } from "@/lib/data";
 
 export function Footer() {
@@ -33,7 +34,7 @@ export function Footer() {
             <span className="text-xs font-mono uppercase tracking-widest text-text-tertiary mb-1">
               Links
             </span>
-            <div className="flex flex-wrap gap-x-6 gap-y-1">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
               {["About", "Skills", "Experience", "Projects", "Contact"].map(
                 (label) => (
                   <a
@@ -45,6 +46,12 @@ export function Footer() {
                   </a>
                 ),
               )}
+              <Link
+                href="/terminal"
+                className="text-sm font-mono text-accent hover:underline transition-colors"
+              >
+                Terminal_
+              </Link>
             </div>
           </div>
 
@@ -91,7 +98,7 @@ export function Footer() {
             intention.
           </p>
           <a
-            href="#"
+            href="#main"
             className="w-8 h-8 rounded-full border border-border bg-surface-elevated flex items-center justify-center text-text-secondary hover:text-accent hover:border-accent transition-colors"
             aria-label="Back to top"
           >

@@ -378,7 +378,7 @@ const THEMES: Record<string, Theme> = {
 
 const ME = {
   name: "Nadim Chowdhury",
-  role: "Full Stack Developer",
+  role: "Software Developer",
   location: "Dhaka, Bangladesh",
   email: "nadim-chowdhury@outlook.com",
   phone: "+880 1971 258803",
@@ -389,98 +389,95 @@ const ME = {
 
 const SKILLS: Record<string, string[]> = {
   frontend: [
+    "JavaScript",
+    "TypeScript",
     "React.js",
     "Next.js",
-    "Angular",
-    "TypeScript",
-    "JavaScript",
     "Tailwind CSS",
     "Bootstrap",
-    "Sass",
     "Ant Design",
-    "Framer Motion",
   ],
   backend: [
     "Node.js",
-    "NestJS",
     "Express.js",
+    "NestJS",
     "GraphQL",
     "REST API",
-    "WebSockets",
-    "tRPC",
   ],
-  database: ["PostgreSQL", "MongoDB", "Prisma", "TypeORM", "Redis", "Supabase"],
-  mobile: ["React Native", "Flutter", "Expo"],
+  mobile: ["React Native"],
+  database: ["PostgreSQL", "MongoDB"],
   devops: [
     "Docker",
     "Git",
-    "GitHub Actions",
-    "Vercel",
-    "Netlify",
-    "CI/CD",
-    "Linux",
+    "GitHub",
   ],
-  tools: ["Postman", "Swagger", "Figma", "VS Code", "Jira", "Notion"],
+  tools: ["Postman", "Swagger"],
 };
 
 const EXP: ExpEntry[] = [
   {
     n: "01",
-    role: "Full Stack Software Developer",
-    co: "Easy Fashion Ltd",
-    period: "Jul 2025 – Nov 2025",
+    role: "Software Developer",
+    co: "Akij iBos",
+    period: "Apr 2026 – Nov 2026",
     type: "Full-time",
-    stack: ["Next.js", "NestJS", "PostgreSQL", "Docker"],
-    desc: "Contributed to a large-scale ERP (POS, Inventory, HRMS). Developed end-to-end features using Next.js/NestJS, built secure REST APIs, and optimized query performance.",
+    stack: [
+      "React.js",
+      "Node.js",
+      "PostgreSQL",
+      "REST API",
+      "Ant Design",
+      "Quartz",
+      "ZKTeco",
+    ],
+    desc: "Worked on ERP modules including Procurement, Purchase Request, and Purchase Order. Developed a Visitor Management System integrated with ZKTeco turnstile gates (visitor registration, host approval, QR access, automated device sync). Refactored Standard Chartered Bank's Statement Collection system, automating CAMT XML processing, database mapping, duplicate handling, and scheduled SFTP retrieval using Quartz (7,051 transactions in testing).",
   },
   {
     n: "02",
-    role: "Full Stack Web Developer",
-    co: "Freelance",
-    period: "Feb 2025 – Jun 2025",
-    type: "Freelance",
-    stack: ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "Stripe"],
-    desc: "Built a Next.js/NestJS Flight Booking System and a drag-and-drop Website Builder SaaS with subscription-based billing and reusable component rendering.",
+    role: "Frontend Developer",
+    co: "Mediusware Ltd.",
+    period: "Dec 2023 – Jan 2026",
+    type: "Full-time",
+    stack: [
+      "React.js",
+      "Next.js",
+      "NestJS",
+      "TypeScript",
+      "GraphQL",
+      "Tailwind CSS",
+      "Amadeus API",
+    ],
+    desc: "Worked on POS and warehouse management systems with keyboard shortcuts. Developed drag-and-drop website builder with multi-tenancy and subdomain publishing. Integrated GraphQL APIs and dynamic data rendering. Built eCommerce RBAC features and a full-stack flight booking system with Amadeus API.",
   },
   {
     n: "03",
-    role: "Jr. Frontend Developer",
-    co: "Mediusware Ltd",
-    period: "Mar 2024 – Jan 2025",
-    type: "Full-time",
-    stack: ["React.js", "TypeScript", "GraphQL", "Ant Design", "Bootstrap"],
-    desc: "Developed a multi-tenant drag-and-drop website builder with subdomain publishing, built features for an event platform, and integrated GraphQL APIs.",
-  },
-  {
-    n: "04",
-    role: "Frontend Trainee",
-    co: "Mediusware Ltd",
-    period: "Dec 2023 – Feb 2024",
-    type: "Internship",
-    stack: ["React.js", "JavaScript", "Ant Design", "REST API"],
-    desc: "Developed profile CRUD with RBAC, back office & task management modules, and independently built an e-commerce application from scratch.",
-  },
-  {
-    n: "05",
-    role: "Frontend Developer",
-    co: "Freelance",
-    period: "Jul 2023 – Nov 2023",
-    type: "Freelance",
-    stack: ["Angular", "React.js", "JavaScript", "REST API"],
-    desc: "Built a School Management System using Angular (student/teacher/admin modules) and a responsive Flight Ticket Booking application with API integration.",
-  },
-  {
-    n: "06",
     role: "Web Developer",
-    co: "Self-employed",
-    period: "Sep 2022 – Jun 2023",
-    type: "Self-employed",
-    stack: ["HTML", "CSS", "JavaScript", "React.js", "MongoDB", "Express.js", "Node.js"],
-    desc: "Learned and applied the MERN stack. Developed practice projects (task management, auth systems, dashboards, CRUD solutions) from concept to deployment.",
+    co: "Freelance & Personal Projects",
+    period: "Sep 2022 – Nov 2023",
+    type: "Freelance",
+    stack: [
+      "React.js",
+      "JavaScript",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "REST API",
+      "Git",
+    ],
+    desc: "Built web applications with React.js focusing on reusable components, responsive layouts, and core full-stack foundations. Developed frontend for School Management System and Flight Booking App with backend APIs, authentication, and CRUD operations.",
   },
 ];
 
 const PROJECTS: ProjectEntry[] = [
+  {
+    id: "purepath-booking",
+    name: "PurePath Booking",
+    cat: "Booking System",
+    url: "purepath-booking.vercel.app",
+    year: "2026",
+    stack: ["Next.js", "React", "Redux Toolkit", "Shadcn UI", "Tailwind CSS"],
+    desc: "Modern, high-performance booking platform built with the React ecosystem to streamline reservations, appointments, and user management.",
+  },
   {
     id: "collabier",
     name: "Collabier SaaS",
@@ -496,7 +493,7 @@ const PROJECTS: ProjectEntry[] = [
     cat: "Booking System",
     url: "flight-booking-x.vercel.app",
     year: "2024",
-    stack: ["Next.js", "NestJS", "JWT", "REST API"],
+    stack: ["Next.js", "NestJS", "Amadeus API", "PostgreSQL", "REST API"],
     desc: "Secure airline booking with RBAC, CRUD for airlines/airports/planes/routes, smooth auth.",
   },
   {
@@ -505,14 +502,10 @@ const PROJECTS: ProjectEntry[] = [
     cat: "ERP Platform",
     url: "scl-mgt-sys-client.vercel.app",
     year: "2024",
-    stack: ["React.js", "Node.js", "MongoDB"],
-    desc: "School ERP with student records, scheduling, teacher dashboards, grade management.",
+    stack: ["React.js", "Node.js", "MongoDB", "Express.js"],
+    desc: "Comprehensive school ERP with student records, scheduling, teacher dashboards, and grade management.",
   },
-  {
-    id: "dashboard",
-    name: "Dashboard UI",
-    cat: "Analytics",
-    url: "dash-b0ard.netlify.app",
+];
     year: "2023",
     stack: ["React.js", "Tailwind CSS", "Recharts"],
     desc: "Modern analytics dashboard with charts, dark mode, responsive layout.",
@@ -573,7 +566,7 @@ const JOKES = [
   "Why do Java developers wear glasses? Because they can't C#. 👓",
   "There are 10 types of people: those who understand binary, and those who don't. 💻",
   "Why did the developer go broke? Because he used up all his cache. 💸",
-  "How many programmers does it take to change a light bulb? None — it's a hardware problem.",
+  "How many programmers does it take to change a light bulb? None - it's a hardware problem.",
   "Programming is 10% writing code and 90% figuring out why it doesn't work. 🤔",
   "The best thing about a Boolean is even if you're wrong, you're only off by a bit.",
 ];
@@ -614,7 +607,7 @@ const RM_RF_SEQUENCE: SequenceEntry[] = [
   { t: 1400, text: "🔥 Burning your career choices...", type: "err" },
   {
     t: 1900,
-    text: "😱 Erasing 3 years of Stack Overflow bookmarks...",
+    text: "😱 Erasing 4 years of Stack Overflow bookmarks...",
     type: "err",
   },
   {
@@ -699,7 +692,7 @@ const HACK_SEQUENCE: SequenceEntry[] = [
   { t: 3900, text: "", type: "br" },
   {
     t: 4000,
-    text: "ACCESS GRANTED 🎉 — Welcome, fellow developer.",
+    text: "ACCESS GRANTED 🎉 - Welcome, fellow developer.",
     type: "ok",
   },
   {
@@ -734,11 +727,66 @@ const CODE = (t: string): Line => mkLine(t, "code");
 
 function safeCalc(expr: string): number | null {
   try {
-    const cleaned = expr.replace(/[^0-9+\-*/().,% ]/g, "").trim();
-    if (!cleaned) return null;
-    // eslint-disable-next-line no-new-func
-    const result = new Function(`"use strict"; return (${cleaned})`)();
-    return typeof result === "number" && isFinite(result) ? result : null;
+    if (!expr || /[^0-9+\-*/%().\s]/.test(expr)) return null;
+    const tokens = expr.match(/(\d+(\.\d+)?|[+\-*/%()])/g);
+    if (!tokens) return null;
+    let pos = 0;
+
+    function parsePrimary(): number {
+      const token = tokens![pos++];
+      if (token === "(") {
+        const val = parseAddSub();
+        if (tokens![pos++] !== ")") throw new Error("Expected )");
+        return val;
+      }
+      if (token === "-") return -parsePrimary();
+      if (token === "+") return parsePrimary();
+      const num = Number(token);
+      if (isNaN(num)) throw new Error("Invalid number");
+      return num;
+    }
+
+    function parseMulDiv(): number {
+      let val = parsePrimary();
+      while (pos < tokens!.length) {
+        const op = tokens![pos];
+        if (op === "*") {
+          pos++;
+          val *= parsePrimary();
+        } else if (op === "/") {
+          pos++;
+          const div = parsePrimary();
+          if (div === 0) throw new Error("Divide by zero");
+          val /= div;
+        } else if (op === "%") {
+          pos++;
+          val %= parsePrimary();
+        } else {
+          break;
+        }
+      }
+      return val;
+    }
+
+    function parseAddSub(): number {
+      let val = parseMulDiv();
+      while (pos < tokens!.length) {
+        const op = tokens![pos];
+        if (op === "+") {
+          pos++;
+          val += parseMulDiv();
+        } else if (op === "-") {
+          pos++;
+          val -= parseMulDiv();
+        } else {
+          break;
+        }
+      }
+      return val;
+    }
+
+    const res = parseAddSub();
+    return pos === tokens.length && isFinite(res) ? res : null;
   } catch {
     return null;
   }
@@ -836,12 +884,15 @@ function run(
         mkLine(`  ${ME.name}`, "hdr"),
         DIM(`  ${ME.role}  ·  ${ME.location}`),
         BR(),
-        OUT("  Experience   3+ years  ·  2022 to present"),
-        OUT("  Projects     20+ deployed across web & mobile"),
-        OUT("  Focus        SaaS · ERP · Interactive Business Apps"),
-        OUT("  Stack        React · Next.js · NestJS · Node.js · PostgreSQL"),
+        OUT("  Experience   4 years  ·  2022 to 2026"),
+        OUT("  Roles        3 professional positions"),
+        OUT("  Focus        ERP · POS · Business Apps · SaaS & Booking Platforms"),
+        OUT("  Stack        React.js · Next.js · Node.js · NestJS · React Native · TypeScript"),
         BR(),
-        OUT("  Dropped out of Mathematics to pursue software full-time."),
+        OUT("  Self-taught Software Developer with 4 years of experience building"),
+        OUT("  applications using React, Node.js and React Native. Experienced in"),
+        OUT("  developing ERP, POS, and business applications, along with SaaS,"),
+        OUT("  booking platforms, and mobile apps."),
         BR(),
         OK("  ● OPEN TO WORK  ·  Full-time · Freelance · Contract"),
         BR(),
@@ -1073,7 +1124,7 @@ function run(
           BR(),
           DIV("README.md"),
           BR(),
-          OUT("  # Nadim Chowdhury — Portfolio Terminal"),
+          OUT("  # Nadim Chowdhury - Portfolio Terminal"),
           BR(),
           OUT("  Built with React.js and a lot of coffee. ☕"),
           BR(),
@@ -1154,7 +1205,7 @@ function run(
       ];
     case "quote": {
       const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
-      return [BR(), OUT(`  "${q.q}"`), DIM(`  — ${q.a}`), BR()];
+      return [BR(), OUT(`  "${q.q}"`), DIM(`  - ${q.a}`), BR()];
     }
 
     case "fortune": {
@@ -1323,7 +1374,7 @@ function run(
         BR(),
         OUT("  ⛅ Dhaka, Bangladesh"),
         OUT("  28°C · Partly cloudy · Humidity 72%"),
-        DIM("  (Simulated — no API key required)"),
+        DIM("  (Simulated - no API key required)"),
         BR(),
       ];
 
@@ -1669,7 +1720,7 @@ function RenderLine({ line, T, isMobile }: RenderLineProps) {
               ["OS", "NADIM-OS 3.0.0"],
               ["Shell", "nadim-sh 1.0.0"],
               ["Theme", th.name],
-              ["Uptime", "3 years, 5 months"],
+              ["Uptime", "4 years, 2 months"],
               ["Location", ME.location],
             ] as [string, string][]
           ).map(([k, v]) => (
@@ -2130,7 +2181,7 @@ export default function Terminal() {
           ))}
         </div>
 
-        {/* Center title — hidden on mobile */}
+        {/* Center title - hidden on mobile */}
         <div
           className="titlebar-center"
           style={{
@@ -2149,9 +2200,9 @@ export default function Terminal() {
           <span style={{ color: T.accent }}>nadim</span>
           <span style={{ color: T.dim }}>@</span>
           <span style={{ color: T.muted }}>portfolio</span>
-          <span style={{ color: T.dim, margin: "0 4px" }}>—</span>
+          <span style={{ color: T.dim, margin: "0 4px" }}>-</span>
           <span style={{ color: T.dim }}>{T.name}</span>
-          <span style={{ color: T.dim, margin: "0 4px" }}>—</span>
+          <span style={{ color: T.dim, margin: "0 4px" }}>-</span>
           <span style={{ color: T.dim, fontVariantNumeric: "tabular-nums" }}>
             {time}
           </span>
@@ -2400,7 +2451,7 @@ export default function Terminal() {
           } as CSSProperties
         }
       >
-        {/* Keyboard shortcuts — hidden on mobile */}
+        {/* Keyboard shortcuts - hidden on mobile */}
         <div
           className="statusbar-shortcuts"
           style={{

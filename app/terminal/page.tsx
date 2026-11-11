@@ -4,6 +4,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { CSSProperties } from "react";
+import Link from "next/link";
 
 interface Theme {
   name: string;
@@ -236,6 +237,7 @@ function TerminalBackground({ accent, bg }: { accent: string; bg: string }) {
     let frame = 0;
     function animate() {
       animId = requestAnimationFrame(animate);
+      if (document.hidden) return;
       frame++;
       const [br, bg2, bb] = hexToRgb(bgHex);
       ctx.fillStyle = `rgba(${br},${bg2},${bb},1)`;
@@ -399,22 +401,11 @@ const SKILLS: Record<string, string[]> = {
     "Tailwind CSS",
     "Bootstrap",
     "Ant Design",
-    "Framer Motion",
   ],
-  backend: [
-    "Node.js",
-    "Express.js",
-    "NestJS",
-    "GraphQL",
-    "REST API",
-  ],
-  database: ["PostgreSQL", "MongoDB"],
+  backend: ["Node.js", "Express.js", "NestJS", "GraphQL", "REST API"],
   mobile: ["React Native"],
-  devops: [
-    "Docker",
-    "Git",
-    "GitHub",
-  ],
+  database: ["PostgreSQL", "MongoDB"],
+  devops: ["Docker", "Git", "GitHub"],
   tools: ["Postman", "Swagger"],
 };
 
@@ -423,46 +414,52 @@ const EXP: ExpEntry[] = [
     n: "01",
     role: "Software Developer",
     co: "Akij iBos",
-    period: "May 2026 – Present",
+    period: "Apr 2026 – Nov 2026",
     type: "Full-time",
-    stack: ["React.js", "Ant Design", "REST API", "MSSQL"],
-    desc: "Worked on ERP modules including Procurement, Purchase Request, and Purchase Order, building and improving features used in day-to-day business operations. Developed Accounts and financial operations (Account Journal, Bank Journal, Bank Payment, Adjustment Journal), and implemented authorization and multi-level approval workflows.",
+    stack: [
+      "React.js",
+      "Node.js",
+      "PostgreSQL",
+      "REST API",
+      "Ant Design",
+      "Quartz",
+      "ZKTeco",
+    ],
+    desc: "Worked on ERP modules (Procurement, Accounts, financial operations, multi-level approvals). Developed a Visitor Management System integrated with ZKTeco turnstile gates (visitor registration, host approval, QR access, automated device sync). Refactored Standard Chartered Bank's Statement Collection system, automating CAMT XML processing, database mapping, and scheduled SFTP retrieval using Quartz (7,051 transactions in testing).",
   },
   {
     n: "02",
-    role: "Full Stack Software Developer",
-    co: "Easy Fashion Ltd",
-    period: "Jul 2025 – Nov 2025",
+    role: "Frontend Developer",
+    co: "Mediusware Ltd.",
+    period: "Dec 2023 – Jan 2026",
     type: "Full-time",
-    stack: ["React.js", "NestJS", "PostgreSQL", "Docker", "PWA"],
-    desc: "Worked on POS and warehouse management systems, developing sales and sales return pages, inventory and stock management features, and integrating frontend and backend APIs. Added keyboard shortcuts and keyboard-friendly interactions to streamline the POS workflow, and worked on PWA features.",
+    stack: [
+      "React.js",
+      "Next.js",
+      "NestJS",
+      "TypeScript",
+      "GraphQL",
+      "Tailwind CSS",
+      "Amadeus API",
+    ],
+    desc: "Worked on POS and warehouse management systems with keyboard shortcuts. Developed drag-and-drop website builder with multi-tenancy and subdomain publishing. Integrated GraphQL APIs and dynamic data rendering. Built eCommerce RBAC features and a full-stack flight booking system with Amadeus API.",
   },
   {
     n: "03",
-    role: "Full Stack Web Developer",
-    co: "Freelance",
-    period: "Apr 2025 – Jun 2025",
-    type: "Freelance",
-    stack: ["Next.js", "NestJS", "PostgreSQL", "Amadeus API", "REST API"],
-    desc: "Built a flight booking system using Next.js and NestJS, with user authentication, role-based access control, and CRUD features for airlines, airports, aircraft, and routes. Integrated the Amadeus API for flight search and booking flow with responsive UI.",
-  },
-  {
-    n: "04",
-    role: "Junior Frontend Developer",
-    co: "Mediusware Ltd.",
-    period: "Dec 2023 – Mar 2025",
-    type: "Full-time",
-    stack: ["React.js", "GraphQL", "TypeScript", "Tailwind CSS", "Ant Design"],
-    desc: "Worked on a drag-and-drop website builder with multi-tenancy, reusable components, and subdomain-based website publishing. Integrated GraphQL APIs, built frontend features with role-based access control on eCommerce projects, and developed features for an event management application.",
-  },
-  {
-    n: "05",
-    role: "Frontend Developer",
+    role: "Web Developer",
     co: "Freelance & Personal Projects",
     period: "Sep 2022 – Nov 2023",
     type: "Freelance",
-    stack: ["React.js", "Node.js", "Express.js", "MongoDB", "REST API"],
-    desc: "Built web applications with React.js while strengthening frontend skills including reusable components and responsive layouts. Worked on the frontend of a School Management System and Flight Booking App with backend APIs, and developed several practice projects.",
+    stack: [
+      "React.js",
+      "JavaScript",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "REST API",
+      "Git",
+    ],
+    desc: "Built web applications with React.js focusing on reusable components, responsive layouts, and core full-stack foundations. Developed frontend for School Management System and Flight Booking App with backend APIs, authentication, and CRUD operations.",
   },
 ];
 
@@ -494,15 +491,15 @@ const PROJECTS: ProjectEntry[] = [
     stack: ["Next.js", "NestJS", "Amadeus API", "PostgreSQL", "REST API"],
     desc: "Full-stack airline booking platform integrated with Amadeus API for flight search, featuring role-based access, routes, planes, and booking management.",
   },
-  {
-    id: "schoolsys",
-    name: "School Mgmt Sys",
-    cat: "ERP Platform",
-    url: "scl-mgt-sys-client.vercel.app",
-    year: "2024",
-    stack: ["React.js", "Node.js", "MongoDB"],
-    desc: "Comprehensive school ERP with student records, scheduling, teacher dashboards, and grade management.",
-  },
+  // {
+  //   id: "schoolsys",
+  //   name: "School Mgmt Sys",
+  //   cat: "ERP Platform",
+  //   url: "scl-mgt-sys-client.vercel.app",
+  //   year: "2024",
+  //   stack: ["React.js", "Node.js", "MongoDB"],
+  //   desc: "Comprehensive school ERP with student records, scheduling, teacher dashboards, and grade management.",
+  // },
 ];
 
 const CMDS = [
@@ -550,6 +547,7 @@ const CMDS = [
   "npm",
   "node",
   "python",
+  "gui",
   "exit",
   "rm",
   "fortune",
@@ -564,7 +562,7 @@ const JOKES = [
   "Why do Java developers wear glasses? Because they can't C#. 👓",
   "There are 10 types of people: those who understand binary, and those who don't. 💻",
   "Why did the developer go broke? Because he used up all his cache. 💸",
-  "How many programmers does it take to change a light bulb? None — it's a hardware problem.",
+  "How many programmers does it take to change a light bulb? None - it's a hardware problem.",
   "Programming is 10% writing code and 90% figuring out why it doesn't work. 🤔",
   "The best thing about a Boolean is even if you're wrong, you're only off by a bit.",
 ];
@@ -605,7 +603,7 @@ const RM_RF_SEQUENCE: SequenceEntry[] = [
   { t: 1400, text: "🔥 Burning your career choices...", type: "err" },
   {
     t: 1900,
-    text: "😱 Erasing 3 years of Stack Overflow bookmarks...",
+    text: "😱 Erasing 4 years of Stack Overflow bookmarks...",
     type: "err",
   },
   {
@@ -690,7 +688,7 @@ const HACK_SEQUENCE: SequenceEntry[] = [
   { t: 3900, text: "", type: "br" },
   {
     t: 4000,
-    text: "ACCESS GRANTED 🎉 — Welcome, fellow developer.",
+    text: "ACCESS GRANTED 🎉 - Welcome, fellow developer.",
     type: "ok",
   },
   {
@@ -725,10 +723,66 @@ const CODE = (t: string): Line => mkLine(t, "code");
 
 function safeCalc(expr: string): number | null {
   try {
-    const cleaned = expr.replace(/[^0-9+\-*/().,% ]/g, "").trim();
-    if (!cleaned) return null;
-    const result = new Function(`"use strict"; return (${cleaned})`)();
-    return typeof result === "number" && isFinite(result) ? result : null;
+    if (!expr || /[^0-9+\-*/%().\s]/.test(expr)) return null;
+    const tokens = expr.match(/(\d+(\.\d+)?|[+\-*/%()])/g);
+    if (!tokens) return null;
+    let pos = 0;
+
+    function parsePrimary(): number {
+      const token = tokens![pos++];
+      if (token === "(") {
+        const val = parseAddSub();
+        if (tokens![pos++] !== ")") throw new Error("Expected )");
+        return val;
+      }
+      if (token === "-") return -parsePrimary();
+      if (token === "+") return parsePrimary();
+      const num = Number(token);
+      if (isNaN(num)) throw new Error("Invalid number");
+      return num;
+    }
+
+    function parseMulDiv(): number {
+      let val = parsePrimary();
+      while (pos < tokens!.length) {
+        const op = tokens![pos];
+        if (op === "*") {
+          pos++;
+          val *= parsePrimary();
+        } else if (op === "/") {
+          pos++;
+          const div = parsePrimary();
+          if (div === 0) throw new Error("Divide by zero");
+          val /= div;
+        } else if (op === "%") {
+          pos++;
+          val %= parsePrimary();
+        } else {
+          break;
+        }
+      }
+      return val;
+    }
+
+    function parseAddSub(): number {
+      let val = parseMulDiv();
+      while (pos < tokens!.length) {
+        const op = tokens![pos];
+        if (op === "+") {
+          pos++;
+          val += parseMulDiv();
+        } else if (op === "-") {
+          pos++;
+          val -= parseMulDiv();
+        } else {
+          break;
+        }
+      }
+      return val;
+    }
+
+    const res = parseAddSub();
+    return pos === tokens.length && isFinite(res) ? res : null;
   } catch {
     return null;
   }
@@ -740,6 +794,7 @@ function run(
   setTheme: (t: Theme) => void,
   hist: string[],
   addLines: (lines: Line[]) => void,
+  registerTimer?: (t: ReturnType<typeof setTimeout>) => void,
 ): Line[] {
   const parts = raw.trim().split(/\s+/);
   const cmd = parts[0].toLowerCase();
@@ -747,15 +802,17 @@ function run(
   if (!cmd) return [];
 
   if (cmd === "rm") {
-    setTimeout(() => {
+    const t0 = setTimeout(() => {
       RM_RF_SEQUENCE.forEach(({ t, text, type }) => {
-        setTimeout(
+        const tid = setTimeout(
           () =>
             addLines([type === "br" ? BR() : mkLine(text, type as LineType)]),
           t,
         );
+        registerTimer?.(tid);
       });
     }, 0);
+    registerTimer?.(t0);
     return [
       BR(),
       WARN("⚠️ Dangerous command detected. Engaging safety protocol..."),
@@ -774,13 +831,13 @@ function run(
         OUT(
           `  skills [category]        Tech stack  ·  ${Object.keys(SKILLS).join(" | ")}`,
         ),
-        OUT("  exp · experience         Full work history (5 roles)"),
+        OUT("  exp · experience         Full work history (3 roles)"),
         OUT("  projects                 All projects overview"),
         OUT(
           `  project <id>             Project deep-dive  ·  ${PROJECTS.map((p) => p.id).join(" | ")}`,
         ),
-        OUT("  resume · cv              View/download Resume PDF"),
-        OUT("  coverletter              View Cover Letter PDF"),
+        OUT("  resume · cv              View resume summary"),
+        OUT("  coverletter              View cover letter statement"),
         OUT("  education · edu          Academic background"),
         OUT("  contact                  Contact information"),
         OUT("  links                    Social & portfolio links"),
@@ -792,6 +849,7 @@ function run(
         ),
         OUT("  themes                   List all themes with preview"),
         OUT("  clear · cls              Clear terminal"),
+        OUT("  exit · gui               Return to GUI portfolio"),
         OUT("  history                  Command history"),
         OUT("  date                     Current datetime"),
         OUT("  echo <text>              Print text"),
@@ -829,14 +887,26 @@ function run(
         mkLine(`  ${ME.name}`, "hdr"),
         DIM(`  ${ME.role}  ·  ${ME.location}`),
         BR(),
-        OUT("  Experience   3+ years  ·  2022 to present"),
-        OUT("  Roles        5 professional positions"),
-        OUT("  Focus        ERP · POS · SaaS & Booking Platforms"),
-        OUT("  Stack        React.js · Next.js · Node.js · NestJS · TypeScript"),
+        OUT("  Experience   4 years  ·  2022 to 2026"),
+        OUT("  Roles        3 professional positions"),
+        OUT(
+          "  Focus        ERP · POS · Business Apps · SaaS & Booking Platforms",
+        ),
+        OUT(
+          "  Stack        React.js · Next.js · Node.js · NestJS · React Native · TypeScript",
+        ),
         BR(),
-        OUT("  Self-taught Software Developer with 3+ years of experience building"),
-        OUT("  web applications using React, Next.js, Node.js, and NestJS."),
-        OUT("  Dropped out of Mathematics program to pursue software full-time."),
+        OUT(
+          "  Self-taught Software Developer building applications using React,",
+        ),
+        OUT(
+          "  Node.js and React Native. Experienced in developing ERP, POS, and",
+        ),
+        OUT("  business applications, along with SaaS and booking platforms."),
+        OUT(
+          "  Mainly focused on frontend while actively working with backend APIs,",
+        ),
+        OUT("  databases, authentication, business logic and mobile apps."),
         BR(),
         OK("  ● OPEN TO WORK  ·  Full-time · Freelance · Contract"),
         BR(),
@@ -918,41 +988,49 @@ function run(
     }
 
     case "resume":
-    case "cv": {
-      try {
-        window.open(ME.resumePdf, "_blank");
-      } catch {
-        /* noop */
-      }
+    case "cv":
       return [
         BR(),
-        DIV("RESUME"),
+        DIV("RESUME SUMMARY"),
         BR(),
-        OK("  ✓ Opening Resume PDF in new tab..."),
-        LNK(`  ↗  ${ME.resumePdf}`, ME.resumePdf),
+        mkLine(`  ${ME.name}`, "hdr"),
+        ACC(`  ${ME.role}  ·  ${ME.location}`),
+        DIM("  ──────────────────────────────────────────"),
+        OUT("  Experience   4 years (Sep 2022 – Nov 2026)"),
+        OUT("  Focus        ERP, POS, SaaS, Booking Platforms, Web & Mobile"),
+        OUT(
+          "  Core Stack   React, Next.js, Node.js, NestJS, TypeScript, React Native",
+        ),
+        OUT(`  Email        ${ME.email}`),
+        OUT(`  Phone        ${ME.phone}`),
+        OUT(`  GitHub       ${ME.github}`),
+        OUT(`  LinkedIn     ${ME.linkedin}`),
         BR(),
-        DIM("  File: nadim-chowdhury-resume.pdf"),
+        DIM("  Interactive sections:"),
+        OUT("  skills       Categorized technical skills"),
+        OUT("  exp          Career roles & key accomplishments"),
+        OUT("  projects     Live production applications"),
         BR(),
       ];
-    }
 
-    case "coverletter": {
-      try {
-        window.open(ME.coverLetterPdf, "_blank");
-      } catch {
-        /* noop */
-      }
+    case "coverletter":
       return [
         BR(),
-        DIV("COVER LETTER"),
+        DIV("COVER LETTER STATEMENT"),
         BR(),
-        OK("  ✓ Opening Cover Letter PDF in new tab..."),
-        LNK(`  ↗  ${ME.coverLetterPdf}`, ME.coverLetterPdf),
+        OUT("  Dear Hiring Manager,"),
         BR(),
-        DIM("  File: nadim-chowdhury-cover-letter.pdf"),
+        OUT(
+          "  I am a Software Developer with 4 years of experience building production-grade",
+        ),
+        OUT("  applications across React, Next.js, Node.js, and React Native."),
+        OUT(
+          "  Experienced across ERP modules, POS systems, SaaS, and booking platforms.",
+        ),
+        BR(),
+        OUT(`  Contact: ${ME.email}  ·  ${ME.phone}`),
         BR(),
       ];
-    }
 
     case "education":
     case "edu":
@@ -961,7 +1039,9 @@ function run(
         DIV("EDUCATION"),
         BR(),
         mkLine("  BSc in Mathematics (Dropout)", "hdr"),
-        DIM("  Habibullah Bahar University College (National University)  ·  2019"),
+        DIM(
+          "  Habibullah Bahar University College (National University)  ·  2019",
+        ),
         BR(),
         mkLine("  HSC in Science", "hdr"),
         DIM("  Kabi Nazrul Govt. College (Science Stream)  ·  2017 – 2019"),
@@ -992,8 +1072,6 @@ function run(
           `https://${ME.linkedin}`,
         ),
         LNK(`  Portfolio     ↗  https://${ME.web}`, `https://${ME.web}`),
-        LNK(`  Resume PDF    ↗  ${ME.resumePdf}`, ME.resumePdf),
-        LNK(`  Cover Letter  ↗  ${ME.coverLetterPdf}`, ME.coverLetterPdf),
         BR(),
       ];
 
@@ -1123,7 +1201,7 @@ function run(
           BR(),
           DIV("README.md"),
           BR(),
-          OUT("  # Nadim Chowdhury — Portfolio Terminal"),
+          OUT("  # Nadim Chowdhury - Portfolio Terminal"),
           BR(),
           OUT("  Built with React.js and a lot of coffee. ☕"),
           BR(),
@@ -1204,7 +1282,7 @@ function run(
       ];
     case "quote": {
       const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
-      return [BR(), OUT(`  "${q.q}"`), DIM(`  — ${q.a}`), BR()];
+      return [BR(), OUT(`  "${q.q}"`), DIM(`  - ${q.a}`), BR()];
     }
 
     case "fortune": {
@@ -1251,17 +1329,20 @@ function run(
         BR(),
       ];
 
-    case "hack":
-      setTimeout(() => {
+    case "hack": {
+      const t0 = setTimeout(() => {
         HACK_SEQUENCE.forEach(({ t, text, type }) => {
-          setTimeout(
+          const tid = setTimeout(
             () =>
               addLines([type === "br" ? BR() : mkLine(text, type as LineType)]),
             t,
           );
+          registerTimer?.(tid);
         });
       }, 0);
+      registerTimer?.(t0);
       return [BR(), ACC("  Initiating hacking sequence... 💻"), BR()];
+    }
 
     case "sl":
       return [
@@ -1373,15 +1454,26 @@ function run(
         BR(),
         OUT("  ⛅ Dhaka, Bangladesh"),
         OUT("  28°C · Partly cloudy · Humidity 72%"),
-        DIM("  (Simulated — no API key required)"),
+        DIM("  (Simulated - no API key required)"),
         BR(),
       ];
 
     case "clear":
     case "cls":
       return [{ type: "clear", id: ++_id, text: "", url: null, meta: null }];
+    case "gui":
     case "exit":
-      return [BR(), DIM("  There is no escape from this portfolio. 😈"), BR()];
+      if (typeof window !== "undefined") {
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 600);
+      }
+      return [
+        BR(),
+        OK("  Navigating back to GUI portfolio..."),
+        DIM("  Redirecting..."),
+        BR(),
+      ];
 
     default:
       return [
@@ -1719,7 +1811,7 @@ function RenderLine({ line, T, isMobile }: RenderLineProps) {
               ["OS", "NADIM-OS 3.0.0"],
               ["Shell", "nadim-sh 1.0.0"],
               ["Theme", th.name],
-              ["Uptime", "3 years, 5 months"],
+              ["Uptime", "4 years, 2 months"],
               ["Location", ME.location],
             ] as [string, string][]
           ).map(([k, v]) => (
@@ -1897,7 +1989,19 @@ export default function Terminal() {
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const measureRef = useRef<HTMLSpanElement | null>(null);
+  const activeTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const T = theme;
+
+  const registerTimer = useCallback((t: ReturnType<typeof setTimeout>) => {
+    activeTimersRef.current.push(t);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      activeTimersRef.current.forEach(clearTimeout);
+      activeTimersRef.current = [];
+    };
+  }, []);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 640);
@@ -1978,8 +2082,17 @@ export default function Terminal() {
     if (cmd) {
       setCmdHist((prev) => [...prev.filter((x) => x !== cmd), cmd].slice(-100));
       setHistIdx(-1);
-      const result = run(cmd, theme, setTheme, cmdHist, addLines);
+      const result = run(
+        cmd,
+        theme,
+        setTheme,
+        cmdHist,
+        addLines,
+        registerTimer,
+      );
       if (result[0]?.type === "clear") {
+        activeTimersRef.current.forEach(clearTimeout);
+        activeTimersRef.current = [];
         setLines([]);
         setInput("");
         return;
@@ -2027,13 +2140,7 @@ export default function Terminal() {
             project: PROJECTS.map((p) => p.id),
             skills: Object.keys(SKILLS),
             cat: ["README.md", "package.json"],
-            open: [
-              ME.web,
-              ME.github,
-              ME.linkedin,
-              ME.resumePdf,
-              ME.coverLetterPdf,
-            ],
+            open: [ME.web, ME.github, ME.linkedin],
           };
           const base = parts[0];
           const list = completions[base];
@@ -2171,6 +2278,13 @@ export default function Terminal() {
           ).map(([c], i) => (
             <div
               key={i}
+              title={
+                i === 0
+                  ? "Exit to GUI portfolio"
+                  : i === 1
+                    ? "Clear output"
+                    : undefined
+              }
               style={{
                 width: isMobile ? 10 : 12,
                 height: isMobile ? 10 : 12,
@@ -2186,14 +2300,53 @@ export default function Terminal() {
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLDivElement).style.filter = "none";
               }}
-              onClick={i === 1 ? () => setLines([]) : undefined}
+              onClick={
+                i === 0
+                  ? () => {
+                      window.location.href = "/";
+                    }
+                  : i === 1
+                    ? () => setLines([])
+                    : undefined
+              }
             />
           ))}
+          <Link
+            href="/"
+            title="Back to standard portfolio"
+            style={{
+              marginLeft: 6,
+              fontSize: isMobile ? 10 : 11,
+              color: T.muted,
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 4,
+              padding: "2px 7px",
+              borderRadius: 4,
+              border: `1px solid ${T.border}`,
+              background: `${T.surface}cc`,
+              transition: "all 0.15s",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.color = T.accent;
+              (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                T.accent;
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.color = T.muted;
+              (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                T.border;
+            }}
+          >
+            <span>←</span>
+            <span>GUI</span>
+          </Link>
         </div>
 
-        {/* Center title — hidden on mobile */}
+        {/* Center title - hidden on mobile */}
         <div
-          className="titlebar-center"
+          className="titl-bar-center"
           style={{
             position: "absolute",
             left: "50%",
@@ -2210,9 +2363,9 @@ export default function Terminal() {
           <span style={{ color: T.accent }}>nadim</span>
           <span style={{ color: T.dim }}>@</span>
           <span style={{ color: T.muted }}>portfolio</span>
-          <span style={{ color: T.dim, margin: "0 4px" }}>—</span>
+          <span style={{ color: T.dim, margin: "0 4px" }}>-</span>
           <span style={{ color: T.dim }}>{T.name}</span>
-          <span style={{ color: T.dim, margin: "0 4px" }}>—</span>
+          <span style={{ color: T.dim, margin: "0 4px" }}>-</span>
           <span style={{ color: T.dim, fontVariantNumeric: "tabular-nums" }}>
             {time}
           </span>
@@ -2461,9 +2614,9 @@ export default function Terminal() {
           } as CSSProperties
         }
       >
-        {/* Keyboard shortcuts — hidden on mobile */}
+        {/* Keyboard shortcuts - hidden on mobile */}
         <div
-          className="statusbar-shortcuts"
+          className="statusbar--hortcuts"
           style={{
             display: "flex",
             gap: 14,

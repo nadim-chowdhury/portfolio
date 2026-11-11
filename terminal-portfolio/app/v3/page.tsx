@@ -44,75 +44,41 @@ const SKILLS: Skill[] = [
 
 const EXPERIENCE: Experience[] = [
   {
-    role: "Full Stack Software Developer",
-    company: "Easy Fashion Ltd",
-    period: "JUL ~ NOV 2025",
+    role: "Software Developer",
+    company: "Akij iBos",
+    period: "APR ~ NOV 2026",
     type: "FULL-TIME",
     color: "#00fff5",
     points: [
-      "Designed and implemented end-to-end features using Next.js and NestJS for multiple ERP modules",
-      "Developed secure REST APIs for reliable client-server communication",
-      "Optimized performance through database query efficiency, code splitting, and caching strategies",
-    ],
-  },
-  {
-    role: "Full Stack Web Developer",
-    company: "Freelance",
-    period: "FEB ~ JUN 2025",
-    type: "FREELANCE",
-    color: "#ff2d78",
-    points: [
-      "Built a Next.js/NestJS Flight Booking System (auth, airline/airport/route management, workflows)",
-      "Developed drag-and-drop Website Builder SaaS with reusable components and subscription billing",
-      "Designed scalable architectures with modular component registries and optimized rendering pipelines",
-    ],
-  },
-  {
-    role: "Jr. Frontend Developer",
-    company: "Mediusware Ltd",
-    period: "MAR 2024 ~ JAN 2025",
-    type: "FULL-TIME",
-    color: "#00fff5",
-    points: [
-      "Developed a multi-tenant drag-and-drop website builder with subdomain publishing functionality",
-      "Built features for event management software and integrated components with backend APIs",
-      "Designed responsive UI components using React, Ant Design, and Bootstrap, consuming GraphQL APIs",
-    ],
-  },
-  {
-    role: "Frontend Trainee",
-    company: "Mediusware Ltd",
-    period: "DEC 2023 ~ FEB 2024",
-    type: "INTERNSHIP",
-    color: "#ffe600",
-    points: [
-      "Developed Profile Management CRUD functionality with role-based access control",
-      "Implemented Administrator Back Office, Employee Task Management, and Customer Order modules",
-      "Built interactive UI logic for Preferences and independently built an e-commerce app from scratch",
+      "Worked on ERP modules including Procurement, Purchase Request, and Purchase Order, building and improving features used in day-to-day business operations",
+      "Developed a Visitor Management System integrated with ZKTeco turnstile gates, implementing visitor registration, host approval, QR-based access, automated device synchronization, and time-based access expiration",
+      "Refactored Standard Chartered Bank's Statement Collection system, automating CAMT XML processing, database mapping, duplicate handling, batch processing, and scheduled SFTP retrieval using Quartz, successfully processing 7,051 transactions in testing",
     ],
   },
   {
     role: "Frontend Developer",
-    company: "Freelance",
-    period: "JUL ~ NOV 2023",
-    type: "FREELANCE",
+    company: "Mediusware Ltd",
+    period: "DEC 2023 ~ JAN 2026",
+    type: "FULL-TIME",
     color: "#ff2d78",
     points: [
-      "Built a School Management System using Angular with student, teacher, and administrative modules",
-      "Developed a responsive Flight Ticket Booking application with complete booking workflows and API integrations",
-      "Designed reusable UI components and responsive layouts, collaborating directly with clients",
+      "Worked on POS and warehouse management systems, developing sales and sales return pages, inventory and stock management features, and integrating frontend and backend APIs",
+      "Worked on a drag-and-drop website builder with multi-tenancy, reusable components, and subdomain-based website publishing",
+      "Integrated GraphQL APIs and handled dynamic data rendering across different pages and modules",
+      "Built frontend features including profile management, task management, customer orders, and user preferences with role-based access control",
+      "Built a flight booking system using Next.js and NestJS, with user authentication, role-based access, and Amadeus API flight search integration",
     ],
   },
   {
     role: "Web Developer",
-    company: "Self-employed",
-    period: "SEP 2022 ~ JUN 2023",
-    type: "SELF-EMPLOYED",
-    color: "#00fff5",
+    company: "Freelance & Personal Projects",
+    period: "SEP 2022 ~ NOV 2023",
+    type: "FREELANCE",
+    color: "#ffe600",
     points: [
-      "Learned and applied the MERN stack by building full-stack applications from concept to deployment",
-      "Created practice projects: task management apps, authentication systems, and CRUD-based solutions",
-      "Practiced REST API development, database design, state management, and debugging/version control",
+      "Built web applications with React.js while strengthening frontend development skills, including reusable components, responsive layouts, and user interactions",
+      "Worked on the frontend of a School Management System and Flight Booking App building pages and features and integrating them with backend APIs",
+      "Built several practice projects to strengthen skills in JavaScript, REST APIs, authentication, CRUD operations, Git, and frontend debugging",
     ],
   },
 ];
@@ -120,6 +86,15 @@ const EXPERIENCE: Experience[] = [
 const PROJECTS: Project[] = [
   {
     id: "PRJ-001",
+    name: "PUREPATH BOOKING",
+    url: "purepath-booking.vercel.app",
+    status: "LIVE",
+    tech: ["Next.js", "React", "Redux Toolkit", "Shadcn UI"],
+    desc: "Modern, high-performance booking platform built with the React ecosystem to streamline reservations, appointments, and user management.",
+    year: "2026",
+  },
+  {
+    id: "PRJ-002",
     name: "COLLABIER SAAS",
     url: "collabier-sass-x.vercel.app",
     status: "LIVE",
@@ -128,31 +103,22 @@ const PROJECTS: Project[] = [
     year: "2025",
   },
   {
-    id: "PRJ-002",
+    id: "PRJ-003",
     name: "FLIGHT BOOKING SYS",
     url: "flight-booking-x.vercel.app",
     status: "LIVE",
-    tech: ["Next.js", "NestJS", "REST API", "JWT"],
-    desc: "Secure airline booking platform with RBAC, CRUD for airlines/airports/planes/routes, and smooth user authentication for booking flows.",
-    year: "2024",
-  },
-  {
-    id: "PRJ-003",
-    name: "SCHOOL MGMT SYS",
-    url: "scl-mgt-sys-client.vercel.app",
-    status: "LIVE",
-    tech: ["React.js", "Node.js", "MongoDB"],
-    desc: "Comprehensive school ERP system with student records, scheduling, teacher dashboards, grade management, and admin controls.",
+    tech: ["Next.js", "NestJS", "Amadeus API", "PostgreSQL"],
+    desc: "Secure airline booking platform with RBAC, CRUD for airlines/airports/planes/routes, and Amadeus API flight search integration.",
     year: "2024",
   },
   {
     id: "PRJ-004",
-    name: "DASHBOARD UI",
-    url: "dash-b0ard.netlify.app",
+    name: "SCHOOL MGMT SYS",
+    url: "scl-mgt-sys-client.vercel.app",
     status: "LIVE",
-    tech: ["React.js", "Tailwind CSS", "Recharts"],
-    desc: "Modern analytics dashboard with data visualizations, dark mode, responsive layout, and real-time data table components.",
-    year: "2023",
+    tech: ["React.js", "Node.js", "MongoDB", "Express.js"],
+    desc: "Comprehensive school ERP system with student records, scheduling, teacher dashboards, grade management, and admin controls.",
+    year: "2024",
   },
 ];
 
@@ -659,7 +625,7 @@ export default function PortfolioV3() {
       <ScanlineOverlay />
       <GridBg />
 
-      {/* Cursor glow — desktop only */}
+      {/* Cursor glow - desktop only */}
       {!isMobile && (
         <div
           style={{
@@ -1040,7 +1006,7 @@ export default function PortfolioV3() {
                     { label: "DESIGNATION", value: "Full Stack Developer" },
                     { label: "CLEARANCE", value: "React · Next.js · NestJS" },
                     { label: "NODE", value: "Dhaka, Bangladesh" },
-                    { label: "UPTIME", value: "3+ Years Active" },
+                    { label: "UPTIME", value: "4 Years Active" },
                     { label: "PROJECTS", value: "20+ Deployed" },
                     { label: "STATUS", value: "AVAILABLE FOR HIRE" },
                   ] as { label: string; value: string }[]

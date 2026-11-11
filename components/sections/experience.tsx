@@ -4,7 +4,6 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Briefcase } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
-// import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { experiences } from "@/lib/data";
 
 function TimelineCard({
@@ -18,16 +17,16 @@ function TimelineCard({
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <div ref={ref} className="relative flex gap-6 md:gap-8">
+    <div ref={ref} className="relative flex gap-4 sm:gap-6 md:gap-8">
       {/* Timeline line + dot */}
       <div className="flex flex-col items-center shrink-0">
         <motion.div
           initial={{ scale: 0 }}
           animate={isInView ? { scale: 1 } : { scale: 0 }}
           transition={{ duration: 0.4, delay: 0.2, type: "spring", bounce: 0.4 }}
-          className="relative w-10 h-10 rounded-full border-2 border-accent bg-surface-primary flex items-center justify-center z-10"
+          className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-accent bg-surface-primary flex items-center justify-center z-10"
         >
-          <Briefcase className="w-4 h-4 text-accent" />
+          <Briefcase className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent" />
           {/* Pulse ring */}
           {index === 0 && (
             <div

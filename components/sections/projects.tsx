@@ -1,8 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ExternalLink, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { ExternalLink } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { projects } from "@/lib/data";
@@ -27,39 +26,34 @@ function ProjectCard({
           </span>
         </div>
 
-        {/* Visual Block — gradient placeholder styled by project */}
-        <div
-          className="relative w-full aspect-video rounded-xl overflow-hidden mb-6 border border-border-subtle"
-          style={{
-            backgroundImage: `url(${project.image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "top",
-          }}
+        {/* Visual Block - Next.js Optimized Image with smooth hover effect */}
+        <a
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`View live demo of ${project.name}`}
+          className="block relative w-full aspect-video rounded-xl overflow-hidden mb-6 border border-border-subtle bg-surface-secondary cursor-pointer"
         >
-          {/* <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-full h-full bg-linear-to-br from-accent/8 via-surface-secondary to-accent/4 flex items-center justify-center">
-              <span className="font-heading text-3xl md:text-4xl font-bold text-accent/15 select-none">
-                {project.name.charAt(0)}
-              </span>
-            </div>
-          </div> */}
-
-          {/* <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/5 transition-colors duration-500 flex items-center justify-center">
-            <motion.div
-              initial={false}
-              className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            >
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-primary/90 text-text-primary text-xs font-medium backdrop-blur-sm border border-border">
-                View Project <ArrowRight className="w-3 h-3" />
-              </span>
-            </motion.div>
-          </div> */}
-        </div>
+          <Image
+            src={project.image}
+            alt={project.name}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+            className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
+          />
+        </a>
 
         {/* Project Info */}
         <div className="flex flex-col flex-1">
-          <h3 className="font-heading font-bold text-lg md:text-xl text-text-primary mb-2 group-hover:text-accent transition-colors">
-            {project.name}
+          <h3 className="font-heading font-bold text-lg md:text-xl text-text-primary mb-2 transition-colors">
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-accent transition-colors"
+            >
+              {project.name}
+            </a>
           </h3>
           <p className="text-sm text-text-secondary leading-relaxed mb-4 flex-1">
             {project.description}

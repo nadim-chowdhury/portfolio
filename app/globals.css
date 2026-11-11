@@ -85,7 +85,7 @@
 
   ::selection {
     background-color: var(--accent);
-    color: #fff;
+    color: var(--accent-fg);
   }
 
   /* Hide scrollbar but keep functionality */
